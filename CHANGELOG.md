@@ -52,6 +52,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 
 
+
+## [1.16.2] - 2026-05-17
+
+### Features
+-  Add microphone input selection for screen recordings (#192) (257a45e)
+-  Add cursor visibility option in recording settings and update related functionality (#196) (70ba706)
+
+### Chore
+- refactor: Synchronize window levels with focus state in Annotate and VideoEditor windows (27a6d3b)
+- refactor: Enhance QuickAccessPanel and QuickAccessManager with interaction metrics and mouse passthrough updates (fb7d9ca)
+- chore: update appcast, cask, and readme for v1.16.1 (6cb8a96)
+
+### Contributors
+- @duongductrong
+- @github-actions[bot]
+
 ## [1.16.1] - 2026-05-17
 
 ### Features
