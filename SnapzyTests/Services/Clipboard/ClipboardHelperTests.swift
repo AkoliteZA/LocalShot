@@ -58,10 +58,16 @@ final class ClipboardHelperTests: XCTestCase {
 
     ClipboardHelper.copyImage(from: fileURL)
     let pasteboard = NSPasteboard.general
-    XCTAssertTrue(pasteboard.canReadItem(withDataConformingToTypes: ["public.png"]) || pasteboard.canReadItem(withDataConformingToTypes: ["public.file-url"]))
+    let item = try XCTUnwrap(pasteboard.pasteboardItems?.first)
+    XCTAssertEqual(pasteboard.pasteboardItems?.count, 1)
+    XCTAssertTrue(item.types.contains(.fileURL))
+    XCTAssertTrue(item.types.contains(.png))
+    XCTAssertTrue(item.types.contains(.tiff))
+    XCTAssertEqual((pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL])?.count, 1)
+    XCTAssertEqual((pasteboard.readObjects(forClasses: [NSImage.self], options: nil) as? [NSImage])?.count, 1)
   }
 
-  func testCopyRenderedImage_withPNGFormat() {
+  func testCopyRenderedImage_withPNGFormat() throws {
     UserDefaults.standard.set(ImageFormatOption.png.rawValue, forKey: PreferencesKeys.screenshotFormat)
     guard let cgImage = TestImageFactory.solidColor(width: 10, height: 10) else {
       XCTFail("Failed to create test image")
@@ -70,10 +76,16 @@ final class ClipboardHelperTests: XCTestCase {
     let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: 10, height: 10))
     ClipboardHelper.copyImage(nsImage)
     let pasteboard = NSPasteboard.general
-    XCTAssertTrue(pasteboard.canReadItem(withDataConformingToTypes: ["public.png"]) || pasteboard.canReadItem(withDataConformingToTypes: ["public.tiff"]))
+    let item = try XCTUnwrap(pasteboard.pasteboardItems?.first)
+    XCTAssertEqual(pasteboard.pasteboardItems?.count, 1)
+    XCTAssertTrue(item.types.contains(.fileURL))
+    XCTAssertTrue(item.types.contains(.png))
+    XCTAssertTrue(item.types.contains(.tiff))
+    XCTAssertEqual((pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL])?.count, 1)
+    XCTAssertEqual((pasteboard.readObjects(forClasses: [NSImage.self], options: nil) as? [NSImage])?.count, 1)
   }
 
-  func testCopyRenderedImage_withJPEGFormat() {
+  func testCopyRenderedImage_withJPEGFormat() throws {
     UserDefaults.standard.set(ImageFormatOption.jpeg.rawValue, forKey: PreferencesKeys.screenshotFormat)
     guard let cgImage = TestImageFactory.solidColor(width: 10, height: 10) else {
       XCTFail("Failed to create test image")
@@ -82,6 +94,33 @@ final class ClipboardHelperTests: XCTestCase {
     let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: 10, height: 10))
     ClipboardHelper.copyImage(nsImage)
     let pasteboard = NSPasteboard.general
-    XCTAssertTrue(pasteboard.canReadItem(withDataConformingToTypes: ["public.jpeg"]) || pasteboard.canReadItem(withDataConformingToTypes: ["public.tiff"]))
+    let item = try XCTUnwrap(pasteboard.pasteboardItems?.first)
+    let jpegType = NSPasteboard.PasteboardType("public.jpeg")
+    XCTAssertEqual(pasteboard.pasteboardItems?.count, 1)
+    XCTAssertTrue(item.types.contains(.fileURL))
+    XCTAssertTrue(item.types.contains(jpegType))
+    XCTAssertTrue(item.types.contains(.tiff))
+    XCTAssertEqual((pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL])?.count, 1)
+    XCTAssertEqual((pasteboard.readObjects(forClasses: [NSImage.self], options: nil) as? [NSImage])?.count, 1)
+  }
+
+  func testCopyImageFromURL_undecodableWebP_keepsSingleFileAndOriginalDataItem() throws {
+    let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: tempDir) }
+
+    let fileURL = tempDir.appendingPathComponent("test.webp")
+    try Data([0x52, 0x49, 0x46, 0x46]).write(to: fileURL)
+
+    ClipboardHelper.copyImage(from: fileURL)
+    let pasteboard = NSPasteboard.general
+    let item = try XCTUnwrap(pasteboard.pasteboardItems?.first)
+    let webPType = NSPasteboard.PasteboardType("org.webmproject.webp")
+
+    XCTAssertEqual(pasteboard.pasteboardItems?.count, 1)
+    XCTAssertTrue(item.types.contains(.fileURL))
+    XCTAssertTrue(item.types.contains(webPType))
+    XCTAssertFalse(item.types.contains(.tiff))
+    XCTAssertEqual((pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL])?.count, 1)
   }
 }

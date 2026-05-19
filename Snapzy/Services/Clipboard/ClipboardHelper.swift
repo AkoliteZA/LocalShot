@@ -3,9 +3,8 @@
 //  Snapzy
 //
 //  Format-aware clipboard write utility.
-//  Writes both NSURL (file reference) and NSImage (pixel data) to the pasteboard
-//  so every receiving app can paste — Finder uses the file URL while chat apps,
-//  browsers, and editors use the TIFF/PNG image representation.
+//  Writes one pasteboard item with file and pixel-data representations
+//  so receiving apps see a single image while choosing the type they support.
 //
 
 import AppKit
@@ -17,9 +16,10 @@ private let logger = Logger(subsystem: "Snapzy", category: "ClipboardHelper")
 
 /// Centralized helper for copying images to clipboard while respecting the configured format.
 ///
-/// Strategy: write **both** `NSURL` (file reference) and `NSImage` (pixel data) to the
-/// pasteboard. File-aware apps (Finder, Preview) use the URL; image-consuming apps
-/// (Telegram, Slack, Chrome, etc.) use the TIFF/PNG representation.
+/// Strategy: write one `NSPasteboardItem` containing multiple representations.
+/// File-aware apps (Finder, Preview) use the URL; image-consuming apps
+/// (Telegram, Slack, Chrome, etc.) use image data, without treating the same
+/// screenshot as separate clipboard items.
 /// Temp files must NOT be deleted immediately — the receiving app needs them at paste time.
 /// Orphaned temp files are cleaned up on next launch by `TempCaptureManager.cleanupOrphanedFiles()`.
 enum ClipboardHelper {
@@ -48,8 +48,9 @@ enum ClipboardHelper {
 
   /// Copy an image file to clipboard with both file reference and image data.
   ///
-  /// Writes `NSURL` (preserves original format in Finder) **and** `NSImage`
-  /// (provides TIFF/PNG data for apps that expect image types on the pasteboard).
+  /// Writes a single pasteboard item with file URL plus encoded image data
+  /// representations so apps can pick their preferred type without seeing
+  /// duplicate clipboard items.
   ///
   /// - Important: Do NOT delete the file after calling this — the receiving app
   ///   needs it to exist at paste time.
@@ -67,16 +68,23 @@ enum ClipboardHelper {
     let pasteboard = NSPasteboard.general
     pasteboard.clearContents()
 
-    // Write NSURL + NSImage for maximum compatibility.
-    // NSURL: Finder/Preview paste the actual file with its original format.
-    // NSImage: Telegram, Slack, Chrome, etc. paste TIFF/PNG image data.
-    if let image = NSImage(contentsOf: url) {
-      pasteboard.writeObjects([url as NSURL, image])
-    } else {
-      // Fallback: file exists but NSImage can't decode it (e.g. WebP on macOS 13)
-      pasteboard.writeObjects([url as NSURL])
-      logger.warning("ClipboardHelper: could not decode image, NSURL-only clipboard for \(url.lastPathComponent)")
-      DiagnosticLogger.shared.log(.warning, .clipboard, "Image decode failed, NSURL-only", context: ["file": url.lastPathComponent])
+    let image = NSImage(contentsOf: url)
+    let encodedData = try? Data(contentsOf: url)
+    let encodedType = pasteboardImageType(for: url.pathExtension)
+
+    writeSingleImageItem(
+      to: pasteboard,
+      fileURL: url,
+      image: image,
+      encodedData: encodedData,
+      encodedType: encodedType
+    )
+
+    if image == nil {
+      // Fallback: file exists but NSImage can't decode it (e.g. WebP on macOS 13).
+      // The pasteboard item still exposes the file URL and original encoded data.
+      logger.warning("ClipboardHelper: could not decode image, file/data-only clipboard for \(url.lastPathComponent)")
+      DiagnosticLogger.shared.log(.warning, .clipboard, "Image decode failed, file/data-only", context: ["file": url.lastPathComponent])
     }
 
     logger.info("Clipboard: copied file \(url.lastPathComponent)")
@@ -123,13 +131,58 @@ enum ClipboardHelper {
 
     let pasteboard = NSPasteboard.general
     pasteboard.clearContents()
-    // Write both NSURL (format-preserving) and NSImage (universal image data)
-    pasteboard.writeObjects([tempURL as NSURL, image])
+    writeSingleImageItem(
+      to: pasteboard,
+      fileURL: tempURL,
+      image: image,
+      encodedData: data,
+      encodedType: pasteboardImageType(for: ext)
+    )
 
     logger.info("Clipboard: copied rendered image as \(ext) via temp file")
   }
 
   // MARK: - Helpers
+
+  private static func writeSingleImageItem(
+    to pasteboard: NSPasteboard,
+    fileURL: URL,
+    image: NSImage?,
+    encodedData: Data?,
+    encodedType: NSPasteboard.PasteboardType?
+  ) {
+    let item = NSPasteboardItem()
+    item.setString(fileURL.absoluteString, forType: .fileURL)
+
+    if let encodedData, let encodedType {
+      item.setData(encodedData, forType: encodedType)
+    }
+
+    if let tiffData = image?.tiffRepresentation {
+      item.setData(tiffData, forType: .tiff)
+    }
+
+    pasteboard.writeObjects([item])
+  }
+
+  private static func pasteboardImageType(for fileExtension: String) -> NSPasteboard.PasteboardType? {
+    let ext = fileExtension.lowercased()
+    switch ext {
+    case "png":
+      return .png
+    case "jpg", "jpeg":
+      return NSPasteboard.PasteboardType(UTType.jpeg.identifier)
+    case "webp":
+      return NSPasteboard.PasteboardType(UTType.webP.identifier)
+    case "tif", "tiff":
+      return .tiff
+    default:
+      guard let type = UTType(filenameExtension: ext), type.conforms(to: .image) else {
+        return nil
+      }
+      return NSPasteboard.PasteboardType(type.identifier)
+    }
+  }
 
   /// Read the user's preferred screenshot format from UserDefaults
   private static func currentFormat() -> ImageFormatOption {
