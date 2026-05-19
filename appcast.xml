@@ -6,6 +6,22 @@
     <description>Snapzy application updates</description>
     <language>en</language>
     <item>
+      <title>Version 1.16.4</title>
+      <sparkle:version>102</sparkle:version>
+      <sparkle:shortVersionString>1.16.4</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <pubDate>Tue, 19 May 2026 18:48:00 +0000</pubDate>
+      <description><![CDATA[
+        <style>:root { color-scheme: light dark; } body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; padding: 8px 16px; } h3 { font-size: 14px; margin: 12px 0 6px; } ul { padding-left: 20px; margin: 4px 0; } li { margin: 3px 0; }</style>
+        <h3>🐛 Bug Fixes</h3><ul><li>correct Simplified and Traditional Chinese UI translations</li><li>Update ClipboardHelper to write single pasteboard item with multiple representations</li><li>Use native keyEquivalent column for overlay menu shortcuts</li></ul>
+      ]]></description>
+      <enclosure
+        url="https://github.com/duongductrong/Snapzy/releases/download/v1.16.4/Snapzy-v1.16.4.dmg"
+        sparkle:edSignature="5OHwfhUapXyDodNoOJjK3mL5hzCLOTcbEGFEJRC9kkN9NGoruN1tWGeFM9YVVIRF3kPrIznMxuyE13AXccntAw=="
+        length="46006964"
+        type="application/octet-stream"/>
+    </item>
+    <item>
       <title>Version 1.16.3</title>
       <sparkle:version>101</sparkle:version>
       <sparkle:shortVersionString>1.16.3</sparkle:shortVersionString>
