@@ -6,17 +6,20 @@
 //
 
 import AppKit
+import Combine
 import SwiftUI
 
 final class ScrollingCaptureHUDWindow: NSPanel {
   private var anchorRect: CGRect
+  private var modelObservation: AnyCancellable?
 
   init(
     anchorRect: CGRect,
     model: ScrollingCaptureSessionModel,
     onStart: @escaping () -> Void,
     onDone: @escaping () -> Void,
-    onCancel: @escaping () -> Void
+    onCancel: @escaping () -> Void,
+    onToggleAutoScroll: @escaping () -> Void
   ) {
     self.anchorRect = anchorRect
 
@@ -39,17 +42,35 @@ final class ScrollingCaptureHUDWindow: NSPanel {
       model: model,
       onStart: onStart,
       onDone: onDone,
-      onCancel: onCancel
+      onCancel: onCancel,
+      onToggleAutoScroll: onToggleAutoScroll
     ))
 
-    let size = contentView?.fittingSize ?? CGSize(width: 380, height: 44)
-    setContentSize(size)
-    position(near: anchorRect, size: size)
+    modelObservation = model.objectWillChange.sink { [weak self] _ in
+      DispatchQueue.main.async {
+        self?.refreshContentSize()
+      }
+    }
+
+    refreshContentSize()
   }
 
   func updateAnchorRect(_ rect: CGRect) {
     anchorRect = rect
-    position(near: rect, size: frame.size)
+    refreshContentSize()
+  }
+
+  func refreshContentSize() {
+    guard let contentView else { return }
+
+    contentView.layoutSubtreeIfNeeded()
+    let fittingSize = contentView.fittingSize
+    let size = CGSize(
+      width: max(380, fittingSize.width.rounded(.up)),
+      height: max(44, fittingSize.height.rounded(.up))
+    )
+    setContentSize(size)
+    position(near: anchorRect, size: size)
   }
 
   private func position(near rect: CGRect, size: CGSize) {

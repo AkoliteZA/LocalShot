@@ -27,11 +27,127 @@ final class ScrollingCaptureWindowSharingTests: XCTestCase {
       model: model,
       onStart: {},
       onDone: {},
-      onCancel: {}
+      onCancel: {},
+      onToggleAutoScroll: {}
     )
     defer { window.close() }
 
     XCTAssertEqual(window.sharingType, NSWindow.SharingType.none)
+  }
+
+  func testHUDWindow_resizesWhenAutoScrollButtonAppears() {
+    let model = ScrollingCaptureSessionModel(selectedRect: sampleAnchorRect)
+    let window = ScrollingCaptureHUDWindow(
+      anchorRect: sampleAnchorRect,
+      model: model,
+      onStart: {},
+      onDone: {},
+      onCancel: {},
+      onToggleAutoScroll: {}
+    )
+    defer { window.close() }
+
+    let readyWidth = window.frame.width
+    model.phase = .capturing
+    model.acceptedFrameCount = 1
+    window.refreshContentSize()
+
+    XCTAssertGreaterThan(window.frame.width, readyWidth)
+  }
+
+  func testSessionModel_canToggleAutoScrollOnlyAfterFirstFrameLocks() {
+    let model = ScrollingCaptureSessionModel(selectedRect: sampleAnchorRect)
+
+    XCTAssertFalse(model.canToggleAutoScroll)
+
+    model.phase = .capturing
+    XCTAssertFalse(model.canToggleAutoScroll)
+
+    model.acceptedFrameCount = 1
+    XCTAssertTrue(model.canToggleAutoScroll)
+
+    model.isAutoScrolling = true
+    model.acceptedFrameCount = 0
+    XCTAssertTrue(model.canToggleAutoScroll)
+
+    model.phase = .finalizing
+    XCTAssertFalse(model.canToggleAutoScroll)
+  }
+
+  func testPlaceMouseInsideSelectionGuidance_usesWarningTone() {
+    let guidance = ScrollingCaptureSelectionGuidanceKind.placeMouseInsideSelection.guidance
+
+    XCTAssertFalse(guidance.title.isEmpty)
+    XCTAssertFalse(guidance.detail?.isEmpty ?? true)
+    if case .warning = guidance.tone {
+      return
+    }
+    XCTFail("Expected warning guidance tone")
+  }
+
+  func testAutoScrollPolicy_usesCurrentPointerAsScrollTarget() {
+    let mouseLocation = CGPoint(x: 180, y: 220)
+
+    XCTAssertEqual(
+      ScrollingCaptureAutoScrollPolicy.scrollTargetPoint(
+        mouseLocation: mouseLocation,
+        selectedRect: sampleAnchorRect
+      ),
+      mouseLocation
+    )
+  }
+
+  func testAutoScrollPolicy_allowsSmallHoverPadding() {
+    let mouseLocation = CGPoint(x: sampleAnchorRect.minX - 10, y: sampleAnchorRect.midY)
+
+    XCTAssertEqual(
+      ScrollingCaptureAutoScrollPolicy.scrollTargetPoint(
+        mouseLocation: mouseLocation,
+        selectedRect: sampleAnchorRect
+      ),
+      mouseLocation
+    )
+  }
+
+  func testAutoScrollPolicy_rejectsPointerOutsideHoverPadding() {
+    let mouseLocation = CGPoint(x: sampleAnchorRect.minX - 40, y: sampleAnchorRect.midY)
+
+    XCTAssertNil(
+      ScrollingCaptureAutoScrollPolicy.scrollTargetPoint(
+        mouseLocation: mouseLocation,
+        selectedRect: sampleAnchorRect
+      )
+    )
+  }
+
+  func testAutoScrollPolicy_finishesOnBoundaryOrHeightLimit() {
+    XCTAssertEqual(
+      ScrollingCaptureAutoScrollPolicy.stitchAction(
+        for: stitchUpdate(outcome: .ignoredNoMovement, likelyReachedBoundary: true)
+      ),
+      .finishCapture
+    )
+    XCTAssertEqual(
+      ScrollingCaptureAutoScrollPolicy.stitchAction(
+        for: stitchUpdate(outcome: .reachedHeightLimit)
+      ),
+      .finishCapture
+    )
+  }
+
+  func testAutoScrollPolicy_stopsAfterRepeatedAlignmentFailures() {
+    XCTAssertEqual(
+      ScrollingCaptureAutoScrollPolicy.stitchAction(
+        for: stitchUpdate(outcome: .ignoredAlignmentFailed, matchFailureCount: 2)
+      ),
+      .keepScrolling
+    )
+    XCTAssertEqual(
+      ScrollingCaptureAutoScrollPolicy.stitchAction(
+        for: stitchUpdate(outcome: .ignoredAlignmentFailed, matchFailureCount: 3)
+      ),
+      .stopScrolling
+    )
   }
 
   func testAreaSelectionWindow_isExcludedFromScreenCapture() throws {
@@ -44,5 +160,23 @@ final class ScrollingCaptureWindowSharingTests: XCTestCase {
 
   private var sampleAnchorRect: CGRect {
     CGRect(x: 120, y: 120, width: 360, height: 480)
+  }
+
+  private func stitchUpdate(
+    outcome: ScrollingCaptureStitchOutcome,
+    matchFailureCount: Int = 0,
+    likelyReachedBoundary: Bool = false
+  ) -> ScrollingCaptureStitchUpdate {
+    ScrollingCaptureStitchUpdate(
+      outcome: outcome,
+      mergedImage: nil,
+      acceptedFrameCount: 1,
+      outputHeight: 480,
+      matchFailureCount: matchFailureCount,
+      mergeDirection: .appendFromBottom,
+      likelyReachedBoundary: likelyReachedBoundary,
+      safety: .confirmed,
+      alignmentDebug: nil
+    )
   }
 }

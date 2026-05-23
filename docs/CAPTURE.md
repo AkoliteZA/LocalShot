@@ -214,6 +214,7 @@ flowchart TD
 - `previewTruthState` indicates whether stitched output is captured, syncing to uncommitted scroll, paused, or finalizing.
 - Vision is a recovery tool inside `ScrollingCaptureStitcher`, not the default hot path.
 - `ScrollingCaptureStitchUpdate.safety` marks confirmed versus unsafe stitch outcomes; final output is built from accepted slices only.
+- After the first frame is locked, the HUD can start Auto Scroll. Snapzy posts accessibility-backed scroll-wheel events at the selected region while the pointer remains inside it, pauses with guidance if the pointer leaves, resumes when it returns, auto-finishes on likely bottom/height-limit, and stops auto-scroll on repeated alignment failure so the user can continue manually.
 - Debug sessions emit `ScrollingCaptureDebug` lines to `~/Library/Logs/Snapzy/snapzy_YYYY-MM-DD.txt`; filter them with `grep 'ScrollingCaptureDebug' "$HOME/Library/Logs/Snapzy/snapzy_$(date +%F).txt"` when validating frame source, append deltas, confidence, safety, and final session summary.
 - Session guidance, runtime badges, preview captions, and recovery toasts are localized and should stay in sync with `docs/LOCALIZATION.md`.
 

@@ -4806,6 +4806,11 @@ enum L10n {
   }
 
   enum ScrollingCapture {
+    static let autoScroll = string(
+      "scrolling-capture.auto-scroll",
+      defaultValue: "Auto Scroll",
+      comment: "Scrolling capture HUD button title for starting automatic scrolling"
+    )
     static let runtimeReady = string(
       "scrolling-capture.runtime-ready",
       defaultValue: "Ready",
@@ -4920,6 +4925,16 @@ enum L10n {
       "scrolling-capture.guidance-area-updated",
       defaultValue: "Area updated",
       comment: "Selection guidance title shown after the scrolling capture region is updated"
+    )
+    static let guidancePlaceMouseInsideSelection = string(
+      "scrolling-capture.guidance-place-mouse-inside-selection",
+      defaultValue: "Place mouse inside the capture area",
+      comment: "Selection guidance title shown when auto-scroll pauses because the pointer left the capture region"
+    )
+    static let guidanceReturnMouseInsideSelection = string(
+      "scrolling-capture.guidance-return-mouse-inside-selection",
+      defaultValue: "Move the pointer back into the selection to continue auto-scrolling",
+      comment: "Selection guidance detail shown when auto-scroll pauses because the pointer left the capture region"
     )
     static let guidanceFrameOnlyScrollingContent = string(
       "scrolling-capture.guidance-frame-only-scrolling-content",
@@ -5080,6 +5095,11 @@ enum L10n {
       "scrolling-capture.start-capture",
       defaultValue: "Start Capture",
       comment: "Primary button title for starting scrolling capture"
+    )
+    static let stopAutoScroll = string(
+      "scrolling-capture.stop-auto-scroll",
+      defaultValue: "Stop",
+      comment: "Scrolling capture HUD button title for stopping automatic scrolling"
     )
     static func sectionsCaptured(_ count: Int) -> String {
       format(
@@ -6207,6 +6227,16 @@ enum L10n {
       "scrolling-capture-status.aligning-latest-content",
       defaultValue: "Capturing and aligning the latest visible content...",
       comment: "Status shown while the live preview is being aligned into the stitched result"
+    )
+    static let autoScrollNeedsAccessibility = string(
+      "scrolling-capture-status.auto-scroll-needs-accessibility",
+      defaultValue: "Auto Scroll needs Accessibility permission. Enable Snapzy in System Settings > Privacy & Security > Accessibility.",
+      comment: "Status shown when auto-scroll cannot start because Accessibility permission is missing"
+    )
+    static let autoScrollPausedMoveMouseInside = string(
+      "scrolling-capture-status.auto-scroll-paused-move-mouse-inside",
+      defaultValue: "Auto-scroll paused. Move the pointer back into the selected region to continue.",
+      comment: "Status shown when auto-scroll pauses because the pointer left the selected region"
     )
     static let mixedDirectionsFinalizing = string(
       "scrolling-capture-status.mixed-directions-finalizing",

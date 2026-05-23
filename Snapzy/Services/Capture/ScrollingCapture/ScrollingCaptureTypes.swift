@@ -103,6 +103,7 @@ enum ScrollingCaptureSelectionGuidanceKind {
   case keepOneDirection
   case keepCapturing
   case tryDoneAgain
+  case placeMouseInsideSelection
   case heightLimitReached
   case pressDoneNoNewContent
   case pressDoneCurrentResultReady
@@ -153,6 +154,12 @@ enum ScrollingCaptureSelectionGuidanceKind {
       return ScrollingCaptureSelectionGuidance(
         title: L10n.ScrollingCapture.guidanceTryDoneAgain,
         detail: L10n.ScrollingCapture.guidanceCurrentResultStillReady,
+        tone: .warning
+      )
+    case .placeMouseInsideSelection:
+      return ScrollingCaptureSelectionGuidance(
+        title: L10n.ScrollingCapture.guidancePlaceMouseInsideSelection,
+        detail: L10n.ScrollingCapture.guidanceReturnMouseInsideSelection,
         tone: .warning
       )
     case .heightLimitReached:
@@ -245,6 +252,38 @@ enum ScrollingCaptureConfiguration {
   static let maxOutputHeight = 32_768
 }
 
+enum ScrollingCaptureAutoScrollStitchAction: Equatable {
+  case keepScrolling
+  case stopScrolling
+  case finishCapture
+}
+
+enum ScrollingCaptureAutoScrollPolicy {
+  static let hoverPadding: CGFloat = 16
+  static let alignmentFailureStopThreshold = 3
+
+  static func scrollTargetPoint(mouseLocation: CGPoint, selectedRect: CGRect) -> CGPoint? {
+    let hoverRect = selectedRect.insetBy(dx: -hoverPadding, dy: -hoverPadding)
+    guard hoverRect.contains(mouseLocation) else { return nil }
+    return mouseLocation
+  }
+
+  static func stitchAction(for update: ScrollingCaptureStitchUpdate) -> ScrollingCaptureAutoScrollStitchAction {
+    if update.likelyReachedBoundary {
+      return .finishCapture
+    }
+
+    switch update.outcome {
+    case .reachedHeightLimit:
+      return .finishCapture
+    case .ignoredAlignmentFailed where update.matchFailureCount >= alignmentFailureStopThreshold:
+      return .stopScrolling
+    case .initialized, .appended, .ignoredNoMovement, .ignoredAlignmentFailed:
+      return .keepScrolling
+    }
+  }
+}
+
 @MainActor
 final class ScrollingCaptureSessionModel: ObservableObject {
   @Published var selectedRect: CGRect
@@ -261,6 +300,7 @@ final class ScrollingCaptureSessionModel: ObservableObject {
   @Published var pendingCommitCount = 0
   @Published var acceptedFrameCount = 0
   @Published var stitchedPixelHeight = 0
+  @Published var isAutoScrolling = false
 
   init(selectedRect: CGRect) {
     self.selectedRect = selectedRect
@@ -289,6 +329,10 @@ final class ScrollingCaptureSessionModel: ObservableObject {
 
   var canFinishCapture: Bool {
     phase == .capturing && !isInteractionLocked
+  }
+
+  var canToggleAutoScroll: Bool {
+    phase == .capturing && !isInteractionLocked && (isAutoScrolling || acceptedFrameCount > 0)
   }
 
   var isShowingLiveViewport: Bool {

@@ -8829,6 +8829,136 @@
         }
       }
     },
+    "scrolling-capture-status.auto-scroll-needs-accessibility" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisches Scrollen benötigt Bedienungshilfen-Zugriff. Aktiviere Snapzy in Systemeinstellungen > Datenschutz & Sicherheit > Bedienungshilfen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto Scroll needs Accessibility permission. Enable Snapzy in System Settings > Privacy & Security > Accessibility."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El desplazamiento automático necesita permiso de Accesibilidad. Activa Snapzy en Ajustes del Sistema > Privacidad y seguridad > Accesibilidad."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le défilement automatique nécessite l’autorisation d’accessibilité. Activez Snapzy dans Réglages Système > Confidentialité et sécurité > Accessibilité."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動スクロールにはアクセシビリティ権限が必要です。システム設定 > プライバシーとセキュリティ > アクセシビリティでSnapzyを有効にしてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동 스크롤에는 손쉬운 사용 권한이 필요합니다. 시스템 설정 > 개인정보 보호 및 보안 > 손쉬운 사용에서 Snapzy를 활성화하세요."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для автопрокрутки нужен доступ к Универсальному доступу. Включите Snapzy в Системных настройках > Конфиденциальность и безопасность > Универсальный доступ."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuộn tự động cần quyền Trợ năng. Hãy bật Snapzy trong Cài đặt hệ thống > Quyền riêng tư & Bảo mật > Trợ năng."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动滚动需要辅助功能权限。请在系统设置 > 隐私与安全性 > 辅助功能中启用 Snapzy。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動捲動需要輔助使用權限。請在「系統設定」>「隱私權與安全性」>「輔助使用」中啟用 Snapzy。"
+          }
+        }
+      }
+    },
+    "scrolling-capture-status.auto-scroll-paused-move-mouse-inside" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisches Scrollen pausiert. Bewege den Zeiger zurück in den ausgewählten Bereich, um fortzufahren."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto-scroll paused. Move the pointer back into the selected region to continue."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desplazamiento automático en pausa. Vuelve a colocar el puntero dentro de la región seleccionada para continuar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Défilement automatique en pause. Replacez le pointeur dans la zone sélectionnée pour continuer."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動スクロールを一時停止しました。続行するにはポインタを選択範囲内に戻してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동 스크롤이 일시 정지되었습니다. 계속하려면 포인터를 선택한 영역 안으로 다시 이동하세요."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Автопрокрутка приостановлена. Верните указатель в выбранную область, чтобы продолжить."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã tạm dừng cuộn tự động. Di chuột trở lại vùng chọn để tiếp tục."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动滚动已暂停。将指针移回所选区域内以继续。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動捲動已暫停。將指標移回所選區域內即可繼續。"
+          }
+        }
+      }
+    },
     "scrolling-capture-status.alignment-paused" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -10584,6 +10714,71 @@
         }
       }
     },
+    "scrolling-capture.auto-scroll" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch scrollen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto Scroll"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desplazamiento automático"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Défilement automatique"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動スクロール"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동 스크롤"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Автопрокрутка"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuộn tự động"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动滚动"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動捲動"
+          }
+        }
+      }
+    },
     "scrolling-capture.badge-captured" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -11945,6 +12140,71 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "更新區域"
+          }
+        }
+      }
+    },
+    "scrolling-capture.guidance-place-mouse-inside-selection" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maus in den Aufnahmebereich bewegen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Place mouse inside the capture area"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coloca el ratón dentro del área de captura"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Placez la souris dans la zone de capture"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "マウスをキャプチャ領域内に置いてください"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마우스를 캡처 영역 안에 두세요"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поместите мышь в область захвата"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đặt chuột vào vùng chụp"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将鼠标放在捕捉区域内"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "將滑鼠放在擷取區域內"
           }
         }
       }
@@ -13375,6 +13635,71 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "釋放鎖定區域"
+          }
+        }
+      }
+    },
+    "scrolling-capture.guidance-return-mouse-inside-selection" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewege den Zeiger zurück in die Auswahl, um das automatische Scrollen fortzusetzen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move the pointer back into the selection to continue auto-scrolling"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelve a colocar el puntero dentro de la selección para continuar el desplazamiento automático"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replacez le pointeur dans la sélection pour continuer le défilement automatique"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動スクロールを続行するにはポインタを選択範囲内に戻してください"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동 스크롤을 계속하려면 포인터를 선택 영역 안으로 다시 이동하세요"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Верните указатель в выделенную область, чтобы продолжить автопрокрутку"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Di chuột trở lại vùng chọn để tiếp tục cuộn tự động"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将指针移回所选区域内以继续自动滚动"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "將指標移回所選區域內即可繼續自動捲動"
           }
         }
       }
@@ -15130,6 +15455,71 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開始擷取"
+          }
+        }
+      }
+    },
+    "scrolling-capture.stop-auto-scroll" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stopp"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detener"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrêter"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "停止"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중지"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Остановить"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dừng"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "停止"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "停止"
           }
         }
       }

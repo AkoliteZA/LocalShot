@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import ApplicationServices
 import Combine
 import Foundation
 
@@ -28,6 +29,9 @@ final class ScrollingCaptureCoordinator {
   private let previewTruthLagToleranceMs = 90
   private let liveFrameDebugSampleInterval = 30
   private let scrollHitSlop: CGFloat = 32
+  private let autoScrollIntervalNanoseconds: UInt64 = 40_000_000
+  private let autoScrollPausedIntervalNanoseconds: UInt64 = 150_000_000
+  private let autoScrollDeltaY: Int32 = -15
   private let previewRenderScale: CGFloat = 2
   private let processingQueue = DispatchQueue(
     label: "com.snapzy.scrolling-capture.processing",
@@ -54,6 +58,8 @@ final class ScrollingCaptureCoordinator {
   private var localSessionKeyMonitor: Any?
   private var globalSessionKeyMonitor: Any?
   private var pendingRefreshTask: Task<Void, Never>?
+  private var autoScrollTask: Task<Void, Never>?
+  private var autoScrollTaskID: UUID?
   private var prepareCaptureContextTask: Task<Void, Never>?
   private var preparedCaptureContext: ScreenCaptureManager.PreparedAreaCaptureContext?
   private var captureScaleFactor: CGFloat = 2
@@ -125,7 +131,8 @@ final class ScrollingCaptureCoordinator {
       model: model,
       onStart: { [weak self] in self?.startCapture() },
       onDone: { [weak self] in self?.finish() },
-      onCancel: { [weak self] in self?.cancel() }
+      onCancel: { [weak self] in self?.cancel() },
+      onToggleAutoScroll: { [weak self] in self?.toggleAutoScrolling() }
     )
     previewWindow = ScrollingCapturePreviewWindow(anchorRect: rect, model: model)
 
@@ -152,6 +159,7 @@ final class ScrollingCaptureCoordinator {
   }
 
   func cancel() {
+    stopAutoScrolling()
     flushSessionMetricsIfNeeded(reason: "cancelled")
     sessionGeneration += 1
     pendingRefreshTask?.cancel()
@@ -228,7 +236,135 @@ final class ScrollingCaptureCoordinator {
     }
   }
 
+  private func toggleAutoScrolling() {
+    if sessionModel?.isAutoScrolling == true {
+      stopAutoScrolling()
+    } else {
+      startAutoScrolling()
+    }
+  }
+
+  private func startAutoScrolling() {
+    guard requestAccessibilityPermissionForAutoScrollIfNeeded() else { return }
+    guard let sessionModel, sessionModel.phase == .capturing else { return }
+    guard sessionModel.canToggleAutoScroll else { return }
+    guard autoScrollTask == nil else { return }
+
+    sessionModel.isAutoScrolling = true
+    let taskID = UUID()
+    autoScrollTaskID = taskID
+    autoScrollTask = Task { @MainActor [weak self] in
+      guard let self else { return }
+      defer {
+        if self.autoScrollTaskID == taskID {
+          self.sessionModel?.isAutoScrolling = false
+          self.autoScrollTask = nil
+          self.autoScrollTaskID = nil
+        }
+      }
+
+      while self.autoScrollTaskID == taskID && !Task.isCancelled {
+        guard
+          let sessionModel = self.sessionModel,
+          sessionModel.phase == .capturing,
+          sessionModel.isAutoScrolling
+        else {
+          break
+        }
+        guard let rect = self.selectedRect else { break }
+
+        let mouseLocation = NSEvent.mouseLocation
+        if let scrollTargetPoint = ScrollingCaptureAutoScrollPolicy.scrollTargetPoint(
+          mouseLocation: mouseLocation,
+          selectedRect: rect
+        ) {
+          if sessionModel.guidanceKind == .placeMouseInsideSelection {
+            sessionModel.setStatus(
+              L10n.ScrollingCaptureStatus.sessionActive(
+                sessionModel.acceptedFrameCount,
+                sessionModel.stitchedPixelHeight
+              ),
+              guidance: .scrollDownSteadily
+            )
+          }
+
+          self.postScrollEvent(
+            deltaY: self.autoScrollDeltaY,
+            at: scrollTargetPoint
+          )
+          try? await Task.sleep(nanoseconds: self.autoScrollIntervalNanoseconds)
+        } else {
+          sessionModel.setStatus(
+            L10n.ScrollingCaptureStatus.autoScrollPausedMoveMouseInside,
+            guidance: .placeMouseInsideSelection
+          )
+          try? await Task.sleep(nanoseconds: self.autoScrollPausedIntervalNanoseconds)
+        }
+      }
+    }
+  }
+
+  private func stopAutoScrolling() {
+    sessionModel?.isAutoScrolling = false
+    autoScrollTaskID = nil
+    autoScrollTask?.cancel()
+    autoScrollTask = nil
+  }
+
+  private func requestAccessibilityPermissionForAutoScrollIfNeeded() -> Bool {
+    if AXIsProcessTrusted() {
+      return true
+    }
+
+    let options = [
+      kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true
+    ] as CFDictionary
+    _ = AXIsProcessTrustedWithOptions(options)
+
+    sessionModel?.setStatus(
+      L10n.ScrollingCaptureStatus.autoScrollNeedsAccessibility,
+      guidance: .continueManually
+    )
+    AppToastManager.shared.show(
+      message: L10n.ScrollingCaptureStatus.autoScrollNeedsAccessibility,
+      style: .warning
+    )
+    DiagnosticLogger.shared.log(
+      .warning,
+      .capture,
+      "Auto-scroll blocked by missing Accessibility permission"
+    )
+    return false
+  }
+
+  private func postScrollEvent(deltaY: Int32, at point: CGPoint) {
+    guard let source = CGEventSource(stateID: .combinedSessionState) else { return }
+    guard
+      let scrollEvent = CGEvent(
+        scrollWheelEvent2Source: source,
+        units: .pixel,
+        wheelCount: 1,
+        wheel1: deltaY,
+        wheel2: 0,
+        wheel3: 0
+      )
+    else {
+      return
+    }
+
+    source.localEventsSuppressionInterval = 0
+    scrollEvent.location = quartzGlobalPoint(fromAppKitGlobalPoint: point)
+    scrollEvent.post(tap: .cgSessionEventTap)
+  }
+
+  private func quartzGlobalPoint(fromAppKitGlobalPoint point: CGPoint) -> CGPoint {
+    let mainScreenHeight = NSScreen.screens.first(where: { $0.displayID == CGMainDisplayID() })?.frame.height
+      ?? CGDisplayBounds(CGMainDisplayID()).height
+    return CGPoint(x: point.x, y: mainScreenHeight - point.y)
+  }
+
   private func finish() {
+    stopAutoScrolling()
     guard let sessionModel else { return }
     guard sessionModel.phase == .capturing else {
       if sessionModel.isInteractionLocked {
@@ -612,6 +748,7 @@ final class ScrollingCaptureCoordinator {
           guidance: .heightLimitReached
         )
       }
+      handleAutoScrollStitchUpdate(update)
       updatePreviewTruthState()
       return update
     } catch {
@@ -1266,6 +1403,20 @@ final class ScrollingCaptureCoordinator {
     case .initialized, .appended, .ignoredNoMovement:
       lastCommittedObservationAt = ProcessInfo.processInfo.systemUptime
     case .ignoredAlignmentFailed, .reachedHeightLimit:
+      break
+    }
+  }
+
+  private func handleAutoScrollStitchUpdate(_ update: ScrollingCaptureStitchUpdate) {
+    guard sessionModel?.isAutoScrolling == true else { return }
+
+    switch ScrollingCaptureAutoScrollPolicy.stitchAction(for: update) {
+    case .finishCapture:
+      stopAutoScrolling()
+      finish()
+    case .stopScrolling:
+      stopAutoScrolling()
+    case .keepScrolling:
       break
     }
   }

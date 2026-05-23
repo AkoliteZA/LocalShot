@@ -12,6 +12,7 @@ struct ScrollingCaptureHUDView: View {
   let onStart: () -> Void
   let onDone: () -> Void
   let onCancel: () -> Void
+  let onToggleAutoScroll: () -> Void
 
   private var capturedSummary: String {
     let count = model.acceptedFrameCount
@@ -34,6 +35,7 @@ struct ScrollingCaptureHUDView: View {
           .foregroundStyle(.secondary)
           .lineLimit(1)
       }
+      .frame(minWidth: 120, maxWidth: 220, alignment: .leading)
 
       Spacer(minLength: 4)
 
@@ -42,7 +44,21 @@ struct ScrollingCaptureHUDView: View {
         .frame(height: 18)
         .opacity(0.3)
 
-      // MARK: - Action buttons
+      actionButtons
+        .fixedSize(horizontal: true, vertical: false)
+        .layoutPriority(1)
+    }
+    .padding(12)
+    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+    .overlay(
+      RoundedRectangle(cornerRadius: 14, style: .continuous)
+        .strokeBorder(Color.white.opacity(0.12))
+    )
+  }
+
+  @ViewBuilder
+  private var actionButtons: some View {
+    HStack(spacing: 8) {
       if model.phase == .ready {
         Button(L10n.Common.cancel, action: onCancel)
           .buttonStyle(.bordered)
@@ -58,17 +74,23 @@ struct ScrollingCaptureHUDView: View {
           .controlSize(.small)
           .disabled(!model.canCancelSession)
 
+        Button(action: onToggleAutoScroll) {
+          Label(
+            model.isAutoScrolling ? L10n.ScrollingCapture.stopAutoScroll : L10n.ScrollingCapture.autoScroll,
+            systemImage: model.isAutoScrolling ? "stop.circle.fill" : "play.circle.fill"
+          )
+          .lineLimit(1)
+          .fixedSize(horizontal: true, vertical: false)
+        }
+        .buttonStyle(.bordered)
+        .controlSize(.small)
+        .disabled(!model.canToggleAutoScroll)
+
         Button(L10n.Common.done, action: onDone)
           .buttonStyle(.borderedProminent)
           .controlSize(.small)
           .disabled(!model.canFinishCapture)
       }
     }
-    .padding(12)
-    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-    .overlay(
-      RoundedRectangle(cornerRadius: 14, style: .continuous)
-        .strokeBorder(Color.white.opacity(0.12))
-    )
   }
 }
