@@ -70,7 +70,7 @@ final class SnapzyConfigurationSyncCoordinatorTests: XCTestCase {
     }
   }
 
-  func testSyncNowReportsConflictWithoutConfirmedOverwrite() throws {
+  func testSyncNowReportsConflictWithoutConfirmedOverwrite() async throws {
     let fileURL = temporaryConfigURL()
     var syncCount = 0
     var overwriteCount = 0
@@ -95,7 +95,7 @@ final class SnapzyConfigurationSyncCoordinatorTests: XCTestCase {
     XCTAssertEqual(coordinator.status, .conflict(fileURL))
   }
 
-  func testConfirmedSyncUsesOverwriteClosure() throws {
+  func testConfirmedSyncUsesOverwriteClosure() async throws {
     let fileURL = temporaryConfigURL()
     var overwriteURL: URL?
     var overwriteSignature: String?
@@ -123,7 +123,7 @@ final class SnapzyConfigurationSyncCoordinatorTests: XCTestCase {
     }
   }
 
-  func testPermissionRequiredStatusIsExposed() throws {
+  func testPermissionRequiredStatusIsExposed() async throws {
     let fileURL = temporaryConfigURL()
     let coordinator = makeCoordinator(
       sync: {
