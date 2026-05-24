@@ -67,10 +67,11 @@ final class PreferencesCoreTests: XCTestCase {
       .shortcuts,
       .permissions,
       .cloud,
+      .advanced,
       .about,
     ]
 
-    XCTAssertEqual(tabs.count, 9)
+    XCTAssertEqual(tabs.count, 10)
   }
 
   private func makeDefaults(

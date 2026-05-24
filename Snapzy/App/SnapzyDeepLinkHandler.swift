@@ -43,6 +43,8 @@ struct SnapzyDeepLinkHandler {
       screenCaptureViewModel.captureFullscreen()
     case .captureArea:
       screenCaptureViewModel.captureArea()
+    case .captureApplication:
+      screenCaptureViewModel.captureApplication()
     case .captureAreaAnnotate:
       screenCaptureViewModel.captureAreaAnnotate()
     case .captureScrolling:
@@ -53,6 +55,8 @@ struct SnapzyDeepLinkHandler {
       screenCaptureViewModel.captureObjectCutout()
     case .recordScreen:
       screenCaptureViewModel.startRecordingFlow()
+    case .recordApplication:
+      screenCaptureViewModel.startApplicationRecordingFlow()
     case .openAnnotate:
       AnnotateManager.shared.openEmptyAnnotation()
       NSApp.activate(ignoringOtherApps: true)
@@ -73,14 +77,16 @@ struct SnapzyDeepLinkHandler {
   }
 }
 
-private enum SnapzyDeepLinkAction {
+enum SnapzyDeepLinkAction: Equatable {
   case captureFullscreen
   case captureArea
+  case captureApplication
   case captureAreaAnnotate
   case captureScrolling
   case captureOCR
   case captureObjectCutout
   case recordScreen
+  case recordApplication
   case openAnnotate
   case openVideoEditor
   case openCloudUploads
@@ -102,6 +108,8 @@ private enum SnapzyDeepLinkAction {
       self = .captureFullscreen
     case "capture/area", "capture-area", "area", "screenshot/area":
       self = .captureArea
+    case "capture/application", "capture/window", "application-capture", "window-capture", "screenshot/window":
+      self = .captureApplication
     case "capture/area-annotate", "capture-area-annotate", "area-annotate", "screenshot/area-annotate":
       self = .captureAreaAnnotate
     case "capture/scrolling", "scrolling-capture", "capture-scrolling", "scrolling", "screenshot/scrolling":
@@ -112,6 +120,8 @@ private enum SnapzyDeepLinkAction {
       self = .captureObjectCutout
     case "record/screen", "record-screen", "screen-recording", "recording", "record":
       self = .recordScreen
+    case "record/application", "record/window", "application-recording", "window-recording", "recording/window":
+      self = .recordApplication
     case "open/annotate", "annotate", "open-annotate":
       self = .openAnnotate
     case "open/video-editor", "video-editor", "edit-video", "open-video-editor":
@@ -137,11 +147,13 @@ private enum SnapzyDeepLinkAction {
     switch self {
     case .captureFullscreen: return "captureFullscreen"
     case .captureArea: return "captureArea"
+    case .captureApplication: return "captureApplication"
     case .captureAreaAnnotate: return "captureAreaAnnotate"
     case .captureScrolling: return "captureScrolling"
     case .captureOCR: return "captureOCR"
     case .captureObjectCutout: return "captureObjectCutout"
     case .recordScreen: return "recordScreen"
+    case .recordApplication: return "recordApplication"
     case .openAnnotate: return "openAnnotate"
     case .openVideoEditor: return "openVideoEditor"
     case .openCloudUploads: return "openCloudUploads"

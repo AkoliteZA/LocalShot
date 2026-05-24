@@ -8,7 +8,7 @@ User-facing copy in these flows is localized through `Snapzy/Shared/Localization
 
 ```mermaid
 flowchart TD
-    A["Trigger from menu bar or global shortcut"] --> B{"Mode"}
+    A["Trigger from menu bar, global shortcut, or snapzy:// URL"] --> B{"Mode"}
 
     B --> C["Fullscreen / Area screenshot"]
     B --> D["Scrolling capture"]
@@ -89,6 +89,7 @@ flowchart TD
 - Area screenshot freezes the active display first, then lazily prepares idle/hovered displays when possible. Area-selection overlay windows are excluded from screen capture, so lazy snapshots do not bake in the dim overlay or create a double-darkened backdrop. During an active cross-display drag, a newly crossed display stays live and is captured after mouse-up once the overlay has been hidden, avoiding a mid-drag freeze jump while preserving fast initial activation. Manual selection is tracked in global screen coordinates and rendered per display, so one selection rectangle can span multiple monitors.
 - For screenshot sessions, the target display overlay now owns direct keyboard handling for `Escape` and the application-mode toggle key, so cancel still works when Snapzy starts from a background custom shortcut without depending on Accessibility-backed global key monitoring.
 - `Cmd+Shift+4` area capture now has two interaction modes inside the same overlay session: manual region by default, and application window mode toggled with the configurable `Application Capture` key from Preferences → Shortcuts. The default key is `A`.
+- Application-window capture can also start directly from the menu, independent shortcut, or `snapzy://capture/application`; it uses the same area capture flow with `.applicationWindow` as the initial interaction mode.
 - Area + inline annotate is a separate screenshot flow with the default shortcut `Cmd+Shift+7`. Users can enable/disable or configure it from Preferences → Shortcuts. It freezes all available displays, lets the user select, move, and resize one region across the desktop coordinate space, supports both the move handle and Space-drag for moving the selected region, reuses Annotate tool models/rendering on that region, and saves the rendered image through the normal screenshot post-capture pipeline after Command-S, Enter, or Done.
 - In application window mode, `AreaSelectionController` builds a front-to-back candidate list from `CGWindowListCopyWindowInfo` plus `SCShareableContent`, highlights the hovered window above the dimming overlay, and captures the selected app window on click without requiring a drag rectangle.
 - Exact window capture is handled by `ScreenCaptureManager.captureWindow()`. macOS 14+ uses ScreenCaptureKit window metrics directly, then trims fully transparent capture fringe so shadow framing does not leave uneven empty canvas; macOS 13+ stays supported with the same ScreenCaptureKit path plus a safe area-capture fallback if exact capture fails.
@@ -265,6 +266,7 @@ flowchart TD
 - `RecordingCoordinator` owns toolbar and overlay UX. `ScreenRecordingManager` owns media capture, timing, and metadata persistence.
 - `AppStatusBarController` stays menu-first during active recording. The menu bar item keeps Snapzy's normal identity, shows the live elapsed time, and exposes stop plus pause/resume from the menu instead of left-click-to-stop.
 - Opening Preferences from the menu bar during recording keeps Settings reachable without forcing a stop. When own-app capture is enabled, the active recording stream dynamically excludes that Settings window.
+- Application-window recording can start directly from the menu, independent shortcut, or `snapzy://record/application`; it uses the normal recording setup flow with `.applicationWindow` as the initial interaction mode.
 - Recording toolbar labels, output mode copy, microphone/save-folder alerts, and export errors are localized.
 
 ## Post-Capture Routing
