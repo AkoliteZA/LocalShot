@@ -11,13 +11,10 @@ import Sparkle
 struct GeneralSettingsView: View {
   @AppStorage(PreferencesKeys.playSounds) private var playSounds = true
   @AppStorage(PreferencesKeys.exportLocation) private var exportLocation = ""
-  @AppStorage(PreferencesKeys.diagnosticsEnabled) private var diagnosticsEnabled = true
-  @AppStorage(PreferencesKeys.diagnosticsRetentionDays) private var diagnosticsRetentionDays = LogCleanupScheduler.defaultRetentionDays
   @Environment(\.openWindow) private var openWindow
   @ObservedObject private var themeManager = ThemeManager.shared
 
   @State private var startAtLogin = LoginItemManager.isEnabled
-  @State private var logSizeText = L10n.PreferencesGeneral.calculating
   private let fileAccessManager = SandboxFileAccessManager.shared
 
   private var updater: SPUUpdater {
@@ -89,42 +86,10 @@ struct GeneralSettingsView: View {
         }
       }
 
-      Section(L10n.PreferencesGeneral.diagnosticsSection) {
-        SettingRow(
-          icon: "doc.text.magnifyingglass",
-          title: L10n.PreferencesGeneral.diagnosticLoggingTitle,
-          description: L10n.PreferencesGeneral.diagnosticLoggingDescription
-        ) {
-          Toggle("", isOn: $diagnosticsEnabled)
-            .labelsHidden()
-        }
-
-        SettingRow(
-          icon: "calendar.badge.clock",
-          title: L10n.PreferencesGeneral.logRetentionTitle,
-          description: L10n.PreferencesGeneral.logRetentionDescription(diagnosticsRetentionDays)
-        ) {
-          HStack(spacing: 8) {
-            Text("\(diagnosticsRetentionDays)d")
-              .frame(width: 36, alignment: .trailing)
-              .monospacedDigit()
-              .foregroundColor(.secondary)
-            Stepper(
-              "",
-              value: Binding(
-                get: { diagnosticsRetentionDays },
-                set: { diagnosticsRetentionDays = $0 }
-              ),
-              in: LogCleanupScheduler.retentionDaysRange
-            )
-            .labelsHidden()
-          }
-          .frame(width: 120, alignment: .trailing)
-        }
-
-        SettingRow(icon: "folder", title: L10n.PreferencesGeneral.logFilesTitle, description: logSizeText) {
-          Button(L10n.PreferencesGeneral.openFolderButton) {
-            revealLogFolder()
+      Section(L10n.PreferencesGeneral.helpSection) {
+        SettingRow(icon: "arrow.counterclockwise.circle", title: L10n.PreferencesGeneral.restartOnboardingTitle, description: L10n.PreferencesGeneral.restartOnboardingDescription) {
+          Button(L10n.PreferencesGeneral.restartButton) {
+            restartOnboarding()
           }
           .buttonStyle(.bordered)
           .controlSize(.small)
@@ -142,25 +107,11 @@ struct GeneralSettingsView: View {
           .controlSize(.small)
         }
       }
-
-      Section(L10n.PreferencesGeneral.helpSection) {
-        SettingRow(icon: "arrow.counterclockwise.circle", title: L10n.PreferencesGeneral.restartOnboardingTitle, description: L10n.PreferencesGeneral.restartOnboardingDescription) {
-          Button(L10n.PreferencesGeneral.restartButton) {
-            restartOnboarding()
-          }
-          .buttonStyle(.bordered)
-          .controlSize(.small)
-        }
-      }
     }
     .formStyle(.grouped)
     .onAppear {
       startAtLogin = LoginItemManager.isEnabled
       initializeExportLocation()
-      updateLogSize()
-    }
-    .onChange(of: diagnosticsRetentionDays) { _ in
-      LogCleanupScheduler.shared.performCleanupNow()
     }
   }
 
@@ -204,38 +155,10 @@ struct GeneralSettingsView: View {
     }
   }
 
-  // MARK: - Diagnostics
+  // MARK: - Help
 
   private var bugReportDisplayAddress: String {
     CrashReportService.bugReportURL.absoluteString.replacingOccurrences(of: "https://", with: "")
-  }
-
-  private func revealLogFolder() {
-    let logDir = DiagnosticLogger.shared.logDirectoryURL
-    let fm = FileManager.default
-    if !fm.fileExists(atPath: logDir.path) {
-      try? fm.createDirectory(at: logDir, withIntermediateDirectories: true)
-    }
-    NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: logDir.path)
-  }
-
-  private func updateLogSize() {
-    let logDir = DiagnosticLogger.shared.logDirectoryURL
-    let fm = FileManager.default
-    guard let files = try? fm.contentsOfDirectory(atPath: logDir.path) else {
-      logSizeText = L10n.PreferencesGeneral.noLogs
-      return
-    }
-    let totalBytes = files.compactMap { file -> Int? in
-      let path = logDir.appendingPathComponent(file).path
-      return (try? fm.attributesOfItem(atPath: path))?[.size] as? Int
-    }.reduce(0, +)
-
-    if totalBytes == 0 {
-      logSizeText = L10n.PreferencesGeneral.noLogs
-    } else {
-      logSizeText = ByteCountFormatter.string(fromByteCount: Int64(totalBytes), countStyle: .file)
-    }
   }
 
   private func openBugReportPage() {

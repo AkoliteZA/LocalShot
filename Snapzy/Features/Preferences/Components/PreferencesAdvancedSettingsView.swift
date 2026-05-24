@@ -2,7 +2,7 @@
 //  PreferencesAdvancedSettingsView.swift
 //  Snapzy
 //
-//  Advanced preferences for portable app configuration.
+//  Advanced preferences for portable app configuration and diagnostics.
 //
 
 import AppKit
@@ -10,8 +10,12 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct AdvancedSettingsView: View {
+  @AppStorage(PreferencesKeys.diagnosticsEnabled) private var diagnosticsEnabled = true
+  @AppStorage(PreferencesKeys.diagnosticsRetentionDays) private var diagnosticsRetentionDays = LogCleanupScheduler.defaultRetentionDays
+
   @State private var needsConfigAccess = SnapzyConfigurationService.shared.needsUserSelectedConfigAccess
   @State private var isRestoreConfirmationPresented = false
+  @State private var logSizeText = L10n.PreferencesAdvanced.calculating
 
   private let service = SnapzyConfigurationService.shared
   private let tomlContentType = UTType(filenameExtension: "toml") ?? .plainText
@@ -84,10 +88,57 @@ struct AdvancedSettingsView: View {
           .help(disabledBackupActionHelp)
         }
       }
+
+      Section(L10n.PreferencesAdvanced.diagnosticsSection) {
+        SettingRow(
+          icon: "doc.text.magnifyingglass",
+          title: L10n.PreferencesAdvanced.diagnosticLoggingTitle,
+          description: L10n.PreferencesAdvanced.diagnosticLoggingDescription
+        ) {
+          Toggle("", isOn: $diagnosticsEnabled)
+            .labelsHidden()
+        }
+
+        SettingRow(
+          icon: "calendar.badge.clock",
+          title: L10n.PreferencesAdvanced.logRetentionTitle,
+          description: L10n.PreferencesAdvanced.logRetentionDescription(diagnosticsRetentionDays)
+        ) {
+          HStack(spacing: 8) {
+            Text("\(diagnosticsRetentionDays)d")
+              .frame(width: 36, alignment: .trailing)
+              .monospacedDigit()
+              .foregroundColor(.secondary)
+            Stepper(
+              "",
+              value: Binding(
+                get: { diagnosticsRetentionDays },
+                set: { diagnosticsRetentionDays = $0 }
+              ),
+              in: LogCleanupScheduler.retentionDaysRange
+            )
+            .labelsHidden()
+          }
+          .frame(width: 120, alignment: .trailing)
+        }
+
+        SettingRow(icon: "folder", title: L10n.PreferencesAdvanced.logFilesTitle, description: logSizeText) {
+          Button(L10n.PreferencesAdvanced.openFolderButton) {
+            revealLogFolder()
+          }
+          .buttonStyle(.bordered)
+          .controlSize(.small)
+        }
+      }
     }
     .formStyle(.grouped)
     .onAppear {
       refreshConfigAccessState()
+      updateLogSize()
+    }
+    .onChange(of: diagnosticsRetentionDays) { _ in
+      LogCleanupScheduler.shared.performCleanupNow()
+      updateLogSize()
     }
     .alert(
       L10n.PreferencesAdvanced.restoreDefaultsConfirmationTitle,
@@ -244,6 +295,34 @@ struct AdvancedSettingsView: View {
     }
 
     return true
+  }
+
+  private func revealLogFolder() {
+    let logDir = DiagnosticLogger.shared.logDirectoryURL
+    let fm = FileManager.default
+    if !fm.fileExists(atPath: logDir.path) {
+      try? fm.createDirectory(at: logDir, withIntermediateDirectories: true)
+    }
+    NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: logDir.path)
+  }
+
+  private func updateLogSize() {
+    let logDir = DiagnosticLogger.shared.logDirectoryURL
+    let fm = FileManager.default
+    guard let files = try? fm.contentsOfDirectory(atPath: logDir.path) else {
+      logSizeText = L10n.PreferencesAdvanced.noLogs
+      return
+    }
+    let totalBytes = files.compactMap { file -> Int? in
+      let path = logDir.appendingPathComponent(file).path
+      return (try? fm.attributesOfItem(atPath: path))?[.size] as? Int
+    }.reduce(0, +)
+
+    if totalBytes == 0 {
+      logSizeText = L10n.PreferencesAdvanced.noLogs
+    } else {
+      logSizeText = ByteCountFormatter.string(fromByteCount: Int64(totalBytes), countStyle: .file)
+    }
   }
 
   private func showGrantNotice(for grantResult: SnapzyConfigurationAccessGrantResult) {

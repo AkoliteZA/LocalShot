@@ -200,6 +200,17 @@ enum L10n {
       defaultValue: "Backup",
       comment: "Advanced preferences backup section title"
     )
+    static let diagnosticsSection = PreferencesGeneral.diagnosticsSection
+    static let diagnosticLoggingTitle = PreferencesGeneral.diagnosticLoggingTitle
+    static let diagnosticLoggingDescription = PreferencesGeneral.diagnosticLoggingDescription
+    static let logFilesTitle = PreferencesGeneral.logFilesTitle
+    static let logRetentionTitle = PreferencesGeneral.logRetentionTitle
+    static func logRetentionDescription(_ days: Int) -> String {
+      PreferencesGeneral.logRetentionDescription(days)
+    }
+    static let openFolderButton = PreferencesGeneral.openFolderButton
+    static let calculating = PreferencesGeneral.calculating
+    static let noLogs = PreferencesGeneral.noLogs
     static let exportTitle = string(
       "preferences-advanced.export-title",
       defaultValue: "Export backup",
