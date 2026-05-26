@@ -161,7 +161,7 @@ final class AnnotateColorPaletteStoreTests: XCTestCase {
     XCTAssertTrue(matches(values?[1], secondFavorite))
   }
 
-  func testFavoriteColorsDropOldestWhenMaximumCountIsExceeded() {
+  func testFavoriteColorsIgnoreNewColorsWhenMaximumCountIsReached() {
     let store = makeStore()
     let totalColors = AnnotateColorPaletteStore.maximumFavoriteColorCount + 1
 
@@ -173,8 +173,8 @@ final class AnnotateColorPaletteStoreTests: XCTestCase {
 
     let values = store.favoriteColorValues[.annotationStroke]
     XCTAssertEqual(values?.count, AnnotateColorPaletteStore.maximumFavoriteColorCount)
-    XCTAssertTrue(matches(values?.first, indexedColor(1, total: totalColors)))
-    XCTAssertTrue(matches(values?.last, indexedColor(totalColors - 1, total: totalColors)))
+    XCTAssertTrue(matches(values?.first, indexedColor(0, total: totalColors)))
+    XCTAssertTrue(matches(values?.last, indexedColor(totalColors - 2, total: totalColors)))
   }
 
   func testToggleFavoriteRemovesExistingRoleFavorite() {
@@ -234,6 +234,27 @@ final class AnnotateColorPaletteStoreTests: XCTestCase {
     store.acceptFavoriteDrop(payload, for: .annotationStroke)
 
     XCTAssertTrue(store.isFavorite(favorite, for: .annotationStroke))
+  }
+
+  func testAcceptFavoriteDropIgnoresNewPayloadWhenMaximumCountIsReached() throws {
+    let store = makeStore()
+    let maximumFavorites = AnnotateColorPaletteStore.maximumFavoriteColorCount
+    let totalColors = maximumFavorites + 1
+
+    for index in 0 ..< maximumFavorites {
+      store.addFavorite(indexedColor(index, total: totalColors), for: .annotationStroke)
+    }
+
+    let overflowFavorite = indexedColor(maximumFavorites, total: totalColors)
+    let payload = try XCTUnwrap(AnnotateColorDragPayload(color: overflowFavorite, sourceFavoriteRole: nil))
+
+    store.acceptFavoriteDrop(payload, for: .annotationStroke)
+
+    let values = store.favoriteColorValues[.annotationStroke]
+    XCTAssertEqual(values?.count, maximumFavorites)
+    XCTAssertTrue(matches(values?.first, indexedColor(0, total: totalColors)))
+    XCTAssertTrue(matches(values?.last, indexedColor(maximumFavorites - 1, total: totalColors)))
+    XCTAssertFalse(store.isFavorite(overflowFavorite, for: .annotationStroke))
   }
 
   func testAcceptFavoriteDropMovesSameRoleFavoriteToEnd() throws {

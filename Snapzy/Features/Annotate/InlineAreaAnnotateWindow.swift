@@ -1785,8 +1785,14 @@ private struct InlineAreaColorPopover: View {
 
   @ObservedObject private var paletteStore = AnnotateColorPaletteStore.shared
   @State private var draftCustomColor = Color.red
-  @State private var showsCustomColorPicker = false
+  @State private var activeDraftTarget: ColorDraftTarget?
   @State private var originalSelectedColor: Color?
+  @State private var showsFavoriteSelectionPopover = false
+
+  private enum ColorDraftTarget {
+    case customPalette
+    case favorite
+  }
 
   private let columns = Array(repeating: GridItem(.fixed(24), spacing: 8), count: 5)
 
@@ -1797,19 +1803,19 @@ private struct InlineAreaColorPopover: View {
         .foregroundColor(.secondary)
         .lineLimit(1)
 
-      let favoriteColors = paletteStore.favoriteColors(for: role)
-      if !favoriteColors.isEmpty {
+      let favorites = favoriteColors
+      if !favorites.isEmpty {
         Text(L10n.Common.favorite)
           .font(Typography.labelSmall)
           .foregroundColor(.secondary)
 
         LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
-          ForEach(favoriteColors, id: \.self) { color in
+          ForEach(favorites, id: \.self) { color in
             favoriteColorButton(color)
           }
 
-          InlineAreaFavoriteDropSlot { payload in
-            handleFavoriteDrop(payload)
+          if canAddFavorite {
+            favoriteDropSlot
           }
         }
       } else {
@@ -1817,9 +1823,7 @@ private struct InlineAreaColorPopover: View {
           .font(Typography.labelSmall)
           .foregroundColor(.secondary)
 
-        InlineAreaFavoriteEmptyDropTarget { payload in
-          handleFavoriteDrop(payload)
-        }
+        favoriteEmptyDropTarget
       }
 
       Divider()
@@ -1843,11 +1847,11 @@ private struct InlineAreaColorPopover: View {
           )
         }
 
-        if showsCustomColorPicker {
+        if activeDraftTarget == .customPalette {
           draftCustomColorButton
         }
 
-        if !showsCustomColorPicker {
+        if activeDraftTarget != .customPalette {
           Button {
             beginCustomColorDraft()
           } label: {
@@ -1859,14 +1863,9 @@ private struct InlineAreaColorPopover: View {
         }
       }
 
-      if showsCustomColorPicker {
-        AnnotateCustomColorPickerPanel(
-          selectedColor: $selectedColor,
-          draftColor: $draftCustomColor,
-          onCancel: cancelCustomColorDraft,
-          onApply: applyCustomColorDraft
-        )
-        .padding(.top, 2)
+      if activeDraftTarget == .customPalette {
+        colorPickerPanel
+          .padding(.top, 2)
       }
     }
     .padding(12)
@@ -1877,9 +1876,115 @@ private struct InlineAreaColorPopover: View {
     .onChange(of: selectedColor) { color in
       syncDraftColor(with: color)
     }
-    .onDisappear {
-      cancelCustomColorDraftIfNeeded()
+    .onChange(of: favoriteColors.count) { count in
+      if count >= AnnotateColorPaletteStore.maximumFavoriteColorCount {
+        closeFavoriteSelectionPopover()
+      }
     }
+    .onDisappear {
+      showsFavoriteSelectionPopover = false
+      cancelCustomColorDraftIfNeeded(keepFavoriteSelectionPopoverOpen: false)
+    }
+  }
+
+  private var favoriteColors: [Color] {
+    paletteStore.favoriteColors(for: role)
+  }
+
+  private var canAddFavorite: Bool {
+    favoriteColors.count < AnnotateColorPaletteStore.maximumFavoriteColorCount
+  }
+
+  private var favoriteVaultColors: [Color] {
+    guard canAddFavorite else { return [] }
+
+    return (colors + paletteStore.customColors).reduce(into: [Color]()) { result, color in
+      guard !AnnotateColorPaletteStore.isClear(color),
+            !paletteStore.isFavorite(color, for: role),
+            !result.contains(where: { AnnotateColorPaletteStore.colorsMatch($0, color) })
+      else {
+        return
+      }
+
+      result.append(color)
+    }
+  }
+
+  private var favoriteDropSlot: some View {
+    InlineAreaFavoriteDropSlot(
+      onTap: showFavoriteSelectionPopover
+    ) { payload in
+      handleFavoriteDrop(payload)
+    }
+    .popover(isPresented: $showsFavoriteSelectionPopover, arrowEdge: .trailing) {
+      favoriteSelectionPopover
+    }
+  }
+
+  private var favoriteEmptyDropTarget: some View {
+    InlineAreaFavoriteEmptyDropTarget(
+      onTap: showFavoriteSelectionPopover
+    ) { payload in
+      handleFavoriteDrop(payload)
+    }
+    .popover(isPresented: $showsFavoriteSelectionPopover, arrowEdge: .trailing) {
+      favoriteSelectionPopover
+    }
+  }
+
+  private var favoriteSelectionPopover: some View {
+    VStack(alignment: .leading, spacing: 10) {
+      Text(L10n.Common.colors)
+        .font(Typography.labelSmall)
+        .foregroundColor(.secondary)
+
+      LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
+        ForEach(favoriteVaultColors, id: \.self) { color in
+          favoriteVaultColorButton(color)
+        }
+
+        if activeDraftTarget == .favorite {
+          draftFavoriteColorButton
+        }
+
+        if activeDraftTarget != .favorite && canAddFavorite {
+          Button {
+            beginFavoriteColorDraft()
+          } label: {
+            AnnotateAddColorSwatch(size: 22)
+          }
+          .buttonStyle(.plain)
+          .help(L10n.Common.custom)
+          .accessibilityLabel(L10n.Common.custom)
+        }
+      }
+
+      if activeDraftTarget == .favorite {
+        colorPickerPanel
+          .padding(.top, 2)
+      }
+    }
+    .padding(12)
+    .frame(width: 196, alignment: .leading)
+    .onDisappear {
+      if activeDraftTarget == .favorite {
+        cancelColorDraft(keepFavoriteSelectionPopoverOpen: false)
+      }
+    }
+  }
+
+  private var draftFavoriteColorButton: some View {
+    InlineAreaColorSwatch(
+      color: draftCustomColor,
+      isSelected: true,
+      size: 22
+    )
+    .contentShape(Circle())
+    .onTapGesture {
+      selectedColor = draftCustomColor
+    }
+    .frame(width: 24, height: 24)
+    .help(L10n.Common.custom)
   }
 
   private var draftCustomColorButton: some View {
@@ -1896,6 +2001,31 @@ private struct InlineAreaColorPopover: View {
     .help(L10n.Common.custom)
   }
 
+  private var colorPickerPanel: some View {
+    AnnotateCustomColorPickerPanel(
+      selectedColor: $selectedColor,
+      draftColor: $draftCustomColor,
+      onCancel: {
+        cancelColorDraft()
+      },
+      onApply: applyColorDraft
+    )
+  }
+
+  private func favoriteVaultColorButton(_ color: Color) -> some View {
+    InlineAreaPaletteColorButton(
+      color: color,
+      title: AnnotateColorPaletteStore.isClear(color) ? L10n.Common.none : title,
+      isSelected: AnnotateColorPaletteStore.colorsMatch(selectedColor, color),
+      sourceFavoriteRole: nil,
+      overlayAction: nil,
+      overlayHelp: "",
+      onSelect: {
+        addVaultColorToFavorites(color)
+      }
+    )
+  }
+
   private func syncDraftColor(with color: Color) {
     guard !AnnotateColorPaletteStore.isClear(color) else { return }
     draftCustomColor = color
@@ -1903,41 +2033,122 @@ private struct InlineAreaColorPopover: View {
 
   private func selectColorAndDismiss(_ color: Color) {
     originalSelectedColor = nil
-    showsCustomColorPicker = false
+    activeDraftTarget = nil
+    showsFavoriteSelectionPopover = false
     selectedColor = color
     dismiss()
   }
 
   private func beginCustomColorDraft() {
+    showsFavoriteSelectionPopover = false
+    beginColorDraft(target: .customPalette)
+  }
+
+  private func showFavoriteSelectionPopover() {
+    guard canAddFavorite else {
+      closeFavoriteSelectionPopover()
+      return
+    }
+
+    if activeDraftTarget == .customPalette {
+      cancelColorDraft()
+    }
+
+    showsFavoriteSelectionPopover = true
+  }
+
+  private func beginFavoriteColorDraft() {
+    guard canAddFavorite else {
+      closeFavoriteSelectionPopover()
+      return
+    }
+
+    beginColorDraft(target: .favorite)
+  }
+
+  private func beginColorDraft(target: ColorDraftTarget) {
+    if activeDraftTarget != nil {
+      cancelColorDraft()
+    }
+
     originalSelectedColor = selectedColor
     syncDraftColor(with: selectedColor)
     selectedColor = draftCustomColor
-    showsCustomColorPicker = true
+    activeDraftTarget = target
   }
 
-  private func applyCustomColorDraft() {
+  private func applyColorDraft() {
     guard !AnnotateColorPaletteStore.isClear(draftCustomColor) else { return }
-    paletteStore.addColor(draftCustomColor)
+
+    let target = activeDraftTarget
+
+    switch target {
+    case .customPalette:
+      paletteStore.addColor(draftCustomColor)
+    case .favorite:
+      guard canAddFavorite else {
+        cancelColorDraft(keepFavoriteSelectionPopoverOpen: false)
+        return
+      }
+
+      paletteStore.addColor(draftCustomColor)
+      paletteStore.addFavorite(draftCustomColor, for: role)
+    case nil:
+      return
+    }
+
     selectedColor = draftCustomColor
     originalSelectedColor = nil
-    showsCustomColorPicker = false
+    activeDraftTarget = nil
+    if target == .favorite {
+      showsFavoriteSelectionPopover = false
+    }
   }
 
-  private func cancelCustomColorDraft() {
+  private func cancelColorDraft(keepFavoriteSelectionPopoverOpen: Bool = true) {
+    let target = activeDraftTarget
+    let shouldKeepFavoriteSelectionPopover = target == .favorite && keepFavoriteSelectionPopoverOpen
+
     guard let originalSelectedColor else {
-      showsCustomColorPicker = false
+      activeDraftTarget = nil
+      if target == .favorite {
+        showsFavoriteSelectionPopover = shouldKeepFavoriteSelectionPopover
+      }
       return
     }
 
     selectedColor = originalSelectedColor
     draftCustomColor = originalSelectedColor
     self.originalSelectedColor = nil
-    showsCustomColorPicker = false
+    activeDraftTarget = nil
+    if target == .favorite {
+      showsFavoriteSelectionPopover = shouldKeepFavoriteSelectionPopover
+    }
   }
 
-  private func cancelCustomColorDraftIfNeeded() {
-    guard originalSelectedColor != nil else { return }
-    cancelCustomColorDraft()
+  private func cancelCustomColorDraftIfNeeded(keepFavoriteSelectionPopoverOpen: Bool = true) {
+    guard activeDraftTarget != nil else { return }
+    cancelColorDraft(keepFavoriteSelectionPopoverOpen: keepFavoriteSelectionPopoverOpen)
+  }
+
+  private func closeFavoriteSelectionPopover() {
+    showsFavoriteSelectionPopover = false
+    if activeDraftTarget == .favorite {
+      cancelColorDraft(keepFavoriteSelectionPopoverOpen: false)
+    }
+  }
+
+  private func addVaultColorToFavorites(_ color: Color) {
+    guard canAddFavorite else {
+      closeFavoriteSelectionPopover()
+      return
+    }
+
+    originalSelectedColor = nil
+    activeDraftTarget = nil
+    paletteStore.addFavorite(color, for: role)
+    selectedColor = color
+    showsFavoriteSelectionPopover = false
   }
 
   private func favoriteColorButton(_ color: Color) -> some View {
@@ -1978,21 +2189,35 @@ private struct InlineAreaColorPopover: View {
   }
 
   private func handleFavoriteDrop(_ payload: AnnotateColorDragPayload) {
+    guard canAcceptFavoriteDrop(payload) else { return }
+
     paletteStore.acceptFavoriteDrop(
       payload,
       for: role
     )
+    if !canAddFavorite {
+      closeFavoriteSelectionPopover()
+    }
   }
 
   private func handleFavoriteDrop(
     _ payload: AnnotateColorDragPayload,
     targetColor: Color
   ) {
+    guard canAcceptFavoriteDrop(payload) else { return }
+
     paletteStore.acceptFavoriteDrop(
       payload,
       for: role,
       targetColor: targetColor
     )
+    if !canAddFavorite {
+      closeFavoriteSelectionPopover()
+    }
+  }
+
+  private func canAcceptFavoriteDrop(_ payload: AnnotateColorDragPayload) -> Bool {
+    paletteStore.isFavorite(payload.color, for: role) || canAddFavorite
   }
 }
 
@@ -2062,6 +2287,7 @@ private struct InlineAreaPaletteColorButton: View {
 }
 
 private struct InlineAreaFavoriteEmptyDropTarget: View {
+  let onTap: () -> Void
   let onDropPayload: (AnnotateColorDragPayload) -> Void
 
   @State private var isTargeted = false
@@ -2088,6 +2314,10 @@ private struct InlineAreaFavoriteEmptyDropTarget: View {
     .foregroundColor(isTargeted ? .accentColor : .secondary)
     .frame(maxWidth: .infinity, minHeight: 38, alignment: .leading)
     .contentShape(Rectangle())
+    .help(L10n.Common.custom)
+    .accessibilityLabel(L10n.Common.custom)
+    .onTapGesture(perform: onTap)
+    .accessibilityAddTraits(.isButton)
     .onDrop(of: AnnotateColorDragPayload.supportedContentTypes, isTargeted: $isTargeted) { providers in
       AnnotateColorDragPayload.load(from: providers) { payload in
         guard let payload else { return }
@@ -2098,6 +2328,7 @@ private struct InlineAreaFavoriteEmptyDropTarget: View {
 }
 
 private struct InlineAreaFavoriteDropSlot: View {
+  let onTap: () -> Void
   let onDropPayload: (AnnotateColorDragPayload) -> Void
 
   @State private var isTargeted = false
@@ -2116,7 +2347,11 @@ private struct InlineAreaFavoriteDropSlot: View {
           )
       )
       .frame(width: 24, height: 24)
-      .help(L10n.Common.dragColorsHere)
+      .help(L10n.Common.custom)
+      .contentShape(Circle())
+      .onTapGesture(perform: onTap)
+      .accessibilityLabel(L10n.Common.custom)
+      .accessibilityAddTraits(.isButton)
       .onDrop(of: AnnotateColorDragPayload.supportedContentTypes, isTargeted: $isTargeted) { providers in
         AnnotateColorDragPayload.load(from: providers) { payload in
           guard let payload else { return }

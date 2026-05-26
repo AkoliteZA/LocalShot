@@ -279,12 +279,9 @@ final class AnnotateColorPaletteStore: ObservableObject {
   private func addFavoriteValue(_ value: RGBAColor, for role: AnnotateColorPaletteRole) {
     var nextValues = storedFavoriteColors[role, default: []]
     guard !nextValues.contains(where: { Self.matches($0, value) }) else { return }
+    guard nextValues.count < Self.maximumFavoriteColorCount else { return }
 
     nextValues.append(value)
-    if nextValues.count > Self.maximumFavoriteColorCount {
-      nextValues = Array(nextValues.suffix(Self.maximumFavoriteColorCount))
-    }
-
     commitFavoriteColors(nextValues, for: role)
   }
 
