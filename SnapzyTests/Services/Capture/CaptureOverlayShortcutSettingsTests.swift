@@ -8,7 +8,7 @@
 
 import Carbon.HIToolbox
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class CaptureOverlayShortcutSettingsTests: XCTestCase {
 

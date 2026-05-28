@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 @MainActor
 final class CaptureHistoryStoreTests: XCTestCase {

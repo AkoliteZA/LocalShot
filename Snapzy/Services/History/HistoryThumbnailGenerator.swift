@@ -12,7 +12,7 @@ import ImageIO
 import UniformTypeIdentifiers
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "HistoryThumbnailGenerator")
+private let logger = Logger(subsystem: "LocalShot", category: "HistoryThumbnailGenerator")
 
 /// Generates and caches thumbnails for capture history items
 final class HistoryThumbnailGenerator {
@@ -23,12 +23,12 @@ final class HistoryThumbnailGenerator {
   private let maxDimension: CGFloat = 208
   private let compressionFactor: CGFloat = 0.58
   private let workerQueue = DispatchQueue(
-    label: "snapzy.history-thumbnail-generator.worker",
+    label: "localshot.history-thumbnail-generator.worker",
     qos: .utility,
     attributes: .concurrent
   )
   private let thumbnailsDirectoryURL: URL
-  private let stateQueue = DispatchQueue(label: "snapzy.history-thumbnail-generator.state")
+  private let stateQueue = DispatchQueue(label: "localshot.history-thumbnail-generator.state")
   private let memoryCache = NSCache<NSString, NSImage>()
   private var inFlightRequests: [String: [(NSImage?) -> Void]] = [:]
   private var memoryCacheKeysByRecordId: [UUID: Set<String>] = [:]
@@ -52,11 +52,7 @@ final class HistoryThumbnailGenerator {
   }
 
   private static func defaultThumbnailsDirectory() -> URL {
-    let appSupport = FileManager.default.urls(
-      for: .applicationSupportDirectory, in: .userDomainMask
-    ).first!
-    return appSupport
-      .appendingPathComponent("Snapzy", isDirectory: true)
+    return LocalShotBrand.applicationSupportDirectory
       .appendingPathComponent("HistoryThumbnails", isDirectory: true)
   }
 

@@ -434,7 +434,7 @@ extension DragHandleNSView {
     let fileManager = FileManager.default
     if let appSupport = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
       let url = appSupport
-        .appendingPathComponent("Snapzy", isDirectory: true)
+        .appendingPathComponent(LocalShotBrand.applicationSupportDirectoryName, isDirectory: true)
         .appendingPathComponent("Captures", isDirectory: true)
         .appendingPathComponent("AnnotateDrag", isDirectory: true)
       try? fileManager.createDirectory(at: url, withIntermediateDirectories: true)
@@ -442,7 +442,7 @@ extension DragHandleNSView {
     }
 
     let fallback = fileManager.temporaryDirectory
-      .appendingPathComponent("Snapzy_Captures", isDirectory: true)
+      .appendingPathComponent("LocalShot_Captures", isDirectory: true)
       .appendingPathComponent("AnnotateDrag", isDirectory: true)
     try? fileManager.createDirectory(at: fallback, withIntermediateDirectories: true)
     return fallback

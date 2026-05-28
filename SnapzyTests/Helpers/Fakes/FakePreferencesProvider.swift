@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@testable import Snapzy
+@testable import LocalShot
 
 @MainActor
 final class FakePreferencesProvider: PreferencesProviding {

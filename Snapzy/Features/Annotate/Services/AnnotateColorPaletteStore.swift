@@ -23,7 +23,7 @@ struct AnnotateColorDragPayload: Codable {
   let alpha: Double
   let sourceFavoriteRole: AnnotateColorPaletteRole?
 
-  private static let plainTextMarker = "com.snapzy.annotate-color"
+  private static let plainTextMarker = "com.localshot.annotate-color"
 
   init?(color: Color, sourceFavoriteRole: AnnotateColorPaletteRole? = nil) {
     guard let value = RGBAColor(color: color) else { return nil }

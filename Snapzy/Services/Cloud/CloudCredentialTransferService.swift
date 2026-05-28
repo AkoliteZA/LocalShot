@@ -38,7 +38,7 @@ enum CloudCredentialTransferError: LocalizedError {
 }
 
 enum CloudCredentialTransferService {
-  static let archiveFileExtension = "snapzycloud"
+  static let archiveFileExtension = "localshotcloud"
   static let archiveContentType = UTType(filenameExtension: archiveFileExtension) ?? .data
   static let minimumPassphraseLength = 12
 
@@ -281,7 +281,7 @@ enum CloudCredentialTransferService {
   static func suggestedArchiveFileName(for payload: CloudCredentialTransferPayload) -> String {
     let provider = payload.configuration.providerType.rawValue.replacingOccurrences(of: "_", with: "-")
     let bucket = sanitizedFileNameComponent(payload.configuration.bucket)
-    return "snapzy-cloud-\(provider)-\(bucket).\(archiveFileExtension)"
+    return "localshot-cloud-\(provider)-\(bucket).\(archiveFileExtension)"
   }
 
   private static func deriveKey(

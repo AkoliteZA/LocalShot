@@ -2,28 +2,28 @@
 //  CaptureStorageManager.swift
 //  Snapzy
 //
-//  Manages temporary capture storage in Application Support/Snapzy/Captures.
+//  Manages temporary capture storage in Application Support/LocalShot/Captures.
 //  Provides cache size calculation and safe cleanup operations.
 //
 
 import Foundation
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "CaptureStorageManager")
+private let logger = Logger(subsystem: LocalShotBrand.appName, category: "CaptureStorageManager")
 
 @MainActor
 final class CaptureStorageManager {
   static let shared = CaptureStorageManager()
 
   private let fileManager = FileManager.default
-  private let appSupportFolderName = "Snapzy"
+  private let appSupportFolderName = LocalShotBrand.applicationSupportDirectoryName
   private let capturesFolderName = "Captures"
 
   private init() {}
 
   // MARK: - Directory
 
-  /// URL to the captures cache directory: Application Support/Snapzy/Captures
+  /// URL to the captures cache directory: Application Support/LocalShot/Captures
   var capturesDirectoryURL: URL? {
     guard
       let appSupportURL = fileManager.urls(
@@ -151,7 +151,7 @@ final class CaptureStorageManager {
     let deletedPaths = await Task.detached(priority: .utility) { () -> [String] in
       let fm = FileManager.default
       var deletedPaths: [String] = []
-      let backgroundLogger = Logger(subsystem: "Snapzy", category: "CaptureStorageManager")
+      let backgroundLogger = Logger(subsystem: LocalShotBrand.appName, category: "CaptureStorageManager")
 
       guard let contents = try? fm.contentsOfDirectory(
         at: dirURL,

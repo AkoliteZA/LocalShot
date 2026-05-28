@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A31BF0A82F1CF69100902D12 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = A31BF0A72F1CF69100902D12 /* Sparkle */; };
 		B42DE1A02FA1B90000WEBP01 /* WebP in Frameworks */ = {isa = PBXBuildFile; productRef = B42DE1A12FA1B90000WEBP01 /* WebP */; };
 		C73DB2A02FA3GRDB00GRDB01 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = C73DB2A12FA3GRDB00GRDB01 /* GRDB */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A36462A32F18EEDA0003453D /* Snapzy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Snapzy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A36462A32F18EEDA0003453D /* LocalShot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocalShot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D00100012F9F000000000001 /* SnapzyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapzyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D00110022F9F000000000002 /* Snapzy.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Snapzy.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,7 +50,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A31BF0A82F1CF69100902D12 /* Sparkle in Frameworks */,
 				B42DE1A02FA1B90000WEBP01 /* WebP in Frameworks */,
 				C73DB2A02FA3GRDB00GRDB01 /* GRDB in Frameworks */,
 			);
@@ -80,7 +78,7 @@
 		A36462A42F18EEDA0003453D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A36462A32F18EEDA0003453D /* Snapzy.app */,
+				A36462A32F18EEDA0003453D /* LocalShot.app */,
 				D00100012F9F000000000001 /* SnapzyTests.xctest */,
 			);
 			name = Products;
@@ -106,12 +104,11 @@
 			);
 			name = Snapzy;
 			packageProductDependencies = (
-				A31BF0A72F1CF69100902D12 /* Sparkle */,
 				B42DE1A12FA1B90000WEBP01 /* WebP */,
 				C73DB2A12FA3GRDB00GRDB01 /* GRDB */,
 			);
 			productName = Snapzy;
-			productReference = A36462A32F18EEDA0003453D /* Snapzy.app */;
+			productReference = A36462A32F18EEDA0003453D /* LocalShot.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D00100072F9F000000000007 /* SnapzyTests */ = {
@@ -185,7 +182,6 @@
 			mainGroup = A364629A2F18EEDA0003453D;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				A31BF0A62F1CF69100902D12 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				B42DE19F2FA1B90000WEBP01 /* XCRemoteSwiftPackageReference "Swift-WebP" */,
 				C73DB19F2FA3GRDB00GRDB01 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 			);
@@ -380,7 +376,7 @@
 					ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Snapzy/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Snapzy;
+				INFOPLIST_KEY_CFBundleDisplayName = LocalShot;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -390,8 +386,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.20.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.trongduong.snapzy;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.localshot;
+				PRODUCT_NAME = LocalShot;
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -419,7 +415,7 @@
 					ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Snapzy/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Snapzy;
+				INFOPLIST_KEY_CFBundleDisplayName = LocalShot;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -429,8 +425,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.20.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.trongduong.snapzy;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.localshot;
+				PRODUCT_NAME = LocalShot;
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -456,14 +452,14 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.12.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.trongduong.snapzy.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.localshot.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Snapzy.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Snapzy";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LocalShot.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LocalShot";
 			};
 			name = Debug;
 		};
@@ -482,14 +478,14 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.12.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.trongduong.snapzy.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.localshot.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Snapzy.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Snapzy";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LocalShot.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LocalShot";
 			};
 			name = Release;
 		};
@@ -526,14 +522,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A31BF0A62F1CF69100902D12 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sparkle-project/Sparkle";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.8.1;
-			};
-		};
 		B42DE19F2FA1B90000WEBP01 /* XCRemoteSwiftPackageReference "Swift-WebP" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ainame/Swift-WebP.git";
@@ -553,11 +541,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A31BF0A72F1CF69100902D12 /* Sparkle */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A31BF0A62F1CF69100902D12 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = Sparkle;
-		};
 		B42DE1A12FA1B90000WEBP01 /* WebP */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B42DE19F2FA1B90000WEBP01 /* XCRemoteSwiftPackageReference "Swift-WebP" */;

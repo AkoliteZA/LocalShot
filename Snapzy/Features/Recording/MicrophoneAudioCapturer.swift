@@ -118,11 +118,11 @@ nonisolated final class MicrophoneAudioCapturer: NSObject, @unchecked Sendable {
   private let preferredDeviceID: String?
   private var captureSession: MicrophoneCaptureSession?
   private let sessionQueue = DispatchQueue(
-    label: "com.trongduong.snapzy.microphone.session",
+    label: "\(LocalShotBrand.queueLabelPrefix).microphone.session",
     qos: .userInteractive
   )
   private let dataOutputQueue = DispatchQueue(
-    label: "com.trongduong.snapzy.microphone.data",
+    label: "\(LocalShotBrand.queueLabelPrefix).microphone.data",
     qos: .userInteractive
   )
 

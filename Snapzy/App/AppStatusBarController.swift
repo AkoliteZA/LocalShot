@@ -7,7 +7,6 @@
 
 import AppKit
 import Combine
-import Sparkle
 import SwiftUI
 
 @MainActor
@@ -26,8 +25,6 @@ final class AppStatusBarController: ObservableObject {
 
   // Dependencies injected after setup
   private var viewModel: ScreenCaptureViewModel?
-  private var updater: SPUUpdater?
-
   // Track if we elevated activation policy for Settings window
   private var didElevateForSettings = false
   private weak var trackedPreferencesWindow: NSWindow?
@@ -43,9 +40,8 @@ final class AppStatusBarController: ObservableObject {
   // MARK: - Public API
 
   /// Setup the status bar item with required dependencies
-  func setup(viewModel: ScreenCaptureViewModel, updater: SPUUpdater, didCrash: Bool = false) {
+  func setup(viewModel: ScreenCaptureViewModel, didCrash: Bool = false) {
     self.viewModel = viewModel
-    self.updater = updater
     self.didDetectCrash = didCrash
 
     setupStatusItem()
@@ -214,11 +210,11 @@ final class AppStatusBarController: ObservableObject {
     case .paused:
       return "\(L10n.RecordingToolbar.recordingPaused) (\(recorder.formattedDuration))"
     case .preparing:
-      return "Snapzy"
+      return LocalShotBrand.appName
     case .stopping:
-      return "Snapzy"
+      return LocalShotBrand.appName
     case .idle:
-      return "Snapzy"
+      return LocalShotBrand.appName
     }
   }
 
@@ -252,6 +248,12 @@ final class AppStatusBarController: ObservableObject {
     }
     let shortcutManager = KeyboardShortcutManager.shared
 
+    let headerItem = NSMenuItem(title: "\(LocalShotBrand.appName)    Local only", action: nil, keyEquivalent: "")
+    headerItem.image = NSApp.applicationIconImage
+    headerItem.isEnabled = false
+    menu?.addItem(headerItem)
+    menu?.addItem(NSMenuItem.separator())
+
     // Recording status indicator (when recording)
     if recorder.state == .recording || recorder.state == .paused {
       let stopItem = NSMenuItem(
@@ -280,9 +282,11 @@ final class AppStatusBarController: ObservableObject {
       menu?.addItem(NSMenuItem.separator())
     }
 
+    addSectionHeader("Capture")
+
     // Capture Actions
     let captureAreaItem = NSMenuItem(
-      title: L10n.Actions.captureArea,
+      title: "Capture Area",
       action: #selector(captureAreaAction),
       keyEquivalent: ""
     )
@@ -293,7 +297,7 @@ final class AppStatusBarController: ObservableObject {
     menu?.addItem(captureAreaItem)
 
     let captureAreaAnnotateItem = NSMenuItem(
-      title: L10n.Actions.captureAreaAnnotate,
+      title: "Capture Area and Annotate",
       action: #selector(captureAreaAnnotateAction),
       keyEquivalent: ""
     )
@@ -305,13 +309,13 @@ final class AppStatusBarController: ObservableObject {
 
     let applicationCaptureShortcut = CaptureOverlayShortcutSettings.applicationCaptureShortcut
     let applicationCaptureItem = NSMenuItem(
-      title: L10n.PreferencesShortcuts.applicationCaptureTitle,
+      title: "Capture Window",
       action: #selector(captureApplicationAction),
       keyEquivalent: ""
     )
     configureOverlayMenuItem(
       applicationCaptureItem,
-      base: L10n.PreferencesShortcuts.applicationCaptureTitle,
+      base: "Capture Window",
       shortcut: applicationCaptureShortcut,
       parentKind: .area,
       using: shortcutManager
@@ -322,7 +326,7 @@ final class AppStatusBarController: ObservableObject {
     menu?.addItem(applicationCaptureItem)
 
     let captureFullscreenItem = NSMenuItem(
-      title: L10n.Actions.captureFullscreen,
+      title: "Capture Full Screen",
       action: #selector(captureFullscreenAction),
       keyEquivalent: ""
     )
@@ -333,8 +337,17 @@ final class AppStatusBarController: ObservableObject {
     captureFullscreenItem.isEnabled = viewModel.hasPermission
     menu?.addItem(captureFullscreenItem)
 
+    let previousAreaItem = NSMenuItem(
+      title: "Capture Previous Area",
+      action: nil,
+      keyEquivalent: ""
+    )
+    previousAreaItem.image = NSImage(systemSymbolName: "rectangle.stack", accessibilityDescription: nil)
+    previousAreaItem.isEnabled = false
+    menu?.addItem(previousAreaItem)
+
     let scrollingCaptureItem = NSMenuItem(
-      title: L10n.Actions.scrollingCapture,
+      title: "Scrolling Capture",
       action: #selector(captureScrollingAction),
       keyEquivalent: ""
     )
@@ -372,9 +385,11 @@ final class AppStatusBarController: ObservableObject {
 
     menu?.addItem(NSMenuItem.separator())
 
+    addSectionHeader("Recording")
+
     // Recording
     let recordItem = NSMenuItem(
-      title: L10n.Menu.recordScreen,
+      title: "Record Area",
       action: #selector(recordScreenAction),
       keyEquivalent: ""
     )
@@ -385,24 +400,36 @@ final class AppStatusBarController: ObservableObject {
     menu?.addItem(recordItem)
 
     let applicationRecordingShortcut = CaptureOverlayShortcutSettings.recordingApplicationCaptureShortcut
-    let applicationRecordingItem = NSMenuItem(
-      title: L10n.PreferencesShortcuts.applicationRecordingTitle,
-      action: #selector(recordApplicationAction),
+    let recordFullscreenItem = NSMenuItem(
+      title: "Record Full Screen",
+      action: #selector(recordFullscreenAction),
       keyEquivalent: ""
     )
     configureOverlayMenuItem(
-      applicationRecordingItem,
-      base: L10n.PreferencesShortcuts.applicationRecordingTitle,
+      recordFullscreenItem,
+      base: "Record Full Screen",
       shortcut: applicationRecordingShortcut,
       parentKind: .recording,
       using: shortcutManager
     )
-    applicationRecordingItem.target = self
-    applicationRecordingItem.image = NSImage(systemSymbolName: "square.on.square", accessibilityDescription: nil)
-    applicationRecordingItem.isEnabled = viewModel.hasPermission && !recorder.isActive
-    menu?.addItem(applicationRecordingItem)
+    recordFullscreenItem.target = self
+    recordFullscreenItem.image = NSImage(systemSymbolName: "display", accessibilityDescription: nil)
+    recordFullscreenItem.isEnabled = viewModel.hasPermission && !recorder.isActive
+    menu?.addItem(recordFullscreenItem)
+
+    let gifRecordingItem = NSMenuItem(
+      title: "GIF Recording",
+      action: #selector(recordGIFAction),
+      keyEquivalent: ""
+    )
+    gifRecordingItem.target = self
+    gifRecordingItem.image = NSImage(systemSymbolName: "photo.stack", accessibilityDescription: nil)
+    gifRecordingItem.isEnabled = viewModel.hasPermission && !recorder.isActive
+    menu?.addItem(gifRecordingItem)
 
     menu?.addItem(NSMenuItem.separator())
+
+    addSectionHeader("Tools")
 
     // Tools
     let annotateItem = NSMenuItem(
@@ -417,27 +444,18 @@ final class AppStatusBarController: ObservableObject {
     annotateItem.isEnabled = true
     menu?.addItem(annotateItem)
 
-    let editVideoItem = NSMenuItem(
-      title: L10n.Menu.editVideo,
-      action: #selector(editVideoAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(editVideoItem, for: .videoEditor, using: shortcutManager)
-    editVideoItem.target = self
-    editVideoItem.image = NSImage(systemSymbolName: "film", accessibilityDescription: nil)
-    editVideoItem.isEnabled = true
-    menu?.addItem(editVideoItem)
-
-    let cloudUploadsItem = NSMenuItem(
-      title: L10n.Actions.cloudUploads,
-      action: #selector(openCloudUploadsAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(cloudUploadsItem, for: .cloudUploads, using: shortcutManager)
-    cloudUploadsItem.target = self
-    cloudUploadsItem.image = NSImage(systemSymbolName: "icloud.and.arrow.up", accessibilityDescription: nil)
-    cloudUploadsItem.isEnabled = CloudManager.shared.isConfigured
-    menu?.addItem(cloudUploadsItem)
+    if LocalShotV1Policy.complexVideoEditorEntryPointsEnabled {
+      let editVideoItem = NSMenuItem(
+        title: L10n.Menu.editVideo,
+        action: #selector(editVideoAction),
+        keyEquivalent: ""
+      )
+      applyConfiguredShortcut(editVideoItem, for: .videoEditor, using: shortcutManager)
+      editVideoItem.target = self
+      editVideoItem.image = NSImage(systemSymbolName: "film", accessibilityDescription: nil)
+      editVideoItem.isEnabled = true
+      menu?.addItem(editVideoItem)
+    }
 
     let historyItem = NSMenuItem(
       title: L10n.Actions.openHistory,
@@ -478,18 +496,6 @@ final class AppStatusBarController: ObservableObject {
       menu?.addItem(NSMenuItem.separator())
     }
 
-    // Check for Updates
-    let updateItem = NSMenuItem(
-      title: L10n.Menu.checkForUpdates,
-      action: #selector(checkForUpdatesAction),
-      keyEquivalent: ""
-    )
-    updateItem.target = self
-    updateItem.image = NSImage(
-      systemSymbolName: "arrow.triangle.2.circlepath", accessibilityDescription: nil)
-    updateItem.isEnabled = true
-    menu?.addItem(updateItem)
-
     // Preferences
     let prefsItem = NSMenuItem(
       title: L10n.Menu.preferences,
@@ -504,6 +510,15 @@ final class AppStatusBarController: ObservableObject {
 
     menu?.addItem(NSMenuItem.separator())
 
+    let saveLocationItem = NSMenuItem(
+      title: "Saving to ~/Pictures/LocalShot",
+      action: nil,
+      keyEquivalent: ""
+    )
+    saveLocationItem.image = NSImage(systemSymbolName: "folder", accessibilityDescription: nil)
+    saveLocationItem.isEnabled = false
+    menu?.addItem(saveLocationItem)
+
     // Quit
     let quitItem = NSMenuItem(
       title: L10n.Menu.quitSnapzy,
@@ -515,6 +530,12 @@ final class AppStatusBarController: ObservableObject {
     quitItem.image = NSImage(systemSymbolName: "power", accessibilityDescription: nil)
     quitItem.isEnabled = true
     menu?.addItem(quitItem)
+  }
+
+  private func addSectionHeader(_ title: String) {
+    let item = NSMenuItem(title: title.uppercased(), action: nil, keyEquivalent: "")
+    item.isEnabled = false
+    menu?.addItem(item)
   }
 
   // MARK: - Menu Actions
@@ -574,6 +595,17 @@ final class AppStatusBarController: ObservableObject {
     viewModel?.startApplicationRecordingFlow()
   }
 
+  @objc private func recordFullscreenAction() {
+    logMenuAction("recordFullscreen")
+    viewModel?.startFullscreenRecordingFlow()
+  }
+
+  @objc private func recordGIFAction() {
+    logMenuAction("recordGIF")
+    UserDefaults.standard.set(RecordingOutputMode.gif.rawValue, forKey: PreferencesKeys.recordingOutputMode)
+    viewModel?.startRecordingFlow()
+  }
+
   @objc private func openAnnotateAction() {
     logMenuAction("openAnnotate")
     AnnotateManager.shared.openEmptyAnnotation()
@@ -585,20 +617,7 @@ final class AppStatusBarController: ObservableObject {
   }
 
   @objc private func openCloudUploadsAction() {
-    logMenuAction(
-      "openCloudUploads",
-      context: ["cloudConfigured": CloudManager.shared.isConfigured ? "true" : "false"]
-    )
-    let didShow = CloudUploadHistoryWindowController.shared.toggleWindow()
-    DiagnosticLogger.shared.log(
-      .debug,
-      .cloud,
-      "Cloud uploads window toggled",
-      context: ["shown": didShow ? "true" : "false"]
-    )
-    if didShow {
-      NSApp.activate(ignoringOtherApps: true)
-    }
+    logMenuAction("openCloudUploadsDisabledForV1")
   }
 
   @objc private func openHistoryAction() {
@@ -617,8 +636,7 @@ final class AppStatusBarController: ObservableObject {
   }
 
   @objc private func checkForUpdatesAction() {
-    logMenuAction("checkForUpdates")
-    UpdaterManager.shared.checkForUpdates()
+    logMenuAction("checkForUpdatesDisabledForV1")
   }
 
   @objc private func reportProblemAction() {

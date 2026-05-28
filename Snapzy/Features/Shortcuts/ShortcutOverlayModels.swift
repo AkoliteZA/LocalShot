@@ -49,14 +49,17 @@ enum ShortcutOverlayContentBuilder {
         items: [
           globalItem(kind: .annotate, icon: "pencil.and.scribble", manager: keyboard),
           globalItem(kind: .videoEditor, icon: "film", manager: keyboard),
-          globalItem(kind: .cloudUploads, icon: "icloud.and.arrow.up", manager: keyboard),
           globalItem(kind: .shortcutList, icon: "list.bullet.rectangle", manager: keyboard),
-        ]
+        ] + (LocalShotV1Policy.cloudUploadsEnabled
+          ? [globalItem(kind: .cloudUploads, icon: "icloud.and.arrow.up", manager: keyboard)]
+          : [])
       ),
       ShortcutOverlaySection(
         id: "annotate-actions",
         title: L10n.ShortcutOverlay.annotateActions,
-        items: AnnotateActionShortcutKind.allCases.map { kind in
+        items: AnnotateActionShortcutKind.allCases
+          .filter { $0 != .cloudUpload || LocalShotV1Policy.cloudUploadsEnabled }
+          .map { kind in
           let (title, icon) = annotateActionMetadata(kind)
           let shortcut = annotate.shortcut(for: kind)
           return ShortcutOverlayItem(

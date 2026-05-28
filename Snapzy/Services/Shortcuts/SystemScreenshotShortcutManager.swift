@@ -279,7 +279,7 @@ final class SystemScreenshotShortcutManager {
       if matches {
         DiagnosticLogger.shared.log(
           .info, .action,
-          "System screenshot hotkey \(hotkeyID.rawValue) matches Snapzy \(kind.rawValue) shortcut"
+          "System screenshot hotkey \(hotkeyID.rawValue) matches LocalShot \(kind.rawValue) shortcut"
         )
       }
       return matches

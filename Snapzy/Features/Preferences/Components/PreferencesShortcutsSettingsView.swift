@@ -383,27 +383,31 @@ struct ShortcutsSettingsView: View {
             onShortcutChanged: { handleGlobalShortcutChange($0, for: .annotate) }
           )
 
-          ShortcutRecorderView(
-            label: L10n.Actions.openVideoEditor,
-            icon: "film",
-            description: L10n.PreferencesShortcuts.openVideoEditorDescription,
-            shortcut: $videoEditorShortcut,
-            defaultShortcut: .defaultVideoEditor,
-            isEnabled: globalEnabledBinding(for: .videoEditor),
-            validationIssue: globalValidationIssues[.videoEditor],
-            onShortcutChanged: { handleGlobalShortcutChange($0, for: .videoEditor) }
-          )
+          if LocalShotV1Policy.complexVideoEditorEntryPointsEnabled {
+            ShortcutRecorderView(
+              label: L10n.Actions.openVideoEditor,
+              icon: "film",
+              description: L10n.PreferencesShortcuts.openVideoEditorDescription,
+              shortcut: $videoEditorShortcut,
+              defaultShortcut: .defaultVideoEditor,
+              isEnabled: globalEnabledBinding(for: .videoEditor),
+              validationIssue: globalValidationIssues[.videoEditor],
+              onShortcutChanged: { handleGlobalShortcutChange($0, for: .videoEditor) }
+            )
+          }
 
-          ShortcutRecorderView(
-            label: L10n.Actions.cloudUploads,
-            icon: "icloud.and.arrow.up",
-            description: L10n.PreferencesShortcuts.cloudUploadsDescription,
-            shortcut: $cloudUploadsShortcut,
-            defaultShortcut: .defaultCloudUploads,
-            isEnabled: globalEnabledBinding(for: .cloudUploads),
-            validationIssue: globalValidationIssues[.cloudUploads],
-            onShortcutChanged: { handleGlobalShortcutChange($0, for: .cloudUploads) }
-          )
+          if LocalShotV1Policy.cloudUploadsEnabled {
+            ShortcutRecorderView(
+              label: L10n.Actions.cloudUploads,
+              icon: "icloud.and.arrow.up",
+              description: L10n.PreferencesShortcuts.cloudUploadsDescription,
+              shortcut: $cloudUploadsShortcut,
+              defaultShortcut: .defaultCloudUploads,
+              isEnabled: globalEnabledBinding(for: .cloudUploads),
+              validationIssue: globalValidationIssues[.cloudUploads],
+              onShortcutChanged: { handleGlobalShortcutChange($0, for: .cloudUploads) }
+            )
+          }
 
           ShortcutRecorderView(
             label: L10n.Actions.showShortcutList,
@@ -470,16 +474,18 @@ struct ShortcutsSettingsView: View {
             onShortcutChanged: { handleAnnotateActionShortcutChange($0, for: .togglePin) }
           )
 
-          ShortcutRecorderView(
-            label: L10n.ShortcutOverlay.cloudUpload,
-            icon: "icloud.and.arrow.up",
-            description: L10n.PreferencesShortcuts.cloudUploadDescription,
-            shortcut: $cloudUploadShortcut,
-            defaultShortcut: AnnotateShortcutManager.defaultCloudUpload,
-            isEnabled: annotateActionEnabledBinding(for: .cloudUpload),
-            validationIssue: annotateActionValidationIssues[.cloudUpload],
-            onShortcutChanged: { handleAnnotateActionShortcutChange($0, for: .cloudUpload) }
-          )
+          if LocalShotV1Policy.cloudUploadsEnabled {
+            ShortcutRecorderView(
+              label: L10n.ShortcutOverlay.cloudUpload,
+              icon: "icloud.and.arrow.up",
+              description: L10n.PreferencesShortcuts.cloudUploadDescription,
+              shortcut: $cloudUploadShortcut,
+              defaultShortcut: AnnotateShortcutManager.defaultCloudUpload,
+              isEnabled: annotateActionEnabledBinding(for: .cloudUpload),
+              validationIssue: annotateActionValidationIssues[.cloudUpload],
+              onShortcutChanged: { handleAnnotateActionShortcutChange($0, for: .cloudUpload) }
+            )
+          }
         }
 
         Section(L10n.ShortcutOverlay.annotateToolKeys) {

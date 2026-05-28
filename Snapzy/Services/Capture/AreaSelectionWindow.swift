@@ -1227,7 +1227,7 @@ final class AreaSelectionOverlayView: NSView {
     selectionBorderLayer.actions = disabledActions
     rootLayer.addSublayer(selectionBorderLayer)
 
-    // Crosshair indicator at mouse position (like CleanShot X)
+    // Crosshair indicator at mouse position (like commercial screenshot utilities)
     crosshairIndicatorLayer = CAShapeLayer()
     crosshairIndicatorLayer.strokeColor = NSColor.white.cgColor
     crosshairIndicatorLayer.fillColor = nil

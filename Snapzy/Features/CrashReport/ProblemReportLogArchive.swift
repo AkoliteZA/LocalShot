@@ -8,7 +8,7 @@
 import Foundation
 
 enum ProblemReportLogArchive {
-  private static let filePrefix = "snapzy-problem-report-"
+  private static let filePrefix = "localshot-problem-report-"
   private static let fileExtension = "zip"
 
   static func makeArchive(from logDirectoryURL: URL, reportURL: URL) throws -> URL {
@@ -30,7 +30,7 @@ enum ProblemReportLogArchive {
 
     let diagnosticLogs = logFiles.filter { url in
       guard
-        url.lastPathComponent.hasPrefix("snapzy_"),
+        url.lastPathComponent.hasPrefix(LocalShotBrand.diagnosticsFilePrefix),
         url.pathExtension == "txt",
         let resourceValues = try? url.resourceValues(forKeys: [.isRegularFileKey]),
         resourceValues.isRegularFile == true
@@ -71,7 +71,7 @@ enum ProblemReportLogArchive {
 
   private static func nextArchiveURL() throws -> URL {
     let fm = FileManager.default
-    let directory = fm.temporaryDirectory.appendingPathComponent("SnapzyProblemReports", isDirectory: true)
+    let directory = fm.temporaryDirectory.appendingPathComponent("LocalShotProblemReports", isDirectory: true)
     try fm.createDirectory(at: directory, withIntermediateDirectories: true)
     cleanupOldArchives(in: directory)
 
@@ -93,7 +93,7 @@ enum ProblemReportLogArchive {
   private static func readmeData(logCount: Int, logDirectoryURL: URL, reportURL: URL, date: Date) -> Data {
     let formatter = ISO8601DateFormatter()
     let text = """
-      Snapzy problem report log bundle
+      LocalShot local diagnostic log bundle
       Generated: \(formatter.string(from: date))
       Included diagnostic log files: \(logCount)
       Source log folder: \(logDirectoryURL.path)
@@ -104,4 +104,3 @@ enum ProblemReportLogArchive {
     return Data(text.utf8)
   }
 }
-

@@ -220,7 +220,7 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
         NSApp.activate(ignoringOtherApps: true)
       }
 
-      DiagnosticLogger.shared.log(.debug, .ui, "Hidden Snapzy windows restored", context: [
+      DiagnosticLogger.shared.log(.debug, .ui, "Hidden LocalShot windows restored", context: [
         "count": "\(liveEntries.count)"
       ])
     }
@@ -243,7 +243,7 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
     guard !visibleNormalWindows.isEmpty else { return session }
 
     visibleNormalWindows.forEach { $0.orderOut(nil) }
-    DiagnosticLogger.shared.log(.debug, .ui, "Snapzy windows hidden for capture", context: [
+    DiagnosticLogger.shared.log(.debug, .ui, "LocalShot windows hidden for capture", context: [
       "count": "\(visibleNormalWindows.count)"
     ])
     return session
@@ -325,6 +325,7 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
     case .openVideoEditor:
       VideoEditorManager.shared.openEmptyEditor()
     case .openCloudUploads:
+      guard LocalShotV1Policy.cloudUploadsEnabled else { return }
       if CloudUploadHistoryWindowController.shared.toggleWindow() {
         NSApp.activate(ignoringOtherApps: true)
       }
@@ -1183,6 +1184,35 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
 
   func startApplicationRecordingFlow() {
     startRecordingFlow(initialInteractionMode: .applicationWindow)
+  }
+
+  func startFullscreenRecordingFlow() {
+    guard hasPermission else {
+      requestPermission()
+      return
+    }
+
+    guard !RecordingCoordinator.shared.isActive else { return }
+    guard !isAreaSelectionActive else {
+      DiagnosticLogger.shared.log(.debug, .recording, "startFullscreenRecordingFlow blocked: area selection active")
+      return
+    }
+
+    isAreaSelectionActive = true
+    DiagnosticLogger.shared.log(.info, .recording, "Full screen recording flow started")
+
+    let hiddenWindowSession = hideVisibleNormalWindowsIfNeeded(shouldHideOwnWindowsForRecordingToolbarFlow)
+    let screenFrame = ScreenUtility.activeScreen().frame
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+      self.isAreaSelectionActive = false
+      RecordingCoordinator.shared.showToolbar(
+        for: screenFrame,
+        onSessionEnded: {
+          hiddenWindowSession.restore()
+        }
+      )
+    }
   }
 
   private func startRecordingFlow(initialInteractionMode: AreaSelectionInteractionMode) {

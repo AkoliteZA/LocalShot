@@ -1,2 +1,2 @@
-"NSMicrophoneUsageDescription" = "Snapzy benötigt Mikrofonzugriff, um Audio mit Ihren Bildschirmaufnahmen aufzunehmen.";
-"NSScreenCaptureUsageDescription" = "Snapzy benötigt die Berechtigung zur Bildschirmaufzeichnung, um Screenshots aufzunehmen und Ihren Bildschirm aufzuzeichnen.";
+"NSMicrophoneUsageDescription" = "LocalShot benötigt Mikrofonzugriff, um Audio mit Ihren Bildschirmaufnahmen aufzunehmen.";
+"NSScreenCaptureUsageDescription" = "LocalShot benötigt die Berechtigung zur Bildschirmaufzeichnung, um Screenshots aufzunehmen und Ihren Bildschirm aufzuzeichnen.";

@@ -10,7 +10,7 @@ import AVFoundation
 import Foundation
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "ThumbnailGenerator")
+private let logger = Logger(subsystem: "LocalShot", category: "ThumbnailGenerator")
 
 /// Result of thumbnail generation containing optional thumbnail and duration
 struct ThumbnailResult {

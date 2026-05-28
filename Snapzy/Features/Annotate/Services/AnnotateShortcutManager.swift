@@ -16,6 +16,12 @@ enum AnnotateActionShortcutKind: String, CaseIterable, Codable {
   case toggleSidebar
   case togglePin
   case cloudUpload
+
+  static let allCases: [AnnotateActionShortcutKind] = [
+    .copyAndClose,
+    .toggleSidebar,
+    .togglePin,
+  ]
 }
 
 /// Manager for annotation tool keyboard shortcuts

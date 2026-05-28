@@ -8,7 +8,7 @@
 import AppKit
 import CoreGraphics
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class AnnotateBlurEffectRendererTests: XCTestCase {
 

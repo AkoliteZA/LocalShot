@@ -34,7 +34,6 @@ struct AboutCreditRow: View {
 #Preview {
   VStack {
     AboutCreditRow(name: "SwiftUI", role: "UI Framework", icon: "swift")
-    AboutCreditRow(name: "Sparkle", role: "Auto Updates", icon: "arrow.triangle.2.circlepath")
   }
   .padding()
 }

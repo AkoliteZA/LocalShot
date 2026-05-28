@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class DiagnosticCoreTests: XCTestCase {
 
@@ -16,7 +16,7 @@ final class DiagnosticCoreTests: XCTestCase {
       category: .capture,
       message: "Capture complete",
       context: ["z": "last", "a": "first"],
-      file: "Snapzy/Services/Capture/ScreenCaptureManager.swift",
+      file: "LocalShot/Services/Capture/ScreenCaptureManager.swift",
       function: "captureFullscreen()",
       line: 42,
       timestamp: Date(timeIntervalSince1970: 0)

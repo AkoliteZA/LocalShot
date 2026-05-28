@@ -16,6 +16,13 @@ enum AfterCaptureAction: String, CaseIterable, Codable {
   case openAnnotate = "openAnnotate"
   case uploadToCloud = "uploadToCloud"
 
+  static let allCases: [AfterCaptureAction] = [
+    .showQuickAccess,
+    .copyFile,
+    .save,
+    .openAnnotate,
+  ]
+
   var displayName: String {
     switch self {
     case .showQuickAccess: return L10n.Actions.showQuickAccessOverlay
@@ -104,6 +111,7 @@ final class PreferencesManager: ObservableObject {
 
   /// Set whether an action is enabled for a capture type
   func setAction(_ action: AfterCaptureAction, for type: CaptureType, enabled: Bool) {
+    guard action != .uploadToCloud || LocalShotV1Policy.cloudUploadsEnabled else { return }
     if afterCaptureActions[action] == nil {
       afterCaptureActions[action] = [:]
     }
@@ -123,7 +131,8 @@ final class PreferencesManager: ObservableObject {
 
   /// Check if an action is enabled for a capture type
   func isActionEnabled(_ action: AfterCaptureAction, for type: CaptureType) -> Bool {
-    afterCaptureActions[action]?[type] ?? defaultValue(for: action, type: type)
+    guard action != .uploadToCloud || LocalShotV1Policy.cloudUploadsEnabled else { return false }
+    return afterCaptureActions[action]?[type] ?? defaultValue(for: action, type: type)
   }
 
   /// Default values for after-capture actions

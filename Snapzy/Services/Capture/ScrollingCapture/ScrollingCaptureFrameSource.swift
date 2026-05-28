@@ -13,7 +13,7 @@ import ScreenCaptureKit
 
 final class ScrollingCaptureFrameSource: NSObject {
   private let sampleQueue = DispatchQueue(
-    label: "com.snapzy.scrolling-capture.preview-stream",
+    label: "com.localshot.scrolling-capture.preview-stream",
     qos: .userInteractive
   )
   private let minimumPublishInterval: TimeInterval

@@ -11,7 +11,7 @@ import Foundation
 final class SnapzyConfigurationService {
   static let shared = SnapzyConfigurationService()
   nonisolated private static let managedConfigFileQueue = DispatchQueue(
-    label: "com.trongduong.snapzy.configuration.managed-file",
+    label: "\(LocalShotBrand.queueLabelPrefix).configuration.managed-file",
     qos: .utility
   )
 

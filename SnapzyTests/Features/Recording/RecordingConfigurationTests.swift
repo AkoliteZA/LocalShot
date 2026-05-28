@@ -7,7 +7,7 @@
 
 import AppKit
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 @MainActor
 final class RecordingConfigurationTests: XCTestCase {
@@ -20,7 +20,7 @@ final class RecordingConfigurationTests: XCTestCase {
   }
 
   func testRecordingToolbarPreferences_defaults() {
-    XCTAssertEqual(RecordingToolbarPreferences.selectedFormat(defaults: defaults), .mov)
+    XCTAssertEqual(RecordingToolbarPreferences.selectedFormat(defaults: defaults), .mp4)
     XCTAssertEqual(RecordingToolbarPreferences.selectedQuality(defaults: defaults), .high)
     XCTAssertTrue(RecordingToolbarPreferences.captureAudio(defaults: defaults))
     XCTAssertFalse(RecordingToolbarPreferences.captureMicrophone(defaults: defaults))
@@ -61,7 +61,7 @@ final class RecordingConfigurationTests: XCTestCase {
     defaults.set("ultra", forKey: PreferencesKeys.recordingQuality)
     defaults.set("cinematic", forKey: PreferencesKeys.recordingOutputMode)
 
-    XCTAssertEqual(RecordingToolbarPreferences.selectedFormat(defaults: defaults), .mov)
+    XCTAssertEqual(RecordingToolbarPreferences.selectedFormat(defaults: defaults), .mp4)
     XCTAssertEqual(RecordingToolbarPreferences.selectedQuality(defaults: defaults), .high)
     XCTAssertEqual(RecordingToolbarPreferences.outputMode(defaults: defaults), .video)
   }

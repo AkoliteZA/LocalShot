@@ -6,7 +6,7 @@
 //
 
 import AppKit
-@testable import Snapzy
+@testable import LocalShot
 
 enum OCRTestImageRenderer {
   static func renderImage(text: String) throws -> CGImage {

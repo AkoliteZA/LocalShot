@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 @MainActor
 final class TempCaptureManagerTests: XCTestCase {
@@ -185,7 +185,7 @@ final class TempCaptureManagerTests: XCTestCase {
   func testTempCaptureDirectory_isInAppSupport() {
     let path = manager.tempCaptureDirectory.path
     XCTAssertTrue(
-      path.contains("Application Support/Snapzy/Captures")
+      path.contains("Application Support/LocalShot/Captures")
         || path.contains("Snapzy_Captures"),
       "Temp directory should be in App Support or fallback: \(path)"
     )

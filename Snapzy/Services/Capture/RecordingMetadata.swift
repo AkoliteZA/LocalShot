@@ -9,7 +9,7 @@ import CoreGraphics
 import Foundation
 import os.log
 
-private let recordingMetadataLogger = Logger(subsystem: "Snapzy", category: "RecordingMetadata")
+private let recordingMetadataLogger = Logger(subsystem: "LocalShot", category: "RecordingMetadata")
 
 struct RecordedMouseSample: Codable, Equatable {
   var time: TimeInterval
@@ -160,14 +160,14 @@ enum RecordingMetadataStore {
     case delete
   }
 
-  private static let appSupportFolderName = "Snapzy"
+  private static let appSupportFolderName = "LocalShot"
   private static let capturesFolderName = "Captures"
   private static let storeFolderName = "RecordingMetadata"
   private static let entriesFolderName = "Entries"
   private static let audioSourcesFolderName = "AudioSources"
   private static let indexFileName = "index.json"
   private static let metadataFileExtension = "json"
-  private static let legacySidecarExtension = "snapzy-recording.json"
+  private static let legacySidecarExtension = "localshot-recording.json"
   private static let orphanGracePeriod: TimeInterval = 24 * 60 * 60
 
   private enum StoreLayout {

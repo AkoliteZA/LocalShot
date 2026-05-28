@@ -41,7 +41,7 @@ nonisolated enum SnapzyConfigurationPaths {
   static func suggestedConfigDirectoryURL(homeDirectory: URL) -> URL {
     homeDirectory
       .appendingPathComponent(".config", isDirectory: true)
-      .appendingPathComponent("snapzy", isDirectory: true)
+      .appendingPathComponent(LocalShotBrand.configurationDirectoryName, isDirectory: true)
   }
 
   static func expandedUserPath(_ path: String, homeDirectory: URL) -> String {

@@ -2,72 +2,23 @@
 //  UpdaterManager.swift
 //  Snapzy
 //
-//  Shared Sparkle updater manager — singleton, starts updater once, logs lifecycle via DiagnosticLogger
+//  LocalShot v1 intentionally has no public updater.
 //
 
-import Sparkle
+import Combine
+import Foundation
 
-final class UpdaterManager: NSObject, SPUUpdaterDelegate {
+@MainActor
+final class UpdaterManager: ObservableObject {
   static let shared = UpdaterManager()
 
-  private(set) var controller: SPUStandardUpdaterController!
+  @Published var automaticallyChecksForUpdates = false
+  @Published var automaticallyDownloadsUpdates = false
+  @Published private(set) var lastUpdateCheckDate: Date?
 
-  var updater: SPUUpdater {
-    controller.updater
-  }
-
-  private override init() {
-    super.init()
-    controller = SPUStandardUpdaterController(
-      startingUpdater: true,
-      updaterDelegate: self,
-      userDriverDelegate: nil
-    )
-    DiagnosticLogger.shared.log(.info, .update, "Updater initialized")
-  }
+  private init() {}
 
   func checkForUpdates() {
-    DiagnosticLogger.shared.log(.info, .update, "Manual check for updates triggered")
-    updater.checkForUpdates()
-  }
-
-  // MARK: - SPUUpdaterDelegate
-
-  func updater(_ updater: SPUUpdater, didFinishLoading appcast: SUAppcast) {
-    let count = appcast.items.count
-    DiagnosticLogger.shared.log(.info, .update, "Appcast loaded: \(count) item(s)")
-  }
-
-  func updater(_ updater: SPUUpdater, didFindValidUpdate item: SUAppcastItem) {
-    let version = item.displayVersionString ?? "?"
-    let build = item.versionString ?? "?"
-    DiagnosticLogger.shared.log(.info, .update, "Update available: v\(version) (\(build))")
-  }
-
-  func updaterDidNotFindUpdate(_ updater: SPUUpdater, error: any Error) {
-    DiagnosticLogger.shared.log(.warning, .update, "No update found: \(error.localizedDescription) [code=\((error as NSError).code), domain=\((error as NSError).domain)]")
-  }
-
-  func updater(_ updater: SPUUpdater, didDownloadUpdate item: SUAppcastItem) {
-    let version = item.displayVersionString ?? "?"
-    DiagnosticLogger.shared.log(.info, .update, "Downloaded update: v\(version)")
-  }
-
-  func updater(_ updater: SPUUpdater, willInstallUpdate item: SUAppcastItem) {
-    let version = item.displayVersionString ?? "?"
-    DiagnosticLogger.shared.log(.info, .update, "Installing update: v\(version)")
-  }
-
-  func updater(_ updater: SPUUpdater, didAbortWithError error: any Error) {
-    let nsError = error as NSError
-    DiagnosticLogger.shared.log(
-      .error, .update,
-      "Update aborted: \(nsError.localizedDescription) [code=\(nsError.code), domain=\(nsError.domain), info=\(nsError.userInfo)]"
-    )
-  }
-
-  func updater(_ updater: SPUUpdater, didCancelInstallUpdateOnQuit item: SUAppcastItem) {
-    let version = item.displayVersionString ?? "?"
-    DiagnosticLogger.shared.log(.warning, .update, "User cancelled install on quit: v\(version)")
+    DiagnosticLogger.shared.log(.info, .update, "Updater disabled for LocalShot v1")
   }
 }

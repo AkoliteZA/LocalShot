@@ -30,16 +30,18 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
   }
 
   func orderedActions(includeDisabled: Bool) -> [QuickAccessActionKind] {
-    guard !includeDisabled else { return actionOrder }
-    return actionOrder.filter { enabledActions.contains($0) }
+    let availableOrder = actionOrder.filter(\.isAvailableInLocalShotV1)
+    guard !includeDisabled else { return availableOrder }
+    return availableOrder.filter { enabledActions.contains($0) }
   }
 
   func isEnabled(_ action: QuickAccessActionKind) -> Bool {
-    enabledActions.contains(action)
+    guard action.isAvailableInLocalShotV1 else { return false }
+    return enabledActions.contains(action)
   }
 
   func action(in slot: QuickAccessActionSlot) -> QuickAccessActionKind? {
-    slotAssignments[slot]
+    slotAssignments[slot]?.isAvailableInLocalShotV1 == true ? slotAssignments[slot] : nil
   }
 
   func assignedSlot(for action: QuickAccessActionKind) -> QuickAccessActionSlot? {
@@ -131,7 +133,9 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
     var ordered: [QuickAccessActionKind] = []
 
     for rawID in rawIDs ?? [] {
-      guard let action = QuickAccessActionKind(rawValue: rawID), !seen.contains(action) else { continue }
+      guard let action = QuickAccessActionKind(rawValue: rawID),
+            action.isAvailableInLocalShotV1,
+            !seen.contains(action) else { continue }
       ordered.append(action)
       seen.insert(action)
     }
@@ -148,7 +152,7 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
       return QuickAccessActionKind.defaultEnabledActions
     }
 
-    return Set(rawIDs.compactMap(QuickAccessActionKind.init(rawValue:)))
+    return Set(rawIDs.compactMap(QuickAccessActionKind.init(rawValue:)).filter(\.isAvailableInLocalShotV1))
   }
 
   private static func normalizedSlotAssignments(
@@ -170,6 +174,7 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
       }
 
       guard let action,
+            action.isAvailableInLocalShotV1,
             !seenActions.contains(action) else {
         continue
       }

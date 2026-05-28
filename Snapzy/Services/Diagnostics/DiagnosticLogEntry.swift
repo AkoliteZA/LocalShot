@@ -78,7 +78,7 @@ struct DiagnosticLogEntry {
     return fmt
   }()
 
-  /// Extract short filename from #fileID (e.g. "Snapzy/DiagnosticLogEntry.swift" → "DiagnosticLogEntry.swift")
+  /// Extract short filename from #fileID (e.g. "LocalShot/DiagnosticLogEntry.swift" → "DiagnosticLogEntry.swift")
   private var shortFileName: String {
     if let lastSlash = file.lastIndex(of: "/") {
       return String(file[file.index(after: lastSlash)...])

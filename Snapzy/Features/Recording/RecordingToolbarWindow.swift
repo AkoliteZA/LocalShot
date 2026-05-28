@@ -40,7 +40,7 @@ enum RecordingToolbarPreferences {
     guard let formatString = defaults.string(forKey: PreferencesKeys.recordingFormat),
           let format = VideoFormat(rawValue: formatString)
     else {
-      return .mov
+      return .mp4
     }
     return format
   }

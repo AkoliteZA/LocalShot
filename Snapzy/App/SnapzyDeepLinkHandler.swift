@@ -2,7 +2,7 @@
 //  SnapzyDeepLinkHandler.swift
 //  Snapzy
 //
-//  Handles snapzy:// automation URLs for external launchers and workflows.
+//  Handles localshot:// automation URLs for external launchers and workflows.
 //
 
 import AppKit
@@ -61,10 +61,12 @@ struct SnapzyDeepLinkHandler {
       AnnotateManager.shared.openEmptyAnnotation()
       NSApp.activate(ignoringOtherApps: true)
     case .openVideoEditor:
+      guard LocalShotV1Policy.complexVideoEditorEntryPointsEnabled else { return }
       VideoEditorManager.shared.openEmptyEditor()
       NSApp.activate(ignoringOtherApps: true)
     case .openCloudUploads:
-      if CloudUploadHistoryWindowController.shared.toggleWindow() {
+      if LocalShotV1Policy.cloudUploadsEnabled,
+         CloudUploadHistoryWindowController.shared.toggleWindow() {
         NSApp.activate(ignoringOtherApps: true)
       }
     case .openHistory:
@@ -95,7 +97,7 @@ enum SnapzyDeepLinkAction: Equatable {
   case openSettings(PreferencesTab?)
 
   init?(url: URL) {
-    guard url.scheme?.lowercased() == "snapzy" else { return nil }
+    guard url.scheme?.lowercased() == LocalShotBrand.urlScheme else { return nil }
 
     let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
     let host = url.host?.lowercased()
@@ -125,8 +127,10 @@ enum SnapzyDeepLinkAction: Equatable {
     case "open/annotate", "annotate", "open-annotate":
       self = .openAnnotate
     case "open/video-editor", "video-editor", "edit-video", "open-video-editor":
+      guard LocalShotV1Policy.complexVideoEditorEntryPointsEnabled else { return nil }
       self = .openVideoEditor
     case "open/cloud-uploads", "cloud-uploads", "uploads", "open-uploads":
+      guard LocalShotV1Policy.cloudUploadsEnabled else { return nil }
       self = .openCloudUploads
     case "open/history", "history", "capture-history":
       self = .openHistory
@@ -189,8 +193,6 @@ enum SnapzyDeepLinkAction: Equatable {
       return .shortcuts
     case "permissions", "privacy":
       return .permissions
-    case "cloud", "uploads":
-      return .cloud
     case "advanced", "configuration", "config", "toml":
       return .advanced
     case "about":

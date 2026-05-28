@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@testable import Snapzy
+@testable import LocalShot
 
 final class MockURLSession: URLSessionProtocol, @unchecked Sendable {
   private let lock = NSLock()

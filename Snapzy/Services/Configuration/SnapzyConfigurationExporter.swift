@@ -7,21 +7,19 @@
 
 import AppKit
 import Foundation
-import Sparkle
 
 @MainActor
 enum SnapzyConfigurationExporter {
   static func exportTOML(defaults: UserDefaults = .standard) -> String {
     var writer = SimpleTOMLWriter()
     writer.root("schema_version", 1)
-    writer.root("snapzy_min_version", Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.20.0")
+    writer.root("localshot_min_version", Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0")
 
     writeGeneral(&writer, defaults: defaults)
     writeCapture(&writer, defaults: defaults)
     writeRecording(&writer, defaults: defaults)
     writeQuickAccess(&writer)
     writeHistory(&writer, defaults: defaults)
-    writeCloud(&writer, defaults: defaults)
     writeAnnotate(&writer, defaults: defaults)
     writeShortcuts(&writer)
 
@@ -36,13 +34,12 @@ enum SnapzyConfigurationExporter {
     writer.value("start_at_login", LoginItemManager.isEnabled)
     writer.value("export_location", SandboxFileAccessManager.shared.exportLocationPath)
 
-    writer.section("updates")
-    let updater = UpdaterManager.shared.updater
-    writer.value("check_automatically", updater.automaticallyChecksForUpdates)
-    writer.value("download_automatically", updater.automaticallyDownloadsUpdates)
-
     writer.section("diagnostics")
-    writer.value("enabled", defaults.object(forKey: PreferencesKeys.diagnosticsEnabled) as? Bool ?? true)
+    writer.value(
+      "enabled",
+      defaults.object(forKey: PreferencesKeys.diagnosticsEnabled) as? Bool
+        ?? LocalShotV1Policy.diagnosticsEnabledByDefault
+    )
     writer.value(
       "retention_days",
       defaults.object(forKey: PreferencesKeys.diagnosticsRetentionDays) as? Int
@@ -61,7 +58,7 @@ enum SnapzyConfigurationExporter {
 
     writer.section("capture.screenshot")
     writer.value("format", defaults.string(forKey: PreferencesKeys.screenshotFormat) ?? ImageFormatOption.png.rawValue)
-    writer.value("include_snapzy", defaults.boolValue(PreferencesKeys.screenshotIncludeOwnApp, default: false))
+    writer.value("include_localshot", defaults.boolValue(PreferencesKeys.screenshotIncludeOwnApp, default: false))
     writer.value("show_cursor", defaults.boolValue(PreferencesKeys.screenshotShowCursor, default: false))
 
     writer.section("capture.scrolling")
@@ -87,7 +84,7 @@ enum SnapzyConfigurationExporter {
     writer.value("capture_microphone", RecordingToolbarPreferences.captureMicrophone(defaults: defaults))
     writer.value("microphone_device_id", RecordingToolbarPreferences.microphoneDeviceID(defaults: defaults))
     writer.value("remember_last_area", defaults.boolValue(PreferencesKeys.recordingRememberLastArea, default: true))
-    writer.value("include_snapzy", defaults.boolValue(PreferencesKeys.recordingIncludeOwnApp, default: false))
+    writer.value("include_localshot", defaults.boolValue(PreferencesKeys.recordingIncludeOwnApp, default: false))
     writer.value("show_cursor", RecordingToolbarPreferences.showCursor(defaults: defaults))
     writer.value("highlight_clicks", RecordingToolbarPreferences.highlightClicks(defaults: defaults))
     writer.value("show_keystrokes", RecordingToolbarPreferences.showKeystrokes(defaults: defaults))
@@ -198,7 +195,6 @@ enum SnapzyConfigurationExporter {
     writer.value("quick_access", manager.isActionEnabled(.showQuickAccess, for: type))
     writer.value("copy_file", manager.isActionEnabled(.copyFile, for: type))
     writer.value("open_annotate", manager.isActionEnabled(.openAnnotate, for: type))
-    writer.value("upload_to_cloud", manager.isActionEnabled(.uploadToCloud, for: type))
   }
 
   private static func storedMouseColor(defaults: UserDefaults) -> NSColor {

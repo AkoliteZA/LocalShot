@@ -7,7 +7,7 @@
 
 import AVFoundation
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class RecordingEncodingSettingsTests: XCTestCase {
 

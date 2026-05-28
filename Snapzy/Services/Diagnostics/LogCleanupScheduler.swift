@@ -85,9 +85,9 @@ final class LogCleanupScheduler {
   }
 
   private static func date(fromLogFileName fileName: String) -> Date? {
-    guard fileName.hasPrefix("snapzy_"), fileName.hasSuffix(".txt") else { return nil }
+    guard fileName.hasPrefix(LocalShotBrand.diagnosticsFilePrefix), fileName.hasSuffix(".txt") else { return nil }
 
-    let start = fileName.index(fileName.startIndex, offsetBy: "snapzy_".count)
+    let start = fileName.index(fileName.startIndex, offsetBy: LocalShotBrand.diagnosticsFilePrefix.count)
     let end = fileName.index(fileName.endIndex, offsetBy: -".txt".count)
     guard start < end else { return nil }
 

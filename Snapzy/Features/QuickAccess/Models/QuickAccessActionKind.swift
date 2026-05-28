@@ -45,7 +45,7 @@ enum QuickAccessActionSlot: String, CaseIterable, Codable, Hashable, Identifiabl
     .topTrailing: .dismiss,
     .topLeading: .delete,
     .bottomLeading: .edit,
-    .bottomTrailing: .uploadToCloud,
+    .bottomTrailing: .pinToScreen,
   ]
 
   var isCenterSlot: Bool {
@@ -87,11 +87,14 @@ enum QuickAccessActionKind: String, CaseIterable, Codable, Hashable, Identifiabl
     .dismiss,
     .delete,
     .edit,
-    .uploadToCloud,
     .pinToScreen,
   ]
 
   static let defaultEnabledActions = Set(defaultOrder)
+
+  var isAvailableInLocalShotV1: Bool {
+    self != .uploadToCloud || LocalShotV1Policy.cloudUploadsEnabled
+  }
 
   var displayStyle: QuickAccessActionDisplayStyle {
     switch self {

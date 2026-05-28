@@ -236,6 +236,12 @@ final class HistoryFloatingManager: ObservableObject {
   }
 
   func uploadToCloud(_ record: CaptureHistoryRecord) {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      AppToastManager.shared.show(message: "Cloud upload is disabled in LocalShot v1.", style: .warning, variant: .compact)
+      DiagnosticLogger.shared.log(.info, .cloud, "History cloud upload ignored; disabled for LocalShot v1")
+      return
+    }
+
     guard cloudUploadStates[record.id] != .uploading else {
       DiagnosticLogger.shared.log(
         .debug,

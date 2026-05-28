@@ -7,7 +7,7 @@
 
 import AppKit
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class HistoryFloatingLayoutTests: XCTestCase {
 

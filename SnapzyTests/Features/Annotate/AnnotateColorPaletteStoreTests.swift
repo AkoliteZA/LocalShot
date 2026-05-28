@@ -6,7 +6,7 @@
 //
 
 import AppKit
-@testable import Snapzy
+@testable import LocalShot
 import SwiftUI
 import UniformTypeIdentifiers
 import XCTest
@@ -211,7 +211,7 @@ final class AnnotateColorPaletteStoreTests: XCTestCase {
 
     XCTAssertEqual(AnnotateColorDragPayload.supportedContentTypes, [.plainText])
     XCTAssertTrue(provider.hasItemConformingToTypeIdentifier(UTType.plainText.identifier))
-    XCTAssertFalse(provider.registeredTypeIdentifiers.contains("com.trongduong.snapzy.annotate-color"))
+    XCTAssertFalse(provider.registeredTypeIdentifiers.contains("com.trongduong.localshot.annotate-color"))
   }
 
   func testDragPayloadPlainTextRoundTripsColorAndSourceRole() throws {

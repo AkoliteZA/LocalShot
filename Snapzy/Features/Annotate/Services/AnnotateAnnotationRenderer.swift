@@ -116,7 +116,7 @@ struct AnnotationRenderer {
     fillColor: Color = .clear,
     arrowStyle: ArrowStyle = .straight,
     rectangleCornerRadius: CGFloat = 0,
-    watermarkText: String = "Snapzy",
+    watermarkText: String = LocalShotBrand.appName,
     watermarkStyle: WatermarkStyle = .diagonal,
     watermarkOpacity: CGFloat = 0.22,
     watermarkRotationDegrees: CGFloat = -24,

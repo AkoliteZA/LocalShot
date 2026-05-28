@@ -331,7 +331,7 @@ enum RecordingAudioCompatibilityExporter {
     try? FileManager.default.removeItem(at: outputURL)
 
     try await withCheckedThrowingContinuation { continuation in
-      let workerQueue = DispatchQueue(label: "com.trongduong.snapzy.recording.audio-compatibility", qos: .utility)
+      let workerQueue = DispatchQueue(label: "\(LocalShotBrand.queueLabelPrefix).recording.audio-compatibility", qos: .utility)
       workerQueue.async {
         do {
           try writeNormalizedFileSynchronously(
@@ -474,7 +474,7 @@ enum RecordingAudioCompatibilityExporter {
 
     for (label, output, input) in outputsAndInputs {
       group.enter()
-      let queue = DispatchQueue(label: "com.trongduong.snapzy.recording.audio-compatibility.\(label)")
+      let queue = DispatchQueue(label: "\(LocalShotBrand.queueLabelPrefix).recording.audio-compatibility.\(label)")
       var didFinish = false
 
       func finishInput() {
@@ -582,7 +582,7 @@ final class ScreenRecordingManager: NSObject, ObservableObject {
   // MARK: - Configuration
 
   private var recordingRect: CGRect = .zero
-  private var videoFormat: VideoFormat = .mov
+  private var videoFormat: VideoFormat = .mp4
   private var videoQuality: VideoQuality = .high
   private var fps: Int = 30
   private var captureSystemAudio: Bool = true
@@ -612,15 +612,15 @@ final class ScreenRecordingManager: NSObject, ObservableObject {
 
   // Dedicated queues to avoid audio starvation behind video processing work.
   private let videoProcessingQueue = DispatchQueue(
-    label: "com.trongduong.snapzy.recording.video",
+    label: "\(LocalShotBrand.queueLabelPrefix).recording.video",
     qos: .userInitiated
   )
   private let audioProcessingQueue = DispatchQueue(
-    label: "com.trongduong.snapzy.recording.audio",
+    label: "\(LocalShotBrand.queueLabelPrefix).recording.audio",
     qos: .userInteractive
   )
   private let microphoneProcessingQueue = DispatchQueue(
-    label: "com.trongduong.snapzy.recording.microphone",
+    label: "\(LocalShotBrand.queueLabelPrefix).recording.microphone",
     qos: .userInteractive
   )
 
@@ -639,7 +639,7 @@ final class ScreenRecordingManager: NSObject, ObservableObject {
   func prepareRecording(
     rect: CGRect,
     windowTarget: WindowCaptureTarget? = nil,
-    format: VideoFormat = .mov,
+    format: VideoFormat = .mp4,
     quality: VideoQuality = .high,
     fps: Int = 30,
     captureSystemAudio: Bool = true,

@@ -2,7 +2,7 @@
 //  DiagnosticLogger.swift
 //  Snapzy
 //
-//  Core logging engine — appends to daily .txt files in ~/Library/Logs/Snapzy/
+//  Core logging engine for local development diagnostics.
 //
 
 import AppKit
@@ -14,13 +14,13 @@ final class DiagnosticLogger {
 
   // MARK: - Configuration
 
-  private let logDirectoryName = "Snapzy"
-  private let filePrefix = "snapzy_"
+  private let logDirectoryName = LocalShotBrand.diagnosticsDirectoryName
+  private let filePrefix = LocalShotBrand.diagnosticsFilePrefix
   private let fileExtension = "txt"
 
   // MARK: - State
 
-  private let writeQueue = DispatchQueue(label: "com.trongduong.snapzy.diagnosticlogger", qos: .utility)
+  private let writeQueue = DispatchQueue(label: "\(LocalShotBrand.queueLabelPrefix).diagnosticlogger", qos: .utility)
   private var currentFileHandle: FileHandle?
   private var currentDateString: String?
   private var hasWrittenSessionHeader = false
@@ -30,7 +30,8 @@ final class DiagnosticLogger {
   // MARK: - Public API
 
   var isEnabled: Bool {
-    UserDefaults.standard.object(forKey: PreferencesKeys.diagnosticsEnabled) as? Bool ?? true
+    UserDefaults.standard.object(forKey: PreferencesKeys.diagnosticsEnabled) as? Bool
+      ?? LocalShotV1Policy.diagnosticsEnabledByDefault
   }
 
   /// Start a new session — writes the system context header.
@@ -237,7 +238,7 @@ final class DiagnosticLogger {
 
     let header = """
       === SESSION START \(timestamp) ===
-      \(osString) | Snapzy \(appVersion) (\(buildNumber)) | \(cpuArch)
+      \(osString) | \(LocalShotBrand.appName) \(appVersion) (\(buildNumber)) | \(cpuArch)
       \(memoryGB)GB RAM | \(gpuModel) | \(diskFree)
       \(screens.count) screen\(screens.count == 1 ? "" : "s") (\(screenInfo)) | PID \(pid)
       Locale: \(locale) | Thermal: \(thermalState) | Sandbox: \(isSandboxed ? "YES" : "NO")

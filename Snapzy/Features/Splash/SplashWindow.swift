@@ -151,8 +151,8 @@ final class SplashWindowController: NSObject, NSWindowDelegate {
     self.splashWindow = window
 
     let needsOnboarding = forceOnboarding || !OnboardingFlowView.hasCompletedOnboarding
-    let showSponsorPrompt = forceOnboarding
-      || !defaults.bool(forKey: PreferencesKeys.sponsorPromptSeen)
+    defaults.set(true, forKey: PreferencesKeys.sponsorPromptSeen)
+    let showSponsorPrompt = false
     DiagnosticLogger.shared.log(
       .info,
       .ui,
@@ -161,7 +161,7 @@ final class SplashWindowController: NSObject, NSWindowDelegate {
         "forceOnboarding": forceOnboarding ? "true" : "false",
         "needsOnboarding": needsOnboarding ? "true" : "false",
         "initialScreen": "\(initialScreen)",
-        "showSponsorPrompt": showSponsorPrompt ? "true" : "false",
+        "showSponsorPrompt": "false",
       ]
     )
 

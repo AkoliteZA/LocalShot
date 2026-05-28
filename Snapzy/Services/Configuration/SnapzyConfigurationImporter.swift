@@ -7,7 +7,6 @@
 
 import AppKit
 import Foundation
-import Sparkle
 
 @MainActor
 enum SnapzyConfigurationImporter {
@@ -29,7 +28,9 @@ enum SnapzyConfigurationImporter {
 
     preparedImport.mutations.forEach { $0() }
     KeyboardShortcutManager.shared.refreshShortcutRegistration()
-    CloudManager.shared.reloadStateFromDefaults()
+    if LocalShotV1Policy.cloudUploadsEnabled {
+      CloudManager.shared.reloadStateFromDefaults()
+    }
     defaults.synchronize()
 
     return SnapzyConfigurationImportResult(
@@ -58,7 +59,9 @@ enum SnapzyConfigurationImporter {
     collectRecording(&reader, defaults: defaults, mutations: &mutations)
     collectQuickAccess(&reader, mutations: &mutations)
     collectHistory(&reader, defaults: defaults, mutations: &mutations)
-    collectCloud(&reader, defaults: defaults, mutations: &mutations)
+    if LocalShotV1Policy.cloudUploadsEnabled {
+      collectCloud(&reader, defaults: defaults, mutations: &mutations)
+    }
     collectAnnotate(&reader, defaults: defaults, mutations: &mutations)
     collectShortcuts(&reader, mutations: &mutations)
 
@@ -68,7 +71,7 @@ enum SnapzyConfigurationImporter {
   private static func validateSchema(_ reader: inout SnapzyConfigurationReader) {
     guard let schemaVersion = reader.int("schema_version") else { return }
     if schemaVersion != 1 {
-      reader.error("Unsupported schema_version \(schemaVersion). Snapzy currently supports schema_version 1.")
+      reader.error("Unsupported schema_version \(schemaVersion). LocalShot currently supports schema_version 1.")
     }
   }
 
@@ -100,12 +103,6 @@ enum SnapzyConfigurationImporter {
     }
     if let exportLocation = reader.string("general", "export_location") {
       mutations.append { defaults.set(expandedPath(exportLocation), forKey: PreferencesKeys.exportLocation) }
-    }
-    collectBool(&reader, "updates", "check_automatically", mutations: &mutations) {
-      UpdaterManager.shared.updater.automaticallyChecksForUpdates = $0
-    }
-    collectBool(&reader, "updates", "download_automatically", mutations: &mutations) {
-      UpdaterManager.shared.updater.automaticallyDownloadsUpdates = $0
     }
     collectBool(&reader, "diagnostics", "enabled", mutations: &mutations) {
       defaults.set($0, forKey: PreferencesKeys.diagnosticsEnabled)
@@ -139,7 +136,7 @@ enum SnapzyConfigurationImporter {
       }
       mutations.append { defaults.set(format, forKey: PreferencesKeys.screenshotFormat) }
     }
-    collectBool(&reader, "capture", "screenshot", "include_snapzy", mutations: &mutations) {
+    collectBool(&reader, "capture", "screenshot", "include_localshot", mutations: &mutations) {
       defaults.set($0, forKey: PreferencesKeys.screenshotIncludeOwnApp)
     }
     collectBool(&reader, "capture", "screenshot", "show_cursor", mutations: &mutations) {
@@ -187,7 +184,7 @@ enum SnapzyConfigurationImporter {
     collectBool(&reader, "recording", "remember_last_area", mutations: &mutations) {
       defaults.set($0, forKey: PreferencesKeys.recordingRememberLastArea)
     }
-    collectBool(&reader, "recording", "include_snapzy", mutations: &mutations) {
+    collectBool(&reader, "recording", "include_localshot", mutations: &mutations) {
       defaults.set($0, forKey: PreferencesKeys.recordingIncludeOwnApp)
     }
     collectBool(&reader, "recording", "show_cursor", mutations: &mutations) {
@@ -376,7 +373,6 @@ enum SnapzyConfigurationImporter {
       ("quick_access", .showQuickAccess),
       ("copy_file", .copyFile),
       ("open_annotate", .openAnnotate),
-      ("upload_to_cloud", .uploadToCloud),
     ]
 
     for (key, action) in mapping {

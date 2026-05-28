@@ -6,61 +6,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "config.toml stimmt nicht mehr mit den Snapzy-Einstellungen überein und kann außerhalb der App bearbeitet worden sein. Beim Synchronisieren wird sie durch die aktuellen Einstellungen ersetzt."
+            "value": "config.toml stimmt nicht mehr mit den LocalShot-Einstellungen überein und kann außerhalb der App bearbeitet worden sein. Beim Synchronisieren wird sie durch die aktuellen Einstellungen ersetzt."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "config.toml no longer matches Snapzy settings and may have edits from outside the app. Syncing will replace it with current settings."
+            "value": "config.toml no longer matches LocalShot settings and may have edits from outside the app. Syncing will replace it with current settings."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "config.toml ya no coincide con los ajustes de Snapzy y puede tener cambios hechos fuera de la app. Al sincronizar se reemplazará con los ajustes actuales."
+            "value": "config.toml ya no coincide con los ajustes de LocalShot y puede tener cambios hechos fuera de la app. Al sincronizar se reemplazará con los ajustes actuales."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "config.toml ne correspond plus aux réglages de Snapzy et peut contenir des modifications faites hors de l’app. La synchronisation la remplacera par les réglages actuels."
+            "value": "config.toml ne correspond plus aux réglages de LocalShot et peut contenir des modifications faites hors de l’app. La synchronisation la remplacera par les réglages actuels."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "config.toml が Snapzy の設定と一致せず、アプリ外で編集されている可能性があります。同期すると現在の設定で置き換えます。"
+            "value": "config.toml が LocalShot の設定と一致せず、アプリ外で編集されている可能性があります。同期すると現在の設定で置き換えます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "config.toml이 더 이상 Snapzy 설정과 일치하지 않으며 앱 외부에서 편집되었을 수 있습니다. 동기화하면 현재 설정으로 교체됩니다."
+            "value": "config.toml이 더 이상 LocalShot 설정과 일치하지 않으며 앱 외부에서 편집되었을 수 있습니다. 동기화하면 현재 설정으로 교체됩니다."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "config.toml больше не совпадает с настройками Snapzy и могла быть изменена вне приложения. При синхронизации она будет заменена текущими настройками."
+            "value": "config.toml больше не совпадает с настройками LocalShot и могла быть изменена вне приложения. При синхронизации она будет заменена текущими настройками."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "config.toml không còn khớp với cài đặt Snapzy và có thể đã được sửa bên ngoài ứng dụng. Đồng bộ sẽ thay thế bằng cài đặt hiện tại."
+            "value": "config.toml không còn khớp với cài đặt LocalShot và có thể đã được sửa bên ngoài ứng dụng. Đồng bộ sẽ thay thế bằng cài đặt hiện tại."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "config.toml 不再与 Snapzy 设置一致，可能已在应用外被编辑。同步会用当前设置替换它。"
+            "value": "config.toml 不再与 LocalShot 设置一致，可能已在应用外被编辑。同步会用当前设置替换它。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "config.toml 不再與 Snapzy 設定一致，可能已在 App 外被編輯。同步會用目前設定取代它。"
+            "value": "config.toml 不再與 LocalShot 設定一致，可能已在 App 外被編輯。同步會用目前設定取代它。"
           }
         }
       }
@@ -838,61 +838,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync vorgemerkt. Snapzy aktualisiert config.toml in Kürze."
+            "value": "Sync vorgemerkt. LocalShot aktualisiert config.toml in Kürze."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sync queued. Snapzy will update config.toml shortly."
+            "value": "Sync queued. LocalShot will update config.toml shortly."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sincronización en cola. Snapzy actualizará config.toml en breve."
+            "value": "Sincronización en cola. LocalShot actualizará config.toml en breve."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Synchronisation en attente. Snapzy mettra config.toml à jour bientôt."
+            "value": "Synchronisation en attente. LocalShot mettra config.toml à jour bientôt."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "同期を予約しました。Snapzy がまもなく config.toml を更新します。"
+            "value": "同期を予約しました。LocalShot がまもなく config.toml を更新します。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "동기화가 대기 중입니다. Snapzy가 곧 config.toml을 업데이트합니다."
+            "value": "동기화가 대기 중입니다. LocalShot가 곧 config.toml을 업데이트합니다."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Синхронизация поставлена в очередь. Snapzy скоро обновит config.toml."
+            "value": "Синхронизация поставлена в очередь. LocalShot скоро обновит config.toml."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Đã xếp hàng đồng bộ. Snapzy sẽ cập nhật config.toml sau ít giây."
+            "value": "Đã xếp hàng đồng bộ. LocalShot sẽ cập nhật config.toml sau ít giây."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "同步已排队。Snapzy 稍后会更新 config.toml。"
+            "value": "同步已排队。LocalShot 稍后会更新 config.toml。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "同步已排程。Snapzy 稍後會更新 config.toml。"
+            "value": "同步已排程。LocalShot 稍後會更新 config.toml。"
           }
         }
       }
@@ -1222,61 +1222,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wenn du bestätigst, ersetzt Snapzy config.toml durch Standardwerte, setzt App-Einstellungen zurück und löscht Cloud-Zugangsdaten. Gespeicherte Aufnahmen werden nicht gelöscht."
+            "value": "Wenn du bestätigst, ersetzt LocalShot config.toml durch Standardwerte, setzt App-Einstellungen zurück und löscht Cloud-Zugangsdaten. Gespeicherte Aufnahmen werden nicht gelöscht."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "If you confirm, Snapzy will replace config.toml with default values, reset app settings, and clear cloud credentials. Saved captures are not deleted."
+            "value": "If you confirm, LocalShot will replace config.toml with default values, reset app settings, and clear cloud credentials. Saved captures are not deleted."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Si confirmas, Snapzy reemplazará config.toml con valores predeterminados, restablecerá los ajustes de la app y borrará las credenciales de la nube. Las capturas guardadas no se eliminan."
+            "value": "Si confirmas, LocalShot reemplazará config.toml con valores predeterminados, restablecerá los ajustes de la app y borrará las credenciales de la nube. Las capturas guardadas no se eliminan."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Si vous confirmez, Snapzy remplacera config.toml par les valeurs par défaut, réinitialisera les réglages de l’app et effacera les identifiants cloud. Les captures enregistrées ne sont pas supprimées."
+            "value": "Si vous confirmez, LocalShot remplacera config.toml par les valeurs par défaut, réinitialisera les réglages de l’app et effacera les identifiants cloud. Les captures enregistrées ne sont pas supprimées."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "確認すると、Snapzy は config.toml をデフォルト値で置き換え、アプリ設定をリセットし、クラウド認証情報を消去します。保存済みのキャプチャは削除されません。"
+            "value": "確認すると、LocalShot は config.toml をデフォルト値で置き換え、アプリ設定をリセットし、クラウド認証情報を消去します。保存済みのキャプチャは削除されません。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "확인하면 Snapzy가 config.toml을 기본값으로 교체하고 앱 설정을 재설정하며 클라우드 자격 증명을 지웁니다. 저장된 캡처는 삭제되지 않습니다."
+            "value": "확인하면 LocalShot가 config.toml을 기본값으로 교체하고 앱 설정을 재설정하며 클라우드 자격 증명을 지웁니다. 저장된 캡처는 삭제되지 않습니다."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Если подтвердить действие, Snapzy заменит config.toml значениями по умолчанию, сбросит настройки приложения и удалит облачные учетные данные. Сохраненные снимки не удаляются."
+            "value": "Если подтвердить действие, LocalShot заменит config.toml значениями по умолчанию, сбросит настройки приложения и удалит облачные учетные данные. Сохраненные снимки не удаляются."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nếu xác nhận, Snapzy sẽ thay config.toml bằng giá trị mặc định, đặt lại cài đặt ứng dụng và xóa thông tin đăng nhập cloud. Ảnh và bản ghi đã lưu sẽ không bị xóa."
+            "value": "Nếu xác nhận, LocalShot sẽ thay config.toml bằng giá trị mặc định, đặt lại cài đặt ứng dụng và xóa thông tin đăng nhập cloud. Ảnh và bản ghi đã lưu sẽ không bị xóa."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "确认后，Snapzy 会用默认值替换 config.toml，重置应用设置，并清除云端凭据。已保存的捕捉内容不会被删除。"
+            "value": "确认后，LocalShot 会用默认值替换 config.toml，重置应用设置，并清除云端凭据。已保存的捕捉内容不会被删除。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "確認後，Snapzy 會用預設值取代 config.toml，重置 App 設定，並清除雲端憑證。已儲存的擷取內容不會被刪除。"
+            "value": "確認後，LocalShot 會用預設值取代 config.toml，重置 App 設定，並清除雲端憑證。已儲存的擷取內容不會被刪除。"
           }
         }
       }
@@ -2259,61 +2259,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy ist Open Source. Fördern Sie die fortlaufende Weiterentwicklung, wenn dies Ihrem Arbeitsablauf hilft."
+            "value": "LocalShot ist Open Source. Fördern Sie die fortlaufende Weiterentwicklung, wenn dies Ihrem Arbeitsablauf hilft."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy is open-source. Sponsor ongoing development if it helps your workflow."
+            "value": "LocalShot is open-source. Sponsor ongoing development if it helps your workflow."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy es de código abierto. Patrocine el desarrollo continuo si ayuda a su flujo de trabajo."
+            "value": "LocalShot es de código abierto. Patrocine el desarrollo continuo si ayuda a su flujo de trabajo."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy est open source. Parrainez le développement continu si cela facilite votre flux de travail."
+            "value": "LocalShot est open source. Parrainez le développement continu si cela facilite votre flux de travail."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy はオープンソースです。ワークフローに役立つ場合は、進行中の開発を支援します。"
+            "value": "LocalShot はオープンソースです。ワークフローに役立つ場合は、進行中の開発を支援します。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy는 오픈 소스입니다. 귀하의 작업 흐름에 도움이 된다면 지속적인 개발을 후원하십시오."
+            "value": "LocalShot는 오픈 소스입니다. 귀하의 작업 흐름에 도움이 된다면 지속적인 개발을 후원하십시오."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy имеет открытый исходный код. Спонсируйте постоянное развитие, если оно помогает вашему рабочему процессу."
+            "value": "LocalShot имеет открытый исходный код. Спонсируйте постоянное развитие, если оно помогает вашему рабочему процессу."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy là mã nguồn mở. Hãy ủng hộ việc phát triển nếu nó hữu ích cho công việc của bạn."
+            "value": "LocalShot là mã nguồn mở. Hãy ủng hộ việc phát triển nếu nó hữu ích cho công việc của bạn."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 是开源的。如果它有助于您的工作流程，请赞助正在进行的开发。"
+            "value": "LocalShot 是开源的。如果它有助于您的工作流程，请赞助正在进行的开发。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 是開源的。如果它有助於您的工作流程，請贊助正在進行的開發。"
+            "value": "LocalShot 是開源的。如果它有助於您的工作流程，請贊助正在進行的開發。"
           }
         }
       }
@@ -2324,61 +2324,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unterstützen Sie Snapzy"
+            "value": "Unterstützen Sie LocalShot"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Support Snapzy"
+            "value": "Support LocalShot"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apoya a Snapzy"
+            "value": "Apoya a LocalShot"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Soutenir Snapzy"
+            "value": "Soutenir LocalShot"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy をサポート"
+            "value": "LocalShot をサポート"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 지원"
+            "value": "LocalShot 지원"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Поддержите Snapzy"
+            "value": "Поддержите LocalShot"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ủng hộ Snapzy"
+            "value": "Ủng hộ LocalShot"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "支持 Snapzy"
+            "value": "支持 LocalShot"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "支持 Snapzy"
+            "value": "支持 LocalShot"
           }
         }
       }
@@ -2844,61 +2844,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wählen Sie, wo Snapzy Aufnahmen speichert"
+            "value": "Wählen Sie, wo LocalShot Aufnahmen speichert"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choose where Snapzy saves captures"
+            "value": "Choose where LocalShot saves captures"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elige dónde Snapzy guarda las capturas"
+            "value": "Elige dónde LocalShot guarda las capturas"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choisissez où Snapzy enregistre les captures"
+            "value": "Choisissez où LocalShot enregistre les captures"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy がキャプチャを保存する場所を選択します"
+            "value": "LocalShot がキャプチャを保存する場所を選択します"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy가 캡처를 저장할 위치를 선택하세요"
+            "value": "LocalShot가 캡처를 저장할 위치를 선택하세요"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Выберите, где Snapzy сохраняет снимки"
+            "value": "Выберите, где LocalShot сохраняет снимки"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chọn nơi Snapzy lưu ảnh và video"
+            "value": "Chọn nơi LocalShot lưu ảnh và video"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "选择 Snapzy 保存截屏与录屏的位置"
+            "value": "选择 LocalShot 保存截屏与录屏的位置"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "選擇 Snapzy 儲存截圖與錄製的位置"
+            "value": "選擇 LocalShot 儲存截圖與錄製的位置"
           }
         }
       }
@@ -3039,25 +3039,25 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desktop/Snapzy"
+            "value": "Pictures/LocalShot"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desktop/Snapzy"
+            "value": "Pictures/LocalShot"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Escritorio/Snapzy"
+            "value": "Escritorio/LocalShot"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bureau/Snapzy"
+            "value": "Bureau/LocalShot"
           }
         },
         "ja": {
@@ -3069,31 +3069,31 @@
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "데스크탑/Snapzy"
+            "value": "데스크탑/LocalShot"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Рабочий стол / Snapzy"
+            "value": "Рабочий стол / LocalShot"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desktop/Snapzy"
+            "value": "Pictures/LocalShot"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "桌面/Snapzy"
+            "value": "桌面/LocalShot"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "桌面/Snapzy"
+            "value": "桌面/LocalShot"
           }
         }
       }
@@ -3234,61 +3234,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wählen Sie die in Snapzy verwendete Sprache"
+            "value": "Wählen Sie die in LocalShot verwendete Sprache"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choose the language used across Snapzy"
+            "value": "Choose the language used across LocalShot"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elige el idioma que usa Snapzy"
+            "value": "Elige el idioma que usa LocalShot"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choisissez la langue utilisée dans Snapzy"
+            "value": "Choisissez la langue utilisée dans LocalShot"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 全体で使用する言語を選択"
+            "value": "LocalShot 全体で使用する言語を選択"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 전체에서 사용할 언어를 선택하세요"
+            "value": "LocalShot 전체에서 사용할 언어를 선택하세요"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Выберите язык, используемый в Snapzy"
+            "value": "Выберите язык, используемый в LocalShot"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chọn ngôn ngữ dùng trong toàn bộ Snapzy"
+            "value": "Chọn ngôn ngữ dùng trong toàn bộ LocalShot"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "选择 Snapzy 中使用的语言"
+            "value": "选择 LocalShot 中使用的语言"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "選擇 Snapzy 使用的語言"
+            "value": "選擇 LocalShot 使用的語言"
           }
         }
       }
@@ -3299,61 +3299,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy neu starten"
+            "value": "LocalShot neu starten"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Relaunch Snapzy"
+            "value": "Relaunch LocalShot"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Reiniciar Snapzy"
+            "value": "Reiniciar LocalShot"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Relancer Snapzy"
+            "value": "Relancer LocalShot"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy を再起動"
+            "value": "LocalShot を再起動"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 다시 실행"
+            "value": "LocalShot 다시 실행"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перезапустить Snapzy"
+            "value": "Перезапустить LocalShot"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mở lại Snapzy"
+            "value": "Mở lại LocalShot"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新启动 Snapzy"
+            "value": "重新启动 LocalShot"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新啟動 Snapzy"
+            "value": "重新啟動 LocalShot"
           }
         }
       }
@@ -3364,61 +3364,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy muss beendet und erneut geöffnet werden, damit diese Sprachänderung in der ganzen App angewendet wird."
+            "value": "LocalShot muss beendet und erneut geöffnet werden, damit diese Sprachänderung in der ganzen App angewendet wird."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy needs to quit and reopen to apply this language change everywhere."
+            "value": "LocalShot needs to quit and reopen to apply this language change everywhere."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy debe cerrarse y volver a abrirse para aplicar este cambio de idioma en toda la app."
+            "value": "LocalShot debe cerrarse y volver a abrirse para aplicar este cambio de idioma en toda la app."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy doit se fermer puis se rouvrir pour appliquer ce changement de langue dans toute l’app."
+            "value": "LocalShot doit se fermer puis se rouvrir pour appliquer ce changement de langue dans toute l’app."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "この言語変更をアプリ全体に反映するには、Snapzy を終了して再度開く必要があります。"
+            "value": "この言語変更をアプリ全体に反映するには、LocalShot を終了して再度開く必要があります。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "이 언어 변경을 앱 전체에 적용하려면 Snapzy를 종료한 뒤 다시 열어야 합니다."
+            "value": "이 언어 변경을 앱 전체에 적용하려면 LocalShot를 종료한 뒤 다시 열어야 합니다."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Чтобы применить это изменение языка во всем приложении, Snapzy нужно закрыть и открыть снова."
+            "value": "Чтобы применить это изменение языка во всем приложении, LocalShot нужно закрыть и открыть снова."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy cần thoát và mở lại để áp dụng thay đổi ngôn ngữ ở toàn bộ ứng dụng."
+            "value": "LocalShot cần thoát và mở lại để áp dụng thay đổi ngôn ngữ ở toàn bộ ứng dụng."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 需要退出并重新打开，才能在整个应用中应用此语言更改。"
+            "value": "LocalShot 需要退出并重新打开，才能在整个应用中应用此语言更改。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 需要先結束並重新開啟，才能在整個應用程式中套用這次語言變更。"
+            "value": "LocalShot 需要先結束並重新開啟，才能在整個應用程式中套用這次語言變更。"
           }
         }
       }
@@ -3429,61 +3429,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy neu starten?"
+            "value": "LocalShot neu starten?"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Relaunch Snapzy?"
+            "value": "Relaunch LocalShot?"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¿Reiniciar Snapzy?"
+            "value": "¿Reiniciar LocalShot?"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Relancer Snapzy ?"
+            "value": "Relancer LocalShot ?"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy を再起動しますか？"
+            "value": "LocalShot を再起動しますか？"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy를 다시 실행할까요?"
+            "value": "LocalShot를 다시 실행할까요?"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перезапустить Snapzy?"
+            "value": "Перезапустить LocalShot?"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mở lại Snapzy?"
+            "value": "Mở lại LocalShot?"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新启动 Snapzy？"
+            "value": "重新启动 LocalShot？"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新啟動 Snapzy？"
+            "value": "重新啟動 LocalShot？"
           }
         }
       }
@@ -3494,61 +3494,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy konnte nicht neu gestartet werden"
+            "value": "LocalShot konnte nicht neu gestartet werden"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Could Not Relaunch Snapzy"
+            "value": "Could Not Relaunch LocalShot"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se pudo reiniciar Snapzy"
+            "value": "No se pudo reiniciar LocalShot"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Impossible de relancer Snapzy"
+            "value": "Impossible de relancer LocalShot"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy を再起動できませんでした"
+            "value": "LocalShot を再起動できませんでした"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy를 다시 실행할 수 없습니다"
+            "value": "LocalShot를 다시 실행할 수 없습니다"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Не удалось перезапустить Snapzy"
+            "value": "Не удалось перезапустить LocalShot"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Không thể mở lại Snapzy"
+            "value": "Không thể mở lại LocalShot"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无法重新启动 Snapzy"
+            "value": "无法重新启动 LocalShot"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "無法重新啟動 Snapzy"
+            "value": "無法重新啟動 LocalShot"
           }
         }
       }
@@ -4794,61 +4794,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wo Snapzy Aufnahmen speichert"
+            "value": "Wo LocalShot Aufnahmen speichert"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Where Snapzy stores captures"
+            "value": "Where LocalShot stores captures"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dónde almacena Snapzy las capturas"
+            "value": "Dónde almacena LocalShot las capturas"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Où Snapzy stocke les captures"
+            "value": "Où LocalShot stocke les captures"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy がキャプチャを保存する場所"
+            "value": "LocalShot がキャプチャを保存する場所"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 매장이 캡처하는 곳"
+            "value": "LocalShot 매장이 캡처하는 곳"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Где Snapzy хранит снимки"
+            "value": "Где LocalShot хранит снимки"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nơi Snapzy lưu ảnh và video"
+            "value": "Nơi LocalShot lưu ảnh và video"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 保存截屏与录屏的位置"
+            "value": "LocalShot 保存截屏与录屏的位置"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 儲存截圖與錄製的位置"
+            "value": "LocalShot 儲存截圖與錄製的位置"
           }
         }
       }
@@ -5314,61 +5314,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Starten Sie Snapzy, wenn Sie sich anmelden"
+            "value": "Starten Sie LocalShot, wenn Sie sich anmelden"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Launch Snapzy when you log in"
+            "value": "Launch LocalShot when you log in"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Inicie Snapzy cuando inicie sesión"
+            "value": "Inicie LocalShot cuando inicie sesión"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lancez Snapzy lorsque vous vous connectez"
+            "value": "Lancez LocalShot lorsque vous vous connectez"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ログイン時にSnapzyを起動する"
+            "value": "ログイン時にLocalShotを起動する"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "로그인 후 Snapzy를 실행하세요"
+            "value": "로그인 후 LocalShot를 실행하세요"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Запустите Snapzy при входе в систему"
+            "value": "Запустите LocalShot при входе в систему"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mở Snapzy khi bạn đăng nhập"
+            "value": "Mở LocalShot khi bạn đăng nhập"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "登录时启动 Snapzy"
+            "value": "登录时启动 LocalShot"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "登入時啟動 Snapzy"
+            "value": "登入時啟動 LocalShot"
           }
         }
       }
@@ -5769,61 +5769,61 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This will move all capture files to Trash and remove them from History. This action cannot be undone in Snapzy."
+            "value": "This will move all capture files to Trash and remove them from History. This action cannot be undone in LocalShot."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Thao tác này sẽ chuyển toàn bộ file capture vào Thùng rác và xóa khỏi History. Không thể hoàn tác trong Snapzy."
+            "value": "Thao tác này sẽ chuyển toàn bộ file capture vào Thùng rác và xóa khỏi History. Không thể hoàn tác trong LocalShot."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alle Aufnahmedateien werden in den Papierkorb gelegt und aus dem Verlauf entfernt. Dies kann in Snapzy nicht rückgängig gemacht werden."
+            "value": "Alle Aufnahmedateien werden in den Papierkorb gelegt und aus dem Verlauf entfernt. Dies kann in LocalShot nicht rückgängig gemacht werden."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Se moverán todos los archivos de captura a la papelera y se quitarán del historial. Esta acción no se puede deshacer en Snapzy."
+            "value": "Se moverán todos los archivos de captura a la papelera y se quitarán del historial. Esta acción no se puede deshacer en LocalShot."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tous les fichiers de capture seront déplacés vers la corbeille et retirés de l’historique. Cette action est irréversible dans Snapzy."
+            "value": "Tous les fichiers de capture seront déplacés vers la corbeille et retirés de l’historique. Cette action est irréversible dans LocalShot."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "すべてのキャプチャファイルがゴミ箱に移動され、履歴から削除されます。この操作は Snapzy では取り消せません。"
+            "value": "すべてのキャプチャファイルがゴミ箱に移動され、履歴から削除されます。この操作は LocalShot では取り消せません。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "모든 캡처 파일이 휴지통으로 이동되고 기록에서 제거됩니다. 이 작업은 Snapzy에서 되돌릴 수 없습니다."
+            "value": "모든 캡처 파일이 휴지통으로 이동되고 기록에서 제거됩니다. 이 작업은 LocalShot에서 되돌릴 수 없습니다."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Все файлы записей будут перемещены в корзину и удалены из истории. Это действие нельзя отменить в Snapzy."
+            "value": "Все файлы записей будут перемещены в корзину и удалены из истории. Это действие нельзя отменить в LocalShot."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "所有截屏与录屏文件将被移到废纸篓并从历史记录中移除。此操作在 Snapzy 中无法撤销。"
+            "value": "所有截屏与录屏文件将被移到废纸篓并从历史记录中移除。此操作在 LocalShot 中无法撤销。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "所有截圖與錄製檔案將移到垃圾桶並從歷史紀錄中移除。此操作在 Snapzy 中無法還原。"
+            "value": "所有截圖與錄製檔案將移到垃圾桶並從歷史紀錄中移除。此操作在 LocalShot 中無法還原。"
           }
         }
       }
@@ -9916,61 +9916,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gewähre einmal Zugriff auf %@, damit Snapzy config.toml erstellen und direkte Bearbeitungen beim Start anwenden kann."
+            "value": "Gewähre einmal Zugriff auf %@, damit LocalShot config.toml erstellen und direkte Bearbeitungen beim Start anwenden kann."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Grant access to %@ once so Snapzy can create config.toml and apply direct edits on launch."
+            "value": "Grant access to %@ once so LocalShot can create config.toml and apply direct edits on launch."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Concede acceso a %@ una vez para que Snapzy pueda crear config.toml y aplicar ediciones directas al iniciar."
+            "value": "Concede acceso a %@ una vez para que LocalShot pueda crear config.toml y aplicar ediciones directas al iniciar."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Accordez une fois l’accès à %@ afin que Snapzy puisse créer config.toml et appliquer les modifications directes au lancement."
+            "value": "Accordez une fois l’accès à %@ afin que LocalShot puisse créer config.toml et appliquer les modifications directes au lancement."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ へのアクセスを一度許可すると、Snapzy は config.toml を作成し、起動時に有効な直接編集を適用できます。"
+            "value": "%@ へのアクセスを一度許可すると、LocalShot は config.toml を作成し、起動時に有効な直接編集を適用できます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@에 한 번 접근을 허용하면 Snapzy가 config.toml을 만들고 실행 시 직접 수정 사항을 적용할 수 있습니다."
+            "value": "%@에 한 번 접근을 허용하면 LocalShot가 config.toml을 만들고 실행 시 직접 수정 사항을 적용할 수 있습니다."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Один раз предоставьте доступ к %@, чтобы Snapzy мог создать config.toml и применять прямые изменения при запуске."
+            "value": "Один раз предоставьте доступ к %@, чтобы LocalShot мог создать config.toml и применять прямые изменения при запуске."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cấp quyền cho %@ một lần để Snapzy có thể tạo config.toml và áp dụng chỉnh sửa trực tiếp khi khởi động."
+            "value": "Cấp quyền cho %@ một lần để LocalShot có thể tạo config.toml và áp dụng chỉnh sửa trực tiếp khi khởi động."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "授予一次 %@ 的访问权限，让 Snapzy 创建 config.toml，并在启动时应用直接编辑。"
+            "value": "授予一次 %@ 的访问权限，让 LocalShot 创建 config.toml，并在启动时应用直接编辑。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "授予一次 %@ 的取用權限，讓 Snapzy 建立 config.toml，並在啟動時套用直接編輯。"
+            "value": "授予一次 %@ 的取用權限，讓 LocalShot 建立 config.toml，並在啟動時套用直接編輯。"
           }
         }
       }
@@ -10556,61 +10556,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy-Konfiguration exportieren"
+            "value": "LocalShot-Konfiguration exportieren"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Export Snapzy Config"
+            "value": "Export LocalShot Config"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Exportar configuración de Snapzy"
+            "value": "Exportar configuración de LocalShot"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Exporter la config Snapzy"
+            "value": "Exporter la config LocalShot"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 設定を書き出す"
+            "value": "LocalShot 設定を書き出す"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 구성 내보내기"
+            "value": "LocalShot 구성 내보내기"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Экспорт конфигурации Snapzy"
+            "value": "Экспорт конфигурации LocalShot"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Xuất cấu hình Snapzy"
+            "value": "Xuất cấu hình LocalShot"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "导出 Snapzy 配置"
+            "value": "导出 LocalShot 配置"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "匯出 Snapzy 設定"
+            "value": "匯出 LocalShot 設定"
           }
         }
       }
@@ -10620,61 +10620,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy-Konfiguration importieren"
+            "value": "LocalShot-Konfiguration importieren"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Import Snapzy Config"
+            "value": "Import LocalShot Config"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Importar configuración de Snapzy"
+            "value": "Importar configuración de LocalShot"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Importer la config Snapzy"
+            "value": "Importer la config LocalShot"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 設定を読み込む"
+            "value": "LocalShot 設定を読み込む"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 구성 가져오기"
+            "value": "LocalShot 구성 가져오기"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Импорт конфигурации Snapzy"
+            "value": "Импорт конфигурации LocalShot"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nhập cấu hình Snapzy"
+            "value": "Nhập cấu hình LocalShot"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "导入 Snapzy 配置"
+            "value": "导入 LocalShot 配置"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "匯入 Snapzy 設定"
+            "value": "匯入 LocalShot 設定"
           }
         }
       }
@@ -10748,61 +10748,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gewähre Zugriff auf %@. Wenn der Ordner fehlt, erstellt Snapzy ihn automatisch."
+            "value": "Gewähre Zugriff auf %@. Wenn der Ordner fehlt, erstellt LocalShot ihn automatisch."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Grant access for %@. If the folder is missing, Snapzy will create it automatically."
+            "value": "Grant access for %@. If the folder is missing, LocalShot will create it automatically."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Concede acceso a %@. Si la carpeta no existe, Snapzy la creará automáticamente."
+            "value": "Concede acceso a %@. Si la carpeta no existe, LocalShot la creará automáticamente."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Accordez l’accès à %@. Si le dossier manque, Snapzy le créera automatiquement."
+            "value": "Accordez l’accès à %@. Si le dossier manque, LocalShot le créera automatiquement."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ へのアクセスを許可してください。フォルダーがない場合、Snapzy が自動的に作成します。"
+            "value": "%@ へのアクセスを許可してください。フォルダーがない場合、LocalShot が自動的に作成します。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@에 대한 접근을 허용하세요. 폴더가 없으면 Snapzy가 자동으로 만듭니다."
+            "value": "%@에 대한 접근을 허용하세요. 폴더가 없으면 LocalShot가 자동으로 만듭니다."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Предоставьте доступ к %@. Если папки нет, Snapzy создаст ее автоматически."
+            "value": "Предоставьте доступ к %@. Если папки нет, LocalShot создаст ее автоматически."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cấp quyền cho %@. Nếu thư mục chưa có, Snapzy sẽ tự tạo."
+            "value": "Cấp quyền cho %@. Nếu thư mục chưa có, LocalShot sẽ tự tạo."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "授予 %@ 的访问权限。如果文件夹不存在，Snapzy 会自动创建。"
+            "value": "授予 %@ 的访问权限。如果文件夹不存在，LocalShot 会自动创建。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "授予 %@ 的取用權限。如果檔案夾不存在，Snapzy 會自動建立。"
+            "value": "授予 %@ 的取用權限。如果檔案夾不存在，LocalShot 會自動建立。"
           }
         }
       }
@@ -10876,61 +10876,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gewähre Zugriff auf %@. Snapzy erstellt dort config.toml, falls sie fehlt."
+            "value": "Gewähre Zugriff auf %@. LocalShot erstellt dort config.toml, falls sie fehlt."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Grant access for %@. Snapzy will create config.toml there if it is missing."
+            "value": "Grant access for %@. LocalShot will create config.toml there if it is missing."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Concede acceso a %@. Snapzy creará config.toml allí si no existe."
+            "value": "Concede acceso a %@. LocalShot creará config.toml allí si no existe."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Accordez l’accès à %@. Snapzy y créera config.toml si nécessaire."
+            "value": "Accordez l’accès à %@. LocalShot y créera config.toml si nécessaire."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ へのアクセスを許可してください。config.toml がない場合は Snapzy がそこに作成します。"
+            "value": "%@ へのアクセスを許可してください。config.toml がない場合は LocalShot がそこに作成します。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@에 대한 접근을 허용하세요. config.toml이 없으면 Snapzy가 그곳에 만듭니다."
+            "value": "%@에 대한 접근을 허용하세요. config.toml이 없으면 LocalShot가 그곳에 만듭니다."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Предоставьте доступ к %@. Если config.toml отсутствует, Snapzy создаст его там."
+            "value": "Предоставьте доступ к %@. Если config.toml отсутствует, LocalShot создаст его там."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cấp quyền cho %@. Nếu chưa có config.toml, Snapzy sẽ tạo tại đó."
+            "value": "Cấp quyền cho %@. Nếu chưa có config.toml, LocalShot sẽ tạo tại đó."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "授予 %@ 的访问权限。如果缺少 config.toml，Snapzy 会在那里创建。"
+            "value": "授予 %@ 的访问权限。如果缺少 config.toml，LocalShot 会在那里创建。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "授予 %@ 的取用權限。如果缺少 config.toml，Snapzy 會在那裡建立。"
+            "value": "授予 %@ 的取用權限。如果缺少 config.toml，LocalShot 會在那裡建立。"
           }
         }
       }
@@ -10940,61 +10940,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wähle %@, damit Snapzy config am Standardort für Dotfiles speichert."
+            "value": "Wähle %@, damit LocalShot config am Standardort für Dotfiles speichert."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choose %@ to keep Snapzy config in the default dotfiles location."
+            "value": "Choose %@ to keep LocalShot config in the default dotfiles location."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elige %@ para mantener la configuración de Snapzy en la ubicación predeterminada de dotfiles."
+            "value": "Elige %@ para mantener la configuración de LocalShot en la ubicación predeterminada de dotfiles."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choisissez %@ pour garder la config Snapzy dans l’emplacement dotfiles par défaut."
+            "value": "Choisissez %@ pour garder la config LocalShot dans l’emplacement dotfiles par défaut."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 設定をデフォルトの dotfiles 場所に置くには %@ を選択してください。"
+            "value": "LocalShot 設定をデフォルトの dotfiles 場所に置くには %@ を選択してください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snapzy 구성을 기본 dotfiles 위치에 유지하려면 %@을 선택하세요."
+            "value": "LocalShot 구성을 기본 dotfiles 위치에 유지하려면 %@을 선택하세요."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Выберите %@, чтобы хранить config Snapzy в стандартном расположении dotfiles."
+            "value": "Выберите %@, чтобы хранить config LocalShot в стандартном расположении dotfiles."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chọn %@ để giữ cấu hình Snapzy ở vị trí dotfiles mặc định."
+            "value": "Chọn %@ để giữ cấu hình LocalShot ở vị trí dotfiles mặc định."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "选择 %@，将 Snapzy 配置保存在默认 dotfiles 位置。"
+            "value": "选择 %@，将 LocalShot 配置保存在默认 dotfiles 位置。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "選擇 %@，將 Snapzy 設定保存在預設 dotfiles 位置。"
+            "value": "選擇 %@，將 LocalShot 設定保存在預設 dotfiles 位置。"
           }
         }
       }

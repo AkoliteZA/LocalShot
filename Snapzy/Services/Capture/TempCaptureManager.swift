@@ -10,7 +10,7 @@
 import Foundation
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "TempCaptureManager")
+private let logger = Logger(subsystem: "LocalShot", category: "TempCaptureManager")
 
 struct RecordingSavePlan {
   let finalDirectory: URL
@@ -40,19 +40,19 @@ final class TempCaptureManager {
 
   /// Temp directory for unsaved captures (Application Support/Snapzy/Captures/).
   /// Uses Application Support instead of /tmp/ so macOS won't purge files
-  /// during drag-and-drop — same pattern as CleanShot X.
+  /// during drag-and-drop — same pattern as commercial screenshot utilities.
   let tempCaptureDirectory: URL = {
     guard let appSupport = FileManager.default.urls(
       for: .applicationSupportDirectory, in: .userDomainMask
     ).first else {
       // Fallback if Application Support unavailable
       let fallback = FileManager.default.temporaryDirectory
-        .appendingPathComponent("Snapzy_Captures", isDirectory: true)
+        .appendingPathComponent("LocalShot_Captures", isDirectory: true)
       try? FileManager.default.createDirectory(at: fallback, withIntermediateDirectories: true)
       return fallback
     }
     let capturesDir = appSupport
-      .appendingPathComponent("Snapzy", isDirectory: true)
+      .appendingPathComponent(LocalShotBrand.applicationSupportDirectoryName, isDirectory: true)
       .appendingPathComponent("Captures", isDirectory: true)
     try? FileManager.default.createDirectory(at: capturesDir, withIntermediateDirectories: true)
     return capturesDir
@@ -342,11 +342,11 @@ final class TempCaptureManager {
       for: .applicationSupportDirectory, in: .userDomainMask
     ).first else {
       return FileManager.default.temporaryDirectory
-        .appendingPathComponent("Snapzy_Captures", isDirectory: true)
+        .appendingPathComponent("LocalShot_Captures", isDirectory: true)
     }
 
     return appSupport
-      .appendingPathComponent("Snapzy", isDirectory: true)
+      .appendingPathComponent(LocalShotBrand.applicationSupportDirectoryName, isDirectory: true)
       .appendingPathComponent("Captures", isDirectory: true)
   }
 

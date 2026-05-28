@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Sparkle
 
 struct GeneralSettingsView: View {
   @AppStorage(PreferencesKeys.playSounds) private var playSounds = true
@@ -16,10 +15,6 @@ struct GeneralSettingsView: View {
 
   @State private var startAtLogin = LoginItemManager.isEnabled
   private let fileAccessManager = SandboxFileAccessManager.shared
-
-  private var updater: SPUUpdater {
-    UpdaterManager.shared.updater
-  }
 
   var body: some View {
     Form {
@@ -56,42 +51,6 @@ struct GeneralSettingsView: View {
         }
       }
 
-      Section(L10n.PreferencesGeneral.updatesSection) {
-        SettingRow(icon: "arrow.triangle.2.circlepath", title: L10n.PreferencesGeneral.checkAutomaticallyTitle, description: L10n.PreferencesGeneral.checkAutomaticallyDescription) {
-          Toggle("", isOn: Binding(
-            get: { updater.automaticallyChecksForUpdates },
-            set: {
-              updater.automaticallyChecksForUpdates = $0
-              SnapzyConfigurationSyncCoordinator.shared.scheduleSync(reason: .explicitChange)
-            }
-          ))
-          .labelsHidden()
-        }
-
-        SettingRow(icon: "arrow.down.circle", title: L10n.PreferencesGeneral.downloadAutomaticallyTitle, description: L10n.PreferencesGeneral.downloadAutomaticallyDescription) {
-          Toggle("", isOn: Binding(
-            get: { updater.automaticallyDownloadsUpdates },
-            set: {
-              updater.automaticallyDownloadsUpdates = $0
-              SnapzyConfigurationSyncCoordinator.shared.scheduleSync(reason: .explicitChange)
-            }
-          ))
-          .labelsHidden()
-        }
-
-        SettingRow(icon: "clock", title: L10n.PreferencesGeneral.lastCheckedTitle, description: nil) {
-          if let lastCheck = updater.lastUpdateCheckDate {
-            Text(lastCheck, style: .relative)
-              .font(.caption)
-              .foregroundColor(.secondary)
-          } else {
-            Text(L10n.PreferencesGeneral.never)
-              .font(.caption)
-              .foregroundColor(.secondary)
-          }
-        }
-      }
-
       Section(L10n.PreferencesGeneral.helpSection) {
         SettingRow(icon: "arrow.counterclockwise.circle", title: L10n.PreferencesGeneral.restartOnboardingTitle, description: L10n.PreferencesGeneral.restartOnboardingDescription) {
           Button(L10n.PreferencesGeneral.restartButton) {
@@ -101,17 +60,6 @@ struct GeneralSettingsView: View {
           .controlSize(.small)
         }
 
-        SettingRow(
-          icon: "exclamationmark.bubble",
-          title: L10n.PreferencesGeneral.reportIssueTitle,
-          description: L10n.PreferencesGeneral.reportIssueDescription(bugReportDisplayAddress)
-        ) {
-          Button(L10n.PreferencesGeneral.openReportPageButton) {
-            openBugReportPage()
-          }
-          .buttonStyle(.bordered)
-          .controlSize(.small)
-        }
       }
     }
     .formStyle(.grouped)
@@ -161,15 +109,6 @@ struct GeneralSettingsView: View {
     }
   }
 
-  // MARK: - Help
-
-  private var bugReportDisplayAddress: String {
-    CrashReportService.bugReportURL.absoluteString.replacingOccurrences(of: "https://", with: "")
-  }
-
-  private func openBugReportPage() {
-    NSWorkspace.shared.open(CrashReportService.bugReportURL)
-  }
 }
 
 #Preview {

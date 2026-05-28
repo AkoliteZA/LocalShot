@@ -721,7 +721,7 @@ final class RecordingRegionOverlayView: NSView {
   }
 
   private func drawRecordingResizeHandles(for rect: CGRect) {
-    // Draw L-shaped corner handles (CleanShot X style)
+    // Draw L-shaped corner handles (commercial screenshot utilities style)
     drawCornerHandle(at: CGPoint(x: rect.minX, y: rect.maxY), corner: .topLeft)
     drawCornerHandle(at: CGPoint(x: rect.maxX, y: rect.maxY), corner: .topRight)
     drawCornerHandle(at: CGPoint(x: rect.minX, y: rect.minY), corner: .bottomLeft)

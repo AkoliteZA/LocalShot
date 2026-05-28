@@ -10,7 +10,7 @@ import Combine
 import Foundation
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "CloudUsageService")
+private let logger = Logger(subsystem: "LocalShot", category: "CloudUsageService")
 
 private struct CloudUsageCacheEntry: Codable {
   static let currentSchemaVersion = 1
@@ -64,7 +64,7 @@ private actor CloudUsageWorker {
     var continuationToken: String?
 
     repeat {
-      var queryString = "list-type=2&prefix=snapzy/&max-keys=1000"
+      var queryString = "list-type=2&prefix=localshot/&max-keys=1000"
       if let token = continuationToken {
         let encodedToken =
           token.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? token
@@ -672,7 +672,7 @@ final class LifecycleRuleParser: NSObject, XMLParserDelegate {
       case "Days":
         currentDays = Int(text)
       case "Rule":
-        if currentRuleID == "snapzy-auto-expire", let days = currentDays {
+        if currentRuleID == "localshot-auto-expire", let days = currentDays {
           foundDays = days
         }
         insideRule = false

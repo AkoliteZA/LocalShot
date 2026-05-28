@@ -664,6 +664,7 @@ struct QuickAccessCardView: View {
 
   /// Whether to show the cloud upload button
   private var shouldShowCloudButton: Bool {
+    guard LocalShotV1Policy.cloudUploadsEnabled else { return false }
     guard cloudManager.isConfigured else { return false }
     return preferencesManager.isActionEnabled(.uploadToCloud, for: captureType)
   }

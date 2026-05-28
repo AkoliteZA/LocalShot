@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class PreferencesCoreTests: XCTestCase {
 
@@ -66,12 +66,11 @@ final class PreferencesCoreTests: XCTestCase {
       .history,
       .shortcuts,
       .permissions,
-      .cloud,
       .advanced,
       .about,
     ]
 
-    XCTAssertEqual(tabs.count, 10)
+    XCTAssertEqual(tabs.count, 9)
   }
 
   private func makeDefaults(

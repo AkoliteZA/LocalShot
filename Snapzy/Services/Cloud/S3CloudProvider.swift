@@ -8,7 +8,7 @@
 import Foundation
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "S3CloudProvider")
+private let logger = Logger(subsystem: "LocalShot", category: "S3CloudProvider")
 
 /// AWS S3 cloud storage provider
 final class S3CloudProvider: CloudProvider {
@@ -191,9 +191,9 @@ final class S3CloudProvider: CloudProvider {
   // MARK: - Lifecycle Rules
 
   /// Snapzy lifecycle rule identifier
-  private static let lifecycleRuleID = "snapzy-auto-expire"
+  private static let lifecycleRuleID = "localshot-auto-expire"
   /// Prefix all Snapzy objects share
-  private static let objectPrefix = "snapzy/"
+  private static let objectPrefix = "localshot/"
 
   func setExpiration(days: Int) async throws {
     // 1. Get existing rules (excluding our old rule)
@@ -206,7 +206,7 @@ final class S3CloudProvider: CloudProvider {
 
     // 3. PUT merged config
     try await putLifecycleConfiguration(rules: existingRules)
-    logger.info("Lifecycle rule set: expire snapzy/ objects after \(days) days")
+    logger.info("Lifecycle rule set: expire localshot/ objects after \(days) days")
   }
 
   func removeExpiration() async throws {
@@ -220,7 +220,7 @@ final class S3CloudProvider: CloudProvider {
     } else if existingRules.count < before {
       try await putLifecycleConfiguration(rules: existingRules)
     }
-    logger.info("Lifecycle rule removed for snapzy/ prefix")
+    logger.info("Lifecycle rule removed for localshot/ prefix")
   }
 
   // MARK: - Lifecycle Helpers
@@ -362,7 +362,7 @@ final class S3CloudProvider: CloudProvider {
     let name = (fileName as NSString).deletingPathExtension
       .replacingOccurrences(of: " ", with: "-")
       .lowercased()
-    return "snapzy/\(timestamp)-\(uuid)-\(name).\(ext)"
+    return "localshot/\(timestamp)-\(uuid)-\(name).\(ext)"
   }
 
   // MARK: - Upload with Progress

@@ -15,7 +15,7 @@ import ImageIO
 import os.log
 import ScreenCaptureKit
 
-private let logger = Logger(subsystem: "Snapzy", category: "ScreenCaptureManager")
+private let logger = Logger(subsystem: "LocalShot", category: "ScreenCaptureManager")
 typealias ShareableContentPrefetchTask = Task<SCShareableContent, Error>
 
 private enum ShareableContentCacheMode: String {
@@ -1078,7 +1078,7 @@ final class ScreenCaptureManager: ObservableObject {
   /// Verify file exists on disk with non-zero size, retrying up to maxAttempts.
   /// Runs on caller's thread (designed for background execution).
   private nonisolated static func verifyFileWritten(at url: URL, maxAttempts: Int = 3, delayMs: UInt64 = 50) async -> Bool {
-    let logger = Logger(subsystem: "Snapzy", category: "ScreenCaptureManager")
+    let logger = Logger(subsystem: "LocalShot", category: "ScreenCaptureManager")
     for attempt in 1...maxAttempts {
       if FileManager.default.fileExists(atPath: url.path) {
         let attrs = try? FileManager.default.attributesOfItem(atPath: url.path)
@@ -1935,7 +1935,7 @@ final class ScreenCaptureManager: ObservableObject {
         let handler = SingleFrameStreamOutput(continuation: continuation)
         let stream = SCStream(filter: contentFilter, configuration: configuration, delegate: nil)
         do {
-          try stream.addStreamOutput(handler, type: .screen, sampleHandlerQueue: DispatchQueue(label: "com.trongduong.snapzy.screenshot"))
+          try stream.addStreamOutput(handler, type: .screen, sampleHandlerQueue: DispatchQueue(label: "\(LocalShotBrand.queueLabelPrefix).screenshot"))
         } catch {
           continuation.resume(throwing: error)
           return

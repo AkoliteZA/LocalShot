@@ -9,7 +9,7 @@ import AppKit
 import ImageIO
 import SwiftUI
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 @MainActor
 final class PostCaptureActionHandlerTests: XCTestCase {
@@ -106,7 +106,7 @@ final class PostCaptureActionHandlerTests: XCTestCase {
 
   private func saveDefaultPreset(
     padding: CGFloat = 10,
-    backgroundStyle: Snapzy.BackgroundStyle = .solidColor(SwiftUI.Color.red)
+    backgroundStyle: LocalShot.BackgroundStyle = .solidColor(SwiftUI.Color.red)
   ) -> AnnotateCanvasPreset {
     let preset = AnnotateCanvasPreset(
       name: "Default Share",
@@ -148,6 +148,16 @@ final class PostCaptureActionHandlerTests: XCTestCase {
     // Re-enable
     preferences.setAction(.showQuickAccess, for: .screenshot, enabled: true)
     XCTAssertTrue(preferences.isActionEnabled(.showQuickAccess, for: .screenshot))
+  }
+
+  func testUploadToCloudActionCannotBeEnabledForLocalShotV1() {
+    XCTAssertFalse(LocalShotV1Policy.cloudUploadsEnabled)
+
+    preferences.setAction(.uploadToCloud, for: .screenshot, enabled: true)
+    preferences.setAction(.uploadToCloud, for: .recording, enabled: true)
+
+    XCTAssertFalse(preferences.isActionEnabled(.uploadToCloud, for: .screenshot))
+    XCTAssertFalse(preferences.isActionEnabled(.uploadToCloud, for: .recording))
   }
 
   // MARK: - Missing File Safety
@@ -270,12 +280,12 @@ final class PostCaptureActionHandlerTests: XCTestCase {
 
   func testAfterCaptureAction_allCases() {
     let allCases = AfterCaptureAction.allCases
-    XCTAssertEqual(allCases.count, 5)
+    XCTAssertEqual(allCases.count, 4)
     XCTAssertTrue(allCases.contains(.showQuickAccess))
     XCTAssertTrue(allCases.contains(.copyFile))
     XCTAssertTrue(allCases.contains(.save))
     XCTAssertTrue(allCases.contains(.openAnnotate))
-    XCTAssertTrue(allCases.contains(.uploadToCloud))
+    XCTAssertFalse(allCases.contains(.uploadToCloud))
   }
 
   func testAfterCaptureAction_displayNames_nonEmpty() {

@@ -237,7 +237,7 @@ struct AnnotateBottomBarView: View {
     .frame(width: 220)
   }
 
-  // MARK: - Drag Handle (CleanShot-style)
+  // MARK: - Drag Handle (commercial screenshot utilities-style)
 
   @State private var isDragHovering = false
 

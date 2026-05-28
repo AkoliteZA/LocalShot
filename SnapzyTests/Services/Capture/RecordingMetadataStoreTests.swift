@@ -8,7 +8,7 @@
 import AVFoundation
 import CoreGraphics
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 @MainActor
 final class RecordingMetadataStoreTests: XCTestCase {
@@ -272,6 +272,6 @@ final class RecordingMetadataStoreTests: XCTestCase {
   private func legacySidecarURL(for videoURL: URL) -> URL {
     videoURL
       .deletingPathExtension()
-      .appendingPathExtension("snapzy-recording.json")
+      .appendingPathExtension("localshot-recording.json")
   }
 }

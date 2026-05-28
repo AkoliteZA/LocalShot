@@ -7,7 +7,7 @@
 
 import AppKit
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 @MainActor
 final class ScrollingCaptureWindowSharingTests: XCTestCase {

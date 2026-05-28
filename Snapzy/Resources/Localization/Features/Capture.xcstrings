@@ -1762,61 +1762,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR-Code erkannt, aber Snapzy kann nur textbasierte QR-Inhalte kopieren."
+            "value" : "QR-Code erkannt, aber LocalShot kann nur textbasierte QR-Inhalte kopieren."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR code detected, but Snapzy can only copy text-based QR content."
+            "value" : "QR code detected, but LocalShot can only copy text-based QR content."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Código QR detectado, pero Snapzy solo puede copiar contenido QR basado en texto."
+            "value" : "Código QR detectado, pero LocalShot solo puede copiar contenido QR basado en texto."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Code QR détecté, mais Snapzy ne peut copier que le contenu QR textuel."
+            "value" : "Code QR détecté, mais LocalShot ne peut copier que le contenu QR textuel."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR コードを検出しましたが、Snapzy はテキスト形式の QR 内容のみコピーできます。"
+            "value" : "QR コードを検出しましたが、LocalShot はテキスト形式の QR 内容のみコピーできます。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR 코드를 감지했지만 Snapzy는 텍스트 기반 QR 내용만 복사할 수 있습니다."
+            "value" : "QR 코드를 감지했지만 LocalShot는 텍스트 기반 QR 내용만 복사할 수 있습니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR-код обнаружен, но Snapzy может копировать только текстовое содержимое QR."
+            "value" : "QR-код обнаружен, но LocalShot может копировать только текстовое содержимое QR."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đã phát hiện mã QR, nhưng Snapzy chỉ có thể sao chép nội dung QR dạng văn bản."
+            "value" : "Đã phát hiện mã QR, nhưng LocalShot chỉ có thể sao chép nội dung QR dạng văn bản."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "检测到二维码，但 Snapzy 只能复制基于文本的二维码内容。"
+            "value" : "检测到二维码，但 LocalShot 只能复制基于文本的二维码内容。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "偵測到 QR 碼，但 Snapzy 只能複製文字型 QR 內容。"
+            "value" : "偵測到 QR 碼，但 LocalShot 只能複製文字型 QR 內容。"
           }
         }
       }
@@ -2022,61 +2022,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wenn der Editor geöffnet bleibt, Snapzy nach Abschluss des Drops nach vorn holen und Annotate fokussieren"
+            "value" : "Wenn der Editor geöffnet bleibt, LocalShot nach Abschluss des Drops nach vorn holen und Annotate fokussieren"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When the editor stays open, bring Snapzy to the front and focus Annotate after the drop completes"
+            "value" : "When the editor stays open, bring LocalShot to the front and focus Annotate after the drop completes"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuando el editor permanezca abierto, traer Snapzy al frente y enfocar Annotate después de soltar"
+            "value" : "Cuando el editor permanezca abierto, traer LocalShot al frente y enfocar Annotate después de soltar"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quand l’éditeur reste ouvert, remettre Snapzy au premier plan et focaliser Annotate une fois le dépôt terminé"
+            "value" : "Quand l’éditeur reste ouvert, remettre LocalShot au premier plan et focaliser Annotate une fois le dépôt terminé"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "エディタを開いたままにする場合、ドロップ完了後に Snapzy を前面へ移動し Annotate にフォーカス"
+            "value" : "エディタを開いたままにする場合、ドロップ完了後に LocalShot を前面へ移動し Annotate にフォーカス"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "편집기를 열어 둔 경우 드롭이 완료된 뒤 Snapzy를 앞으로 가져오고 Annotate에 포커스"
+            "value" : "편집기를 열어 둔 경우 드롭이 완료된 뒤 LocalShot를 앞으로 가져오고 Annotate에 포커스"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Если редактор остается открытым, вывести Snapzy на передний план и сфокусировать Annotate после завершения перетаскивания"
+            "value" : "Если редактор остается открытым, вывести LocalShot на передний план и сфокусировать Annotate после завершения перетаскивания"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Khi trình chỉnh sửa vẫn mở, đưa Snapzy lên trước và focus Annotate sau khi thao tác thả hoàn tất"
+            "value" : "Khi trình chỉnh sửa vẫn mở, đưa LocalShot lên trước và focus Annotate sau khi thao tác thả hoàn tất"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "编辑器保持打开时，在放下完成后将 Snapzy 置于前台并聚焦 Annotate"
+            "value" : "编辑器保持打开时，在放下完成后将 LocalShot 置于前台并聚焦 Annotate"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "編輯器保持開啟時，在放開完成後將 Snapzy 帶到前景並聚焦 Annotate"
+            "value" : "編輯器保持開啟時，在放開完成後將 LocalShot 帶到前景並聚焦 Annotate"
           }
         }
       }
@@ -3974,61 +3974,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy-Fenster wie „Anmerken“ in aufgezeichneten Videos anzeigen"
+            "value" : "LocalShot-Fenster wie „Anmerken“ in aufgezeichneten Videos anzeigen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show Snapzy windows such as Annotate in recorded videos"
+            "value" : "Show LocalShot windows such as Annotate in recorded videos"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostrar ventanas Snapzy como Anotar en videos grabados"
+            "value" : "Mostrar ventanas LocalShot como Anotar en videos grabados"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afficher les fenêtres Snapzy telles que Annoter dans les vidéos enregistrées"
+            "value" : "Afficher les fenêtres LocalShot telles que Annoter dans les vidéos enregistrées"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "録画したビデオに注釈などの Snapzy ウィンドウを表示する"
+            "value" : "録画したビデオに注釈などの LocalShot ウィンドウを表示する"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "녹화된 비디오에 주석과 같은 Snapzy 창 표시"
+            "value" : "녹화된 비디오에 주석과 같은 LocalShot 창 표시"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Показывать окна Snapzy, такие как Annotate, в записанных видео"
+            "value" : "Показывать окна LocalShot, такие как Annotate, в записанных видео"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hiển thị các cửa sổ Snapzy như Annotate trong video đã ghi"
+            "value" : "Hiển thị các cửa sổ LocalShot như Annotate trong video đã ghi"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在屏幕录制画面中显示 Snapzy 窗口（例如标注工具栏）"
+            "value" : "在屏幕录制画面中显示 LocalShot 窗口（例如标注工具栏）"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在螢幕錄製畫面中顯示 Snapzy 視窗（例如標註工具列）"
+            "value" : "在螢幕錄製畫面中顯示 LocalShot 視窗（例如標註工具列）"
           }
         }
       }
@@ -4104,61 +4104,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy-Fenster wie „Annotate“ in aufgenommenen Bildern anzeigen"
+            "value" : "LocalShot-Fenster wie „Annotate“ in aufgenommenen Bildern anzeigen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show Snapzy windows such as Annotate in captured images"
+            "value" : "Show LocalShot windows such as Annotate in captured images"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostrar ventanas Snapzy como Anotar en imágenes capturadas"
+            "value" : "Mostrar ventanas LocalShot como Anotar en imágenes capturadas"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afficher les fenêtres Snapzy telles que Annoter dans les images capturées"
+            "value" : "Afficher les fenêtres LocalShot telles que Annoter dans les images capturées"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "キャプチャした画像に注釈を付けるなどの Snapzy ウィンドウを表示する"
+            "value" : "キャプチャした画像に注釈を付けるなどの LocalShot ウィンドウを表示する"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "캡처된 이미지에 Annotate와 같은 Snapzy 창 표시"
+            "value" : "캡처된 이미지에 Annotate와 같은 LocalShot 창 표시"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Показывать окна Snapzy, такие как Annotate, на захваченных изображениях"
+            "value" : "Показывать окна LocalShot, такие как Annotate, на захваченных изображениях"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hiển thị các cửa sổ Snapzy như Annotate trong ảnh đã chụp"
+            "value" : "Hiển thị các cửa sổ LocalShot như Annotate trong ảnh đã chụp"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在截图画面中显示 Snapzy 窗口（例如标注窗口）"
+            "value" : "在截图画面中显示 LocalShot 窗口（例如标注窗口）"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在截圖中顯示 Snapzy 視窗（例如標註視窗）"
+            "value" : "在截圖中顯示 LocalShot 視窗（例如標註視窗）"
           }
         }
       }
@@ -4234,61 +4234,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Für die Erfassung von Objektausschnitten ist Transparenz erforderlich. Snapzy speichert sie als PNG, auch wenn JPEG ausgewählt ist."
+            "value" : "Für die Erfassung von Objektausschnitten ist Transparenz erforderlich. LocalShot speichert sie als PNG, auch wenn JPEG ausgewählt ist."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Object cutout captures require transparency. Snapzy will save them as PNG even when JPEG is selected."
+            "value" : "Object cutout captures require transparency. LocalShot will save them as PNG even when JPEG is selected."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las capturas de objetos recortados requieren transparencia. Snapzy los guardará como PNG incluso cuando se seleccione JPEG."
+            "value" : "Las capturas de objetos recortados requieren transparencia. LocalShot los guardará como PNG incluso cuando se seleccione JPEG."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les captures de découpes d'objets nécessitent de la transparence. Snapzy les enregistrera au format PNG même lorsque JPEG est sélectionné."
+            "value" : "Les captures de découpes d'objets nécessitent de la transparence. LocalShot les enregistrera au format PNG même lorsque JPEG est sélectionné."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "オブジェクトの切り抜きキャプチャには透明性が必要です。 Snapzy は、JPEG が選択されている場合でも、ファイルを PNG として保存します。"
+            "value" : "オブジェクトの切り抜きキャプチャには透明性が必要です。 LocalShot は、JPEG が選択されている場合でも、ファイルを PNG として保存します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "개체 컷아웃 캡처에는 투명성이 필요합니다. Snapzy는 JPEG를 선택한 경우에도 해당 파일을 PNG로 저장합니다."
+            "value" : "개체 컷아웃 캡처에는 투명성이 필요합니다. LocalShot는 JPEG를 선택한 경우에도 해당 파일을 PNG로 저장합니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Для захвата вырезов объектов требуется прозрачность. Snapzy сохранит их в формате PNG, даже если выбран JPEG."
+            "value" : "Для захвата вырезов объектов требуется прозрачность. LocalShot сохранит их в формате PNG, даже если выбран JPEG."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ảnh tách chủ thể cần nền trong suốt. Snapzy sẽ lưu chúng dưới dạng PNG ngay cả khi bạn chọn JPEG."
+            "value" : "Ảnh tách chủ thể cần nền trong suốt. LocalShot sẽ lưu chúng dưới dạng PNG ngay cả khi bạn chọn JPEG."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "主体抠图需要透明通道。若选择 JPEG，Snapzy 仍会保存为 PNG。"
+            "value" : "主体抠图需要透明通道。若选择 JPEG，LocalShot 仍会保存为 PNG。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "主體去背需要透明資訊。即使選擇 JPEG，Snapzy 仍會以 PNG 格式儲存。"
+            "value" : "主體去背需要透明資訊。即使選擇 JPEG，LocalShot 仍會以 PNG 格式儲存。"
           }
         }
       }
@@ -8835,61 +8835,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Automatisches Scrollen benötigt Bedienungshilfen-Zugriff. Aktiviere Snapzy in Systemeinstellungen > Datenschutz & Sicherheit > Bedienungshilfen."
+            "value" : "Automatisches Scrollen benötigt Bedienungshilfen-Zugriff. Aktiviere LocalShot in Systemeinstellungen > Datenschutz & Sicherheit > Bedienungshilfen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Auto Scroll needs Accessibility permission. Enable Snapzy in System Settings > Privacy & Security > Accessibility."
+            "value" : "Auto Scroll needs Accessibility permission. Enable LocalShot in System Settings > Privacy & Security > Accessibility."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El desplazamiento automático necesita permiso de Accesibilidad. Activa Snapzy en Ajustes del Sistema > Privacidad y seguridad > Accesibilidad."
+            "value" : "El desplazamiento automático necesita permiso de Accesibilidad. Activa LocalShot en Ajustes del Sistema > Privacidad y seguridad > Accesibilidad."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le défilement automatique nécessite l’autorisation d’accessibilité. Activez Snapzy dans Réglages Système > Confidentialité et sécurité > Accessibilité."
+            "value" : "Le défilement automatique nécessite l’autorisation d’accessibilité. Activez LocalShot dans Réglages Système > Confidentialité et sécurité > Accessibilité."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自動スクロールにはアクセシビリティ権限が必要です。システム設定 > プライバシーとセキュリティ > アクセシビリティでSnapzyを有効にしてください。"
+            "value" : "自動スクロールにはアクセシビリティ権限が必要です。システム設定 > プライバシーとセキュリティ > アクセシビリティでLocalShotを有効にしてください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "자동 스크롤에는 손쉬운 사용 권한이 필요합니다. 시스템 설정 > 개인정보 보호 및 보안 > 손쉬운 사용에서 Snapzy를 활성화하세요."
+            "value" : "자동 스크롤에는 손쉬운 사용 권한이 필요합니다. 시스템 설정 > 개인정보 보호 및 보안 > 손쉬운 사용에서 LocalShot를 활성화하세요."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Для автопрокрутки нужен доступ к Универсальному доступу. Включите Snapzy в Системных настройках > Конфиденциальность и безопасность > Универсальный доступ."
+            "value" : "Для автопрокрутки нужен доступ к Универсальному доступу. Включите LocalShot в Системных настройках > Конфиденциальность и безопасность > Универсальный доступ."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuộn tự động cần quyền Trợ năng. Hãy bật Snapzy trong Cài đặt hệ thống > Quyền riêng tư & Bảo mật > Trợ năng."
+            "value" : "Cuộn tự động cần quyền Trợ năng. Hãy bật LocalShot trong Cài đặt hệ thống > Quyền riêng tư & Bảo mật > Trợ năng."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自动滚动需要辅助功能权限。请在系统设置 > 隐私与安全性 > 辅助功能中启用 Snapzy。"
+            "value" : "自动滚动需要辅助功能权限。请在系统设置 > 隐私与安全性 > 辅助功能中启用 LocalShot。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自動捲動需要輔助使用權限。請在「系統設定」>「隱私權與安全性」>「輔助使用」中啟用 Snapzy。"
+            "value" : "自動捲動需要輔助使用權限。請在「系統設定」>「隱私權與安全性」>「輔助使用」中啟用 LocalShot。"
           }
         }
       }
@@ -8965,61 +8965,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ausrichtung pausiert. Machen Sie langsamer und behalten Sie eine Richtung bei, damit Snapzy sich erholen kann."
+            "value" : "Ausrichtung pausiert. Machen Sie langsamer und behalten Sie eine Richtung bei, damit LocalShot sich erholen kann."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alignment paused. Slow down and keep one direction so Snapzy can recover."
+            "value" : "Alignment paused. Slow down and keep one direction so LocalShot can recover."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alineación pausada. Reduce la velocidad y mantén una dirección para que Snapzy pueda recuperarse."
+            "value" : "Alineación pausada. Reduce la velocidad y mantén una dirección para que LocalShot pueda recuperarse."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L’alignement s’est arrêté. Ralentissez et gardez une direction pour que Snapzy puisse récupérer."
+            "value" : "L’alignement s’est arrêté. Ralentissez et gardez une direction pour que LocalShot puisse récupérer."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アライメントは一時停止されました。 Snapzy が回復できるように、速度を落として一方向を維持してください。"
+            "value" : "アライメントは一時停止されました。 LocalShot が回復できるように、速度を落として一方向を維持してください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "정렬이 일시중지되었습니다. Snapzy가 회복할 수 있도록 속도를 줄이고 한 방향을 유지하세요."
+            "value" : "정렬이 일시중지되었습니다. LocalShot가 회복할 수 있도록 속도를 줄이고 한 방향을 유지하세요."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выравнивание приостановлено. Снизьте скорость и держитесь одного направления, чтобы Snapzy мог восстановиться."
+            "value" : "Выравнивание приостановлено. Снизьте скорость и держитесь одного направления, чтобы LocalShot мог восстановиться."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đã tạm dừng căn chỉnh. Hãy cuộn chậm hơn và giữ một hướng để Snapzy khôi phục."
+            "value" : "Đã tạm dừng căn chỉnh. Hãy cuộn chậm hơn và giữ một hướng để LocalShot khôi phục."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "对齐暂停。放慢速度并保持一个方向，以便 Snapzy 能够恢复。"
+            "value" : "对齐暂停。放慢速度并保持一个方向，以便 LocalShot 能够恢复。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "對齊暫停。放慢速度並保持一個方向，以便 Snapzy 能夠恢復。"
+            "value" : "對齊暫停。放慢速度並保持一個方向，以便 LocalShot 能夠恢復。"
           }
         }
       }
@@ -9160,61 +9160,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Das letzte Bild konnte nicht erfasst werden. Snapzy speichert das aktuelle Stitch-Ergebnis."
+            "value" : "Das letzte Bild konnte nicht erfasst werden. LocalShot speichert das aktuelle Stitch-Ergebnis."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't capture the last frame. Snapzy will save the current stitched result."
+            "value" : "Couldn't capture the last frame. LocalShot will save the current stitched result."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se pudo capturar el último fotograma. Snapzy guardará el resultado cosido actual."
+            "value" : "No se pudo capturar el último fotograma. LocalShot guardará el resultado cosido actual."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Impossible de capturer la dernière image. Snapzy enregistrera le résultat cousu actuel."
+            "value" : "Impossible de capturer la dernière image. LocalShot enregistrera le résultat cousu actuel."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最後のフレームをキャプチャできませんでした。 Snapzy は現在のステッチ結果を保存します。"
+            "value" : "最後のフレームをキャプチャできませんでした。 LocalShot は現在のステッチ結果を保存します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "마지막 프레임을 캡처할 수 없습니다. Snapzy는 현재 스티치 결과를 저장합니다."
+            "value" : "마지막 프레임을 캡처할 수 없습니다. LocalShot는 현재 스티치 결과를 저장합니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Не удалось запечатлеть последний кадр. Snapzy сохранит текущий результат сшивания."
+            "value" : "Не удалось запечатлеть последний кадр. LocalShot сохранит текущий результат сшивания."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Không thể chụp khung hình cuối. Snapzy sẽ lưu kết quả ghép hiện tại."
+            "value" : "Không thể chụp khung hình cuối. LocalShot sẽ lưu kết quả ghép hiện tại."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "无法截取最后一帧。Snapzy 将保存当前拼接结果。"
+            "value" : "无法截取最后一帧。LocalShot 将保存当前拼接结果。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "無法擷取最後一個畫面；Snapzy 會儲存目前的拼接結果。"
+            "value" : "無法擷取最後一個畫面；LocalShot 會儲存目前的拼接結果。"
           }
         }
       }
@@ -9225,61 +9225,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der letzte Frame konnte nicht aktualisiert werden. Snapzy speichert das aktuelle Stitch-Ergebnis."
+            "value" : "Der letzte Frame konnte nicht aktualisiert werden. LocalShot speichert das aktuelle Stitch-Ergebnis."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't refresh the last frame. Snapzy will save the current stitched result."
+            "value" : "Couldn't refresh the last frame. LocalShot will save the current stitched result."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se pudo actualizar el último fotograma. Snapzy guardará el resultado cosido actual."
+            "value" : "No se pudo actualizar el último fotograma. LocalShot guardará el resultado cosido actual."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Impossible d'actualiser la dernière image. Snapzy enregistrera le résultat cousu actuel."
+            "value" : "Impossible d'actualiser la dernière image. LocalShot enregistrera le résultat cousu actuel."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最後のフレームを更新できませんでした。 Snapzy は現在のステッチ結果を保存します。"
+            "value" : "最後のフレームを更新できませんでした。 LocalShot は現在のステッチ結果を保存します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "마지막 프레임을 새로고침할 수 없습니다. Snapzy는 현재 스티치 결과를 저장합니다."
+            "value" : "마지막 프레임을 새로고침할 수 없습니다. LocalShot는 현재 스티치 결과를 저장합니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Не удалось обновить последний кадр. Snapzy сохранит текущий результат сшивания."
+            "value" : "Не удалось обновить последний кадр. LocalShot сохранит текущий результат сшивания."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Không thể làm mới khung hình cuối. Snapzy sẽ lưu kết quả ghép hiện tại."
+            "value" : "Không thể làm mới khung hình cuối. LocalShot sẽ lưu kết quả ghép hiện tại."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "无法刷新最后一帧。 Snapzy 将保存当前的拼接结果。"
+            "value" : "无法刷新最后一帧。 LocalShot 将保存当前的拼接结果。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "無法刷新最後一幀。 Snapzy 將保存當前的拼接結果。"
+            "value" : "無法刷新最後一幀。 LocalShot 將保存當前的拼接結果。"
           }
         }
       }
@@ -9420,61 +9420,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der letzte Frame konnte nicht sauber ausgerichtet werden. Snapzy speichert das aktuelle Stitch-Ergebnis."
+            "value" : "Der letzte Frame konnte nicht sauber ausgerichtet werden. LocalShot speichert das aktuelle Stitch-Ergebnis."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't align the last frame cleanly. Snapzy will save the current stitched result."
+            "value" : "Couldn't align the last frame cleanly. LocalShot will save the current stitched result."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se pudo alinear limpiamente el último fotograma. Snapzy guardará el resultado cosido actual."
+            "value" : "No se pudo alinear limpiamente el último fotograma. LocalShot guardará el resultado cosido actual."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Impossible d'aligner proprement la dernière image. Snapzy enregistrera le résultat cousu actuel."
+            "value" : "Impossible d'aligner proprement la dernière image. LocalShot enregistrera le résultat cousu actuel."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最後のフレームをきれいに揃えることができませんでした。 Snapzy は現在のステッチ結果を保存します。"
+            "value" : "最後のフレームをきれいに揃えることができませんでした。 LocalShot は現在のステッチ結果を保存します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "마지막 프레임을 깔끔하게 정렬할 수 없습니다. Snapzy는 현재 스티치 결과를 저장합니다."
+            "value" : "마지막 프레임을 깔끔하게 정렬할 수 없습니다. LocalShot는 현재 스티치 결과를 저장합니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Не удалось аккуратно выровнять последний кадр. Snapzy сохранит текущий результат сшивания."
+            "value" : "Не удалось аккуратно выровнять последний кадр. LocalShot сохранит текущий результат сшивания."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Không thể căn chỉnh gọn khung hình cuối. Snapzy sẽ lưu kết quả ghép hiện tại."
+            "value" : "Không thể căn chỉnh gọn khung hình cuối. LocalShot sẽ lưu kết quả ghép hiện tại."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "无法干净地对齐最后一帧。 Snapzy 将保存当前的拼接结果。"
+            "value" : "无法干净地对齐最后一帧。 LocalShot 将保存当前的拼接结果。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "無法乾淨地對齊最後一幀。 Snapzy 將保存當前的拼接結果。"
+            "value" : "無法乾淨地對齊最後一幀。 LocalShot 將保存當前的拼接結果。"
           }
         }
       }
@@ -9485,55 +9485,55 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Finalisierung der aktuellen Aufnahme. Snapzy sperrt das neueste Stitch-Ergebnis vor dem Speichern."
+            "value" : "Finalisierung der aktuellen Aufnahme. LocalShot sperrt das neueste Stitch-Ergebnis vor dem Speichern."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Finalizing the current capture. Snapzy is locking the latest stitched result before saving."
+            "value" : "Finalizing the current capture. LocalShot is locking the latest stitched result before saving."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Finalizando la captura actual. Snapzy está bloqueando el último resultado cosido antes de guardarlo."
+            "value" : "Finalizando la captura actual. LocalShot está bloqueando el último resultado cosido antes de guardarlo."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Finalisation de la capture en cours. Snapzy verrouille le dernier résultat cousu avant de l'enregistrer."
+            "value" : "Finalisation de la capture en cours. LocalShot verrouille le dernier résultat cousu avant de l'enregistrer."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "現在のキャプチャを終了しています。 Snapzy は、保存する前に最新のステッチ結果をロックします。"
+            "value" : "現在のキャプチャを終了しています。 LocalShot は、保存する前に最新のステッチ結果をロックします。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "현재 캡처를 마무리하는 중입니다. Snapzy는 저장하기 전에 최신 스티치 결과를 잠급니다."
+            "value" : "현재 캡처를 마무리하는 중입니다. LocalShot는 저장하기 전에 최신 스티치 결과를 잠급니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Завершение текущего захвата. Snapzy блокирует последний результат сшивания перед сохранением."
+            "value" : "Завершение текущего захвата. LocalShot блокирует последний результат сшивания перед сохранением."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đang hoàn tất ảnh chụp hiện tại. Snapzy đang khóa kết quả ghép mới nhất trước khi lưu."
+            "value" : "Đang hoàn tất ảnh chụp hiện tại. LocalShot đang khóa kết quả ghép mới nhất trước khi lưu."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在完成本次截取，保存前 Snapzy 会锁定最新拼接结果。"
+            "value" : "正在完成本次截取，保存前 LocalShot 会锁定最新拼接结果。"
           }
         },
         "zh-Hant" : {
@@ -9550,55 +9550,55 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sperren der aktuellen Aufnahme. Snapzy versiegelt %d zusammengefügte Frames vor dem Speichern."
+            "value" : "Sperren der aktuellen Aufnahme. LocalShot versiegelt %d zusammengefügte Frames vor dem Speichern."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Locking the current capture. Snapzy is sealing %d stitched frames before saving."
+            "value" : "Locking the current capture. LocalShot is sealing %d stitched frames before saving."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bloqueando la captura actual. Snapzy está sellando %d cuadros cosidos antes de guardarlos."
+            "value" : "Bloqueando la captura actual. LocalShot está sellando %d cuadros cosidos antes de guardarlos."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verrouillage de la capture en cours. Snapzy scelle %d cadres cousus avant de les enregistrer."
+            "value" : "Verrouillage de la capture en cours. LocalShot scelle %d cadres cousus avant de les enregistrer."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "現在のキャプチャをロックしています。 Snapzy は、保存する前に %d 個のステッチされたフレームをシールしています。"
+            "value" : "現在のキャプチャをロックしています。 LocalShot は、保存する前に %d 個のステッチされたフレームをシールしています。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "현재 캡처를 잠급니다. Snapzy가 저장하기 전에 연결된 프레임 %d개를 봉인하고 있습니다."
+            "value" : "현재 캡처를 잠급니다. LocalShot가 저장하기 전에 연결된 프레임 %d개를 봉인하고 있습니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Блокировка текущего захвата. Snapzy запечатывает %d сшитых кадров перед сохранением."
+            "value" : "Блокировка текущего захвата. LocalShot запечатывает %d сшитых кадров перед сохранением."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đang khóa ảnh chụp hiện tại. Snapzy đang chốt %d khung đã ghép trước khi lưu."
+            "value" : "Đang khóa ảnh chụp hiện tại. LocalShot đang chốt %d khung đã ghép trước khi lưu."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在完成本次截取，保存前 Snapzy 正在处理 %d 帧拼接结果。"
+            "value" : "正在完成本次截取，保存前 LocalShot 正在处理 %d 帧拼接结果。"
           }
         },
         "zh-Hant" : {
@@ -9615,61 +9615,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Höhenlimit erreicht. Snapzy speichert das aktuelle Stitch-Ergebnis."
+            "value" : "Höhenlimit erreicht. LocalShot speichert das aktuelle Stitch-Ergebnis."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Height limit reached. Snapzy is saving the current stitched result."
+            "value" : "Height limit reached. LocalShot is saving the current stitched result."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Límite de altura alcanzado. Snapzy está guardando el resultado cosido actual."
+            "value" : "Límite de altura alcanzado. LocalShot está guardando el resultado cosido actual."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Limite de hauteur atteinte. Snapzy enregistre le résultat cousu actuel."
+            "value" : "Limite de hauteur atteinte. LocalShot enregistre le résultat cousu actuel."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "高さ制限に達しました。 Snapzy は現在のステッチ結果を保存しています。"
+            "value" : "高さ制限に達しました。 LocalShot は現在のステッチ結果を保存しています。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "높이 제한에 도달했습니다. Snapzy는 현재 스티치 결과를 저장하고 있습니다."
+            "value" : "높이 제한에 도달했습니다. LocalShot는 현재 스티치 결과를 저장하고 있습니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Достигнут предел высоты. Snapzy сохраняет текущий результат сшивания."
+            "value" : "Достигнут предел высоты. LocalShot сохраняет текущий результат сшивания."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đã chạm giới hạn chiều cao. Snapzy đang lưu kết quả ghép hiện tại."
+            "value" : "Đã chạm giới hạn chiều cao. LocalShot đang lưu kết quả ghép hiện tại."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "达到高度限制。 Snapzy 正在保存当前的拼接结果。"
+            "value" : "达到高度限制。 LocalShot 正在保存当前的拼接结果。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "達到高度限制。 Snapzy 正在保存當前的拼接結果。"
+            "value" : "達到高度限制。 LocalShot 正在保存當前的拼接結果。"
           }
         }
       }
@@ -9680,61 +9680,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es wurden keine neuen Inhalte erkannt. Snapzy speichert das aktuelle Stitch-Ergebnis."
+            "value" : "Es wurden keine neuen Inhalte erkannt. LocalShot speichert das aktuelle Stitch-Ergebnis."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No new content was detected. Snapzy is saving the current stitched result."
+            "value" : "No new content was detected. LocalShot is saving the current stitched result."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se detectó ningún contenido nuevo. Snapzy está guardando el resultado cosido actual."
+            "value" : "No se detectó ningún contenido nuevo. LocalShot está guardando el resultado cosido actual."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aucun nouveau contenu n'a été détecté. Snapzy enregistre le résultat cousu actuel."
+            "value" : "Aucun nouveau contenu n'a été détecté. LocalShot enregistre le résultat cousu actuel."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "新しいコンテンツは検出されませんでした。 Snapzy は現在のステッチ結果を保存しています。"
+            "value" : "新しいコンテンツは検出されませんでした。 LocalShot は現在のステッチ結果を保存しています。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "새로운 콘텐츠가 감지되지 않았습니다. Snapzy는 현재 스티치 결과를 저장하고 있습니다."
+            "value" : "새로운 콘텐츠가 감지되지 않았습니다. LocalShot는 현재 스티치 결과를 저장하고 있습니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Нового контента обнаружено не было. Snapzy сохраняет текущий результат сшивания."
+            "value" : "Нового контента обнаружено не было. LocalShot сохраняет текущий результат сшивания."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Không phát hiện nội dung mới. Snapzy đang lưu kết quả ghép hiện tại."
+            "value" : "Không phát hiện nội dung mới. LocalShot đang lưu kết quả ghép hiện tại."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "没有检测到新内容。 Snapzy 正在保存当前的拼接结果。"
+            "value" : "没有检测到新内容。 LocalShot 正在保存当前的拼接结果。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "沒有檢測到新內容。 Snapzy 正在保存當前的拼接結果。"
+            "value" : "沒有檢測到新內容。 LocalShot 正在保存當前的拼接結果。"
           }
         }
       }
@@ -9875,61 +9875,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es wurden gemischte Scrollrichtungen erkannt. Behalten Sie eine Richtung bei, damit Snapzy sich ausrichten kann."
+            "value" : "Es wurden gemischte Scrollrichtungen erkannt. Behalten Sie eine Richtung bei, damit LocalShot sich ausrichten kann."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mixed scroll directions detected. Keep one direction so Snapzy can align."
+            "value" : "Mixed scroll directions detected. Keep one direction so LocalShot can align."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se detectaron direcciones de desplazamiento mixtas. Mantenga una dirección para que Snapzy pueda alinearse."
+            "value" : "Se detectaron direcciones de desplazamiento mixtas. Mantenga una dirección para que LocalShot pueda alinearse."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sens de défilement mixtes détectés. Gardez une direction pour que Snapzy puisse s'aligner."
+            "value" : "Sens de défilement mixtes détectés. Gardez une direction pour que LocalShot puisse s'aligner."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "混合スクロール方向が検出されました。 Snapzy が位置を合わせられるように、一方向を維持してください。"
+            "value" : "混合スクロール方向が検出されました。 LocalShot が位置を合わせられるように、一方向を維持してください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "혼합된 스크롤 방향이 감지되었습니다. Snapzy가 정렬할 수 있도록 한 방향을 유지하세요."
+            "value" : "혼합된 스크롤 방향이 감지되었습니다. LocalShot가 정렬할 수 있도록 한 방향을 유지하세요."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Обнаружены смешанные направления прокрутки. Сохраняйте одно направление, чтобы Snapzy мог выровняться."
+            "value" : "Обнаружены смешанные направления прокрутки. Сохраняйте одно направление, чтобы LocalShot мог выровняться."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Phát hiện cuộn nhiều hướng. Hãy giữ một hướng để Snapzy có thể căn chỉnh."
+            "value" : "Phát hiện cuộn nhiều hướng. Hãy giữ một hướng để LocalShot có thể căn chỉnh."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "检测到混合滚动方向。保持一个方向，以便 Snapzy 可以对齐。"
+            "value" : "检测到混合滚动方向。保持一个方向，以便 LocalShot 可以对齐。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "檢測到混合滾動方向。保持一個方向，以便 Snapzy 可以對齊。"
+            "value" : "檢測到混合滾動方向。保持一個方向，以便 LocalShot 可以對齊。"
           }
         }
       }
@@ -10005,49 +10005,49 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy konnte ein speicherbares zusammengefügtes Bild noch nicht sperren. Sie können mit der Aufnahme fortfahren, es erneut mit „Fertig“ versuchen oder abbrechen."
+            "value" : "LocalShot konnte ein speicherbares zusammengefügtes Bild noch nicht sperren. Sie können mit der Aufnahme fortfahren, es erneut mit „Fertig“ versuchen oder abbrechen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy couldn't lock a savable stitched image yet. You can keep capturing, try Done again, or Cancel."
+            "value" : "LocalShot couldn't lock a savable stitched image yet. You can keep capturing, try Done again, or Cancel."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy aún no pudo bloquear una imagen cosida que se puede guardar. Puede seguir capturando, intentar Listo nuevamente o Cancelar."
+            "value" : "LocalShot aún no pudo bloquear una imagen cosida que se puede guardar. Puede seguir capturando, intentar Listo nuevamente o Cancelar."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy n'a pas encore pu verrouiller une image assemblée pouvant être enregistrée. Vous pouvez continuer la capture, réessayer Terminé ou Annuler."
+            "value" : "LocalShot n'a pas encore pu verrouiller une image assemblée pouvant être enregistrée. Vous pouvez continuer la capture, réessayer Terminé ou Annuler."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy は、保存可能なステッチ画像をまだロックできませんでした。キャプチャを続行するか、「完了」を再試行するか、「キャンセル」することができます。"
+            "value" : "LocalShot は、保存可能なステッチ画像をまだロックできませんでした。キャプチャを続行するか、「完了」を再試行するか、「キャンセル」することができます。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy는 아직 저장 가능한 스티치 이미지를 잠글 수 없습니다. 계속 캡처하거나, 다시 완료하거나, 취소할 수 있습니다."
+            "value" : "LocalShot는 아직 저장 가능한 스티치 이미지를 잠글 수 없습니다. 계속 캡처하거나, 다시 완료하거나, 취소할 수 있습니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy пока не удалось заблокировать сохраненное сшитое изображение. Вы можете продолжить съемку, попробовать «Готово» еще раз или «Отмена»."
+            "value" : "LocalShot пока не удалось заблокировать сохраненное сшитое изображение. Вы можете продолжить съемку, попробовать «Готово» еще раз или «Отмена»."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy chưa thể khóa một ảnh ghép có thể lưu. Bạn có thể tiếp tục chụp, thử Xong lại hoặc Hủy."
+            "value" : "LocalShot chưa thể khóa một ảnh ghép có thể lưu. Bạn có thể tiếp tục chụp, thử Xong lại hoặc Hủy."
           }
         },
         "zh-Hans" : {
@@ -11760,61 +11760,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Live-Vorschau läuft, während Snapzy den zusammengefügten Rahmen sperrt."
+            "value" : "Live-Vorschau läuft, während LocalShot den zusammengefügten Rahmen sperrt."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Live preview running while Snapzy locks the stitched frame."
+            "value" : "Live preview running while LocalShot locks the stitched frame."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vista previa en vivo ejecutándose mientras Snapzy bloquea el marco cosido."
+            "value" : "Vista previa en vivo ejecutándose mientras LocalShot bloquea el marco cosido."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aperçu en direct en cours d'exécution pendant que Snapzy verrouille le cadre cousu."
+            "value" : "Aperçu en direct en cours d'exécution pendant que LocalShot verrouille le cadre cousu."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy がステッチされたフレームをロックしている間、ライブ プレビューが実行されます。"
+            "value" : "LocalShot がステッチされたフレームをロックしている間、ライブ プレビューが実行されます。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy가 스티치된 프레임을 잠그는 동안 실시간 미리보기가 실행 중입니다."
+            "value" : "LocalShot가 스티치된 프레임을 잠그는 동안 실시간 미리보기가 실행 중입니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Предварительный просмотр в реальном времени выполняется, пока Snapzy блокирует сшитый кадр."
+            "value" : "Предварительный просмотр в реальном времени выполняется, пока LocalShot блокирует сшитый кадр."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bản xem trước trực tiếp đang chạy trong khi Snapzy khóa khung đã ghép."
+            "value" : "Bản xem trước trực tiếp đang chạy trong khi LocalShot khóa khung đã ghép."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 锁定缝合帧时运行实时预览。"
+            "value" : "LocalShot 锁定缝合帧时运行实时预览。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 鎖定縫合幀時運行實時預覽。"
+            "value" : "LocalShot 鎖定縫合幀時運行實時預覽。"
           }
         }
       }
@@ -12859,67 +12859,67 @@
         }
       }
     },
-    "scrolling-capture.guidance-keep-one-direction-so-snapzy-can-realign" : {
+    "scrolling-capture.guidance-keep-one-direction-so-localshot-can-realign" : {
       "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Behalten Sie eine Richtung bei, damit Snapzy neu ausrichten kann"
+            "value" : "Behalten Sie eine Richtung bei, damit LocalShot neu ausrichten kann"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keep one direction so Snapzy can re-align"
+            "value" : "Keep one direction so LocalShot can re-align"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mantenga una dirección para que Snapzy pueda realinearse"
+            "value" : "Mantenga una dirección para que LocalShot pueda realinearse"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gardez une direction pour que Snapzy puisse se réaligner"
+            "value" : "Gardez une direction pour que LocalShot puisse se réaligner"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy が再調整できるように、一方向を維持してください"
+            "value" : "LocalShot が再調整できるように、一方向を維持してください"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy가 다시 정렬할 수 있도록 한 방향을 유지하세요"
+            "value" : "LocalShot가 다시 정렬할 수 있도록 한 방향을 유지하세요"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сохраняйте одно направление, чтобы Snapzy мог перестроить"
+            "value" : "Сохраняйте одно направление, чтобы LocalShot мог перестроить"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Giữ một hướng để Snapzy căn chỉnh lại"
+            "value" : "Giữ một hướng để LocalShot căn chỉnh lại"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保持一个方向，以便 Snapzy 可以重新对齐"
+            "value" : "保持一个方向，以便 LocalShot 可以重新对齐"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保持一個方向，以便 Snapzy 可以重新對齊"
+            "value" : "保持一個方向，以便 LocalShot 可以重新對齊"
           }
         }
       }
@@ -14029,132 +14029,132 @@
         }
       }
     },
-    "scrolling-capture.guidance-snapzy-locking-first-frame" : {
+    "scrolling-capture.guidance-localshot-locking-first-frame" : {
       "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy sperrt den ersten Frame"
+            "value" : "LocalShot sperrt den ersten Frame"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy is locking the first frame"
+            "value" : "LocalShot is locking the first frame"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy está bloqueando el primer cuadro"
+            "value" : "LocalShot está bloqueando el primer cuadro"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy verrouille la première image"
+            "value" : "LocalShot verrouille la première image"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy は最初のフレームをロックしています"
+            "value" : "LocalShot は最初のフレームをロックしています"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy가 첫 번째 프레임을 잠그고 있습니다"
+            "value" : "LocalShot가 첫 번째 프레임을 잠그고 있습니다"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy блокирует первый кадр"
+            "value" : "LocalShot блокирует первый кадр"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy đang khóa khung hình đầu tiên"
+            "value" : "LocalShot đang khóa khung hình đầu tiên"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 正在锁定第一帧"
+            "value" : "LocalShot 正在锁定第一帧"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 正在鎖定第一幀"
+            "value" : "LocalShot 正在鎖定第一幀"
           }
         }
       }
     },
-    "scrolling-capture.guidance-snapzy-sealing-stitched-result" : {
+    "scrolling-capture.guidance-localshot-sealing-stitched-result" : {
       "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy versiegelt das genähte Ergebnis"
+            "value" : "LocalShot versiegelt das genähte Ergebnis"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy is sealing the stitched result"
+            "value" : "LocalShot is sealing the stitched result"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy está sellando el resultado cosido"
+            "value" : "LocalShot está sellando el resultado cosido"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy scelle le résultat cousu"
+            "value" : "LocalShot scelle le résultat cousu"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy はステッチ結果を封印しています"
+            "value" : "LocalShot はステッチ結果を封印しています"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy가 스티치 결과를 봉인하고 있습니다"
+            "value" : "LocalShot가 스티치 결과를 봉인하고 있습니다"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy запечатывает результат сшивания"
+            "value" : "LocalShot запечатывает результат сшивания"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy đang chốt kết quả đã ghép"
+            "value" : "LocalShot đang chốt kết quả đã ghép"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 正在密封缝合结果"
+            "value" : "LocalShot 正在密封缝合结果"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 正在密封縫合結果"
+            "value" : "LocalShot 正在密封縫合結果"
           }
         }
       }
@@ -14555,61 +14555,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vorschau angehalten – scrollen Sie langsam, damit Snapzy sich neu ausrichten kann."
+            "value" : "Vorschau angehalten – scrollen Sie langsam, damit LocalShot sich neu ausrichten kann."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preview paused - scroll slowly so Snapzy can re-align."
+            "value" : "Preview paused - scroll slowly so LocalShot can re-align."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vista previa en pausa: desplácese lentamente para que Snapzy pueda realinearse."
+            "value" : "Vista previa en pausa: desplácese lentamente para que LocalShot pueda realinearse."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aperçu en pause - faites défiler lentement pour que Snapzy puisse se réaligner."
+            "value" : "Aperçu en pause - faites défiler lentement pour que LocalShot puisse se réaligner."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プレビューが一時停止されました - Snapzy が再調整できるようにゆっくりスクロールします。"
+            "value" : "プレビューが一時停止されました - LocalShot が再調整できるようにゆっくりスクロールします。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "미리보기가 일시중지되었습니다. Snapzy가 다시 정렬할 수 있도록 천천히 스크롤하세요."
+            "value" : "미리보기가 일시중지되었습니다. LocalShot가 다시 정렬할 수 있도록 천천히 스크롤하세요."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Предварительный просмотр приостановлен: прокрутите медленно, чтобы Snapzy мог выровнять изображение."
+            "value" : "Предварительный просмотр приостановлен: прокрутите медленно, чтобы LocalShot мог выровнять изображение."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bản xem trước đã tạm dừng, hãy cuộn chậm để Snapzy căn chỉnh lại."
+            "value" : "Bản xem trước đã tạm dừng, hãy cuộn chậm để LocalShot căn chỉnh lại."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "预览已暂停 - 缓慢滚动，以便 Snapzy 可以重新对齐。"
+            "value" : "预览已暂停 - 缓慢滚动，以便 LocalShot 可以重新对齐。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "預覽已暫停 - 緩慢滾動，以便 Snapzy 可以重新對齊。"
+            "value" : "預覽已暫停 - 緩慢滾動，以便 LocalShot 可以重新對齊。"
           }
         }
       }
@@ -14815,61 +14815,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeigt das neueste zusammengefügte Ergebnis an, während Snapzy neuere Inhalte sperrt."
+            "value" : "Zeigt das neueste zusammengefügte Ergebnis an, während LocalShot neuere Inhalte sperrt."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Showing the latest stitched result while Snapzy locks newer content."
+            "value" : "Showing the latest stitched result while LocalShot locks newer content."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostrando el último resultado cosido mientras Snapzy bloquea el contenido más nuevo."
+            "value" : "Mostrando el último resultado cosido mientras LocalShot bloquea el contenido más nuevo."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Affichage du dernier résultat assemblé pendant que Snapzy verrouille le contenu le plus récent."
+            "value" : "Affichage du dernier résultat assemblé pendant que LocalShot verrouille le contenu le plus récent."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy が新しいコンテンツをロックしている間、最新のステッチ結果を表示します。"
+            "value" : "LocalShot が新しいコンテンツをロックしている間、最新のステッチ結果を表示します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy가 최신 콘텐츠를 잠그는 동안 최신 연결 결과를 표시합니다."
+            "value" : "LocalShot가 최신 콘텐츠를 잠그는 동안 최신 연결 결과를 표시합니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Показан последний сшитый результат, в то время как Snapzy блокирует новый контент."
+            "value" : "Показан последний сшитый результат, в то время как LocalShot блокирует новый контент."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đang hiển thị kết quả ghép mới nhất trong khi Snapzy khóa phần nội dung mới hơn."
+            "value" : "Đang hiển thị kết quả ghép mới nhất trong khi LocalShot khóa phần nội dung mới hơn."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "显示最新的拼接结果，同时 Snapzy 锁定更新的内容。"
+            "value" : "显示最新的拼接结果，同时 LocalShot 锁定更新的内容。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "顯示最新的拼接結果，同時 Snapzy 鎖定更新的內容。"
+            "value" : "顯示最新的拼接結果，同時 LocalShot 鎖定更新的內容。"
           }
         }
       }

@@ -30,6 +30,9 @@ final class AppCoordinator {
     LegacyLicenseCleanupService.shared.runIfNeeded()
 
     let defaults = UserDefaults.standard
+    if defaults.object(forKey: PreferencesKeys.diagnosticsEnabled) == nil {
+      defaults.set(LocalShotV1Policy.diagnosticsEnabledByDefault, forKey: PreferencesKeys.diagnosticsEnabled)
+    }
     if defaults.object(forKey: PreferencesKeys.diagnosticsRetentionDays) == nil {
       defaults.set(LogCleanupScheduler.defaultRetentionDays, forKey: PreferencesKeys.diagnosticsRetentionDays)
     }
@@ -47,6 +50,8 @@ final class AppCoordinator {
     if defaults.object(forKey: PreferencesKeys.historyOpenOnLaunch) == nil {
       defaults.set(false, forKey: PreferencesKeys.historyOpenOnLaunch)
     }
+    defaults.set(false, forKey: PreferencesKeys.cloudConfigured)
+    defaults.set(false, forKey: PreferencesKeys.cloudPasswordEnabled)
 
     // Floating history panel defaults
     if defaults.object(forKey: "history.floating.enabled") == nil {
@@ -69,8 +74,7 @@ final class AppCoordinator {
 
     AppStatusBarController.shared.setup(
       viewModel: environment.screenCaptureViewModel,
-      updater: UpdaterManager.shared.updater,
-      didCrash: didCrash && DiagnosticLogger.shared.isEnabled
+      didCrash: didCrash && LocalShotV1Policy.problemReportsEnabled
     )
     DiagnosticLogger.shared.log(
       .debug,

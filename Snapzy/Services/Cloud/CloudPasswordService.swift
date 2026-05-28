@@ -21,7 +21,7 @@ enum CloudPasswordVerificationResult {
 @MainActor
 final class CloudPasswordService {
   static let shared = CloudPasswordService()
-  private let logger = Logger(subsystem: "Snapzy", category: "CloudPasswordService")
+  private let logger = Logger(subsystem: "LocalShot", category: "CloudPasswordService")
   private let defaults = UserDefaults.standard
 
   private init() {}

@@ -34,7 +34,7 @@ final class ScrollingCaptureCoordinator {
   private let autoScrollDeltaY: Int32 = -15
   private let previewRenderScale: CGFloat = 2
   private let processingQueue = DispatchQueue(
-    label: "com.snapzy.scrolling-capture.processing",
+    label: "com.localshot.scrolling-capture.processing",
     qos: .userInitiated
   )
 

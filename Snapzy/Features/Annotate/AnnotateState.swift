@@ -157,7 +157,7 @@ final class AnnotateState: ObservableObject {
   @Published var rectangleCornerRadius: CGFloat = 0
   @Published var blurType: BlurType = .pixelated
   @Published var arrowStyle: ArrowStyle = .straight
-  @Published var watermarkText: String = "Snapzy"
+  @Published var watermarkText: String = LocalShotBrand.appName
   @Published private var annotationToolProperties: [AnnotationToolType: AnnotationProperties] = [:]
   private var sharedAnnotationColor: Color?
   private var sharedAnnotationParameterDefaults = SharedAnnotationParameterDefaults()
@@ -3240,7 +3240,7 @@ final class AnnotateState: ObservableObject {
   var quickWatermarkTextBinding: Binding<String> {
     Binding(
       get: { [weak self] in
-        guard let self else { return "Snapzy" }
+        guard let self else { return LocalShotBrand.appName }
         if let annotation = self.quickSelectionTargets(matching: {
           if case .watermark = $0 { return true }
           return false

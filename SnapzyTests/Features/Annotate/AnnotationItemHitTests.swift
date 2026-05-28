@@ -7,7 +7,7 @@
 
 import CoreGraphics
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class AnnotationItemHitTests: XCTestCase {
 

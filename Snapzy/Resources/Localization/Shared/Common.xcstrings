@@ -982,61 +982,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Installieren Sie Snapzy in /Applications, bevor Sie Berechtigungen erteilen. Aktueller Pfad: %@"
+            "value" : "Installieren Sie LocalShot in /Applications, bevor Sie Berechtigungen erteilen. Aktueller Pfad: %@"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Install Snapzy in /Applications before granting permissions. Current path: %@"
+            "value" : "Install LocalShot in /Applications before granting permissions. Current path: %@"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Instale Snapzy en /Aplicaciones antes de otorgar permisos. Ruta actual: %@"
+            "value" : "Instale LocalShot en /Aplicaciones antes de otorgar permisos. Ruta actual: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Installez Snapzy dans /Applications avant d'accorder les autorisations. Chemin actuel : %@"
+            "value" : "Installez LocalShot dans /Applications avant d'accorder les autorisations. Chemin actuel : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "権限を付与する前に、/Applications に Snapzy をインストールします。現在のパス: %@"
+            "value" : "権限を付与する前に、/Applications に LocalShot をインストールします。現在のパス: %@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "권한을 부여하기 전에 /Applications에 Snapzy를 설치하세요. 현재 경로: %@"
+            "value" : "권한을 부여하기 전에 /Applications에 LocalShot를 설치하세요. 현재 경로: %@"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Прежде чем предоставлять разрешения, установите Snapzy в каталоге /Applications. Текущий путь: %@"
+            "value" : "Прежде чем предоставлять разрешения, установите LocalShot в каталоге /Applications. Текущий путь: %@"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hãy cài Snapzy trong /Applications trước khi cấp quyền. Đường dẫn hiện tại: %@"
+            "value" : "Hãy cài LocalShot trong /Applications trước khi cấp quyền. Đường dẫn hiện tại: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在授予权限之前，在 /Applications 中安装 Snapzy。当前路径：%@"
+            "value" : "在授予权限之前，在 /Applications 中安装 LocalShot。当前路径：%@"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在授予權限之前，在 /Applications 中安裝 Snapzy。當前路徑：%@"
+            "value" : "在授予權限之前，在 /Applications 中安裝 LocalShot。當前路徑：%@"
           }
         }
       }

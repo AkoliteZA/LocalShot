@@ -406,6 +406,19 @@ enum GlobalShortcutKind: String, CaseIterable, Codable {
   case objectCutout
   case history
 
+  static let allCases: [GlobalShortcutKind] = [
+    .fullscreen,
+    .area,
+    .areaAnnotate,
+    .scrollingCapture,
+    .recording,
+    .annotate,
+    .shortcutList,
+    .ocr,
+    .objectCutout,
+    .history,
+  ]
+
   var isSystemConflictRelevant: Bool {
     switch self {
     case .fullscreen, .area, .recording:
@@ -1006,6 +1019,7 @@ final class KeyboardShortcutManager {
       actionName = "video-editor"
       action = .openVideoEditor
     case cloudUploadsHotkeyID.id:
+      guard LocalShotV1Policy.cloudUploadsEnabled else { return }
       actionName = "cloud-uploads"
       action = .openCloudUploads
     case shortcutListHotkeyID.id:
@@ -1099,12 +1113,14 @@ final class KeyboardShortcutManager {
       hotkeyID: ocrHotkeyID,
       ref: &ocrHotkeyRef
     )
-    registerShortcutIfNeeded(
-      kind: .cloudUploads,
-      config: shortcut(for: .cloudUploads),
-      hotkeyID: cloudUploadsHotkeyID,
-      ref: &cloudUploadsHotkeyRef
-    )
+    if LocalShotV1Policy.cloudUploadsEnabled {
+      registerShortcutIfNeeded(
+        kind: .cloudUploads,
+        config: shortcut(for: .cloudUploads),
+        hotkeyID: cloudUploadsHotkeyID,
+        ref: &cloudUploadsHotkeyRef
+      )
+    }
     registerShortcutIfNeeded(
       kind: .shortcutList,
       config: shortcut(for: .shortcutList),

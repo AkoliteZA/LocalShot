@@ -12,7 +12,7 @@ import Foundation
 import UniformTypeIdentifiers
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "ClipboardHelper")
+private let logger = Logger(subsystem: LocalShotBrand.appName, category: "ClipboardHelper")
 
 /// Centralized helper for copying images to clipboard while respecting the configured format.
 ///
@@ -113,7 +113,7 @@ enum ClipboardHelper {
 
     // Write to a temp file so the pasteboard can reference it
     let tempDir = TempCaptureManager.shared.tempCaptureDirectory
-    let fileName = "Snapzy_clipboard_\(UUID().uuidString).\(ext)"
+    let fileName = "LocalShot_clipboard_\(UUID().uuidString).\(ext)"
     let tempURL = tempDir.appendingPathComponent(fileName)
 
     do {

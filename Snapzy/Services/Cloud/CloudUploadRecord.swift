@@ -56,7 +56,7 @@ struct CloudUploadRecord: Identifiable, Codable, Equatable, FetchableRecord, Per
       for: .applicationSupportDirectory, in: .userDomainMask
     ).first!
     let thumbURL = appSupport
-      .appendingPathComponent("Snapzy", isDirectory: true)
+      .appendingPathComponent(LocalShotBrand.applicationSupportDirectoryName, isDirectory: true)
       .appendingPathComponent("thumbnails", isDirectory: true)
       .appendingPathComponent("\(id.uuidString).jpg")
     return FileManager.default.fileExists(atPath: thumbURL.path) ? thumbURL : nil

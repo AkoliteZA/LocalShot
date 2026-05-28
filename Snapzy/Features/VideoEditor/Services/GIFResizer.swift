@@ -12,7 +12,7 @@ import ImageIO
 import UniformTypeIdentifiers
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "GIFResizer")
+private let logger = Logger(subsystem: "LocalShot", category: "GIFResizer")
 
 /// Resizes an animated GIF to target dimensions using ImageIO
 @MainActor

@@ -7,7 +7,7 @@
 
 import AppKit
 import Foundation
-@testable import Snapzy
+@testable import LocalShot
 
 @MainActor
 final class FakeQuickAccessManager: QuickAccessManaging {

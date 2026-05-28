@@ -9,7 +9,7 @@ import Foundation
 import GRDB
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "DatabaseManager")
+private let logger = Logger(subsystem: "LocalShot", category: "DatabaseManager")
 
 /// Manages the SQLite database connection and schema migrations
 final class DatabaseManager: @unchecked Sendable {
@@ -21,7 +21,7 @@ final class DatabaseManager: @unchecked Sendable {
   private init() {
     let dir = Self.databaseDirectory()
     try! FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-    let dbPath = dir.appendingPathComponent("snapzy.db").path
+    let dbPath = dir.appendingPathComponent(LocalShotBrand.databaseFileName).path
 
     do {
       dbPool = try DatabasePool(path: dbPath)
@@ -37,7 +37,7 @@ final class DatabaseManager: @unchecked Sendable {
       if isRunningUnderXCTest {
         let processID = ProcessInfo.processInfo.processIdentifier
         return FileManager.default.temporaryDirectory
-          .appendingPathComponent("SnapzyTests", isDirectory: true)
+          .appendingPathComponent("LocalShotTests", isDirectory: true)
           .appendingPathComponent("Databases", isDirectory: true)
           .appendingPathComponent("runner-\(processID)", isDirectory: true)
       }
@@ -46,7 +46,7 @@ final class DatabaseManager: @unchecked Sendable {
     let appSupport = FileManager.default.urls(
       for: .applicationSupportDirectory, in: .userDomainMask
     ).first!
-    return appSupport.appendingPathComponent("Snapzy", isDirectory: true)
+    return LocalShotBrand.applicationSupportDirectory
   }
 
   static var isRunningUnderXCTest: Bool {

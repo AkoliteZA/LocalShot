@@ -16,7 +16,7 @@ struct QuickAccessActionDragPayload {
 
   static let typeIdentifiers = [UTType.plainText.identifier]
 
-  private static let marker = "com.snapzy.quick-access-action"
+  private static let marker = "com.localshot.quick-access-action"
 
   let action: QuickAccessActionKind
   let source: Source

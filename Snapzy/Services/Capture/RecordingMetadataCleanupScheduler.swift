@@ -9,7 +9,7 @@ import Foundation
 import os.log
 
 private let recordingMetadataCleanupLogger = Logger(
-  subsystem: "Snapzy",
+  subsystem: "LocalShot",
   category: "RecordingMetadataCleanup"
 )
 

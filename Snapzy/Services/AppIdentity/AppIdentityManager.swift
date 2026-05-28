@@ -10,7 +10,7 @@ import Foundation
 import Security
 
 enum AppBundleIdentity {
-  static let expected = "com.trongduong.snapzy"
+  static let expected = LocalShotBrand.bundleIdentifier
 }
 
 enum AppIdentityIssue: Equatable, Hashable {

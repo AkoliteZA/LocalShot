@@ -199,7 +199,7 @@ final class AnnotationSessionStore {
   nonisolated private static func defaultRootDirectory() -> URL {
     let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
     return appSupport
-      .appendingPathComponent("Snapzy", isDirectory: true)
+      .appendingPathComponent(LocalShotBrand.applicationSupportDirectoryName, isDirectory: true)
       .appendingPathComponent("AnnotationSessions", isDirectory: true)
   }
 

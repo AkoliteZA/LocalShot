@@ -2,7 +2,7 @@
 //  QuickAccessAnimations.swift
 //  Snapzy
 //
-//  Shared animation constants for QuickAccess panel - CleanShot X inspired
+//  Shared animation constants for QuickAccess panel - commercial screenshot utilities inspired
 //
 
 import SwiftUI

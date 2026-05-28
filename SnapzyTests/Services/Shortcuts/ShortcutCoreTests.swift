@@ -8,7 +8,7 @@
 import AppKit
 import Carbon.HIToolbox
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class ShortcutCoreTests: XCTestCase {
 
@@ -77,5 +77,22 @@ final class ShortcutCoreTests: XCTestCase {
 
     let existingDisabledPreference = KeyboardShortcutManager.disabledShortcutSet(from: ["areaAnnotate"])
     XCTAssertTrue(existingDisabledPreference.contains(.areaAnnotate))
+  }
+
+  @MainActor
+  func testShortcutOverlayContent_omitsCloudUploadEntriesForLocalShotV1() {
+    XCTAssertFalse(LocalShotV1Policy.cloudUploadsEnabled)
+
+    let items = ShortcutOverlayContentBuilder.buildSections().flatMap(\.items)
+    let itemIds = Set(items.map(\.id))
+
+    XCTAssertFalse(itemIds.contains("global-\(GlobalShortcutKind.cloudUploads.rawValue)"))
+    XCTAssertFalse(itemIds.contains("annotate-action-\(AnnotateActionShortcutKind.cloudUpload.rawValue)"))
+    XCTAssertFalse(items.contains { $0.icon.contains("icloud") })
+  }
+
+  func testAnnotateActionShortcutKind_allCasesOmitCloudUploadForLocalShotV1() {
+    XCTAssertFalse(LocalShotV1Policy.cloudUploadsEnabled)
+    XCTAssertFalse(AnnotateActionShortcutKind.allCases.contains(.cloudUpload))
   }
 }

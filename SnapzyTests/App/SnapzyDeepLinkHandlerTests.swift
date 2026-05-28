@@ -2,31 +2,29 @@
 //  SnapzyDeepLinkHandlerTests.swift
 //  SnapzyTests
 //
-//  Unit tests for snapzy:// automation URL parsing.
+//  Unit tests for localshot:// automation URL parsing.
 //
 
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class SnapzyDeepLinkHandlerTests: XCTestCase {
 
   func testCanonicalRoutesParseExpectedActions() throws {
     let cases: [(String, SnapzyDeepLinkAction)] = [
-      ("snapzy://capture/fullscreen", .captureFullscreen),
-      ("snapzy://capture/area", .captureArea),
-      ("snapzy://capture/application", .captureApplication),
-      ("snapzy://capture/area-annotate", .captureAreaAnnotate),
-      ("snapzy://capture/scrolling", .captureScrolling),
-      ("snapzy://capture/ocr", .captureOCR),
-      ("snapzy://capture/object-cutout", .captureObjectCutout),
-      ("snapzy://record/screen", .recordScreen),
-      ("snapzy://record/application", .recordApplication),
-      ("snapzy://open/annotate", .openAnnotate),
-      ("snapzy://open/video-editor", .openVideoEditor),
-      ("snapzy://open/cloud-uploads", .openCloudUploads),
-      ("snapzy://open/history", .openHistory),
-      ("snapzy://show/shortcuts", .showShortcuts),
-      ("snapzy://settings", .openSettings(nil)),
+      ("localshot://capture/fullscreen", .captureFullscreen),
+      ("localshot://capture/area", .captureArea),
+      ("localshot://capture/application", .captureApplication),
+      ("localshot://capture/area-annotate", .captureAreaAnnotate),
+      ("localshot://capture/scrolling", .captureScrolling),
+      ("localshot://capture/ocr", .captureOCR),
+      ("localshot://capture/object-cutout", .captureObjectCutout),
+      ("localshot://record/screen", .recordScreen),
+      ("localshot://record/application", .recordApplication),
+      ("localshot://open/annotate", .openAnnotate),
+      ("localshot://open/history", .openHistory),
+      ("localshot://show/shortcuts", .showShortcuts),
+      ("localshot://settings", .openSettings(nil)),
     ]
 
     for (urlString, expectedAction) in cases {
@@ -37,10 +35,10 @@ final class SnapzyDeepLinkHandlerTests: XCTestCase {
 
   func testApplicationCaptureAliasesParseExpectedAction() throws {
     let aliases = [
-      "snapzy://capture/window",
-      "snapzy://application-capture",
-      "snapzy://window-capture",
-      "snapzy://screenshot/window",
+      "localshot://capture/window",
+      "localshot://application-capture",
+      "localshot://window-capture",
+      "localshot://screenshot/window",
     ]
 
     for urlString in aliases {
@@ -51,10 +49,10 @@ final class SnapzyDeepLinkHandlerTests: XCTestCase {
 
   func testApplicationRecordingAliasesParseExpectedAction() throws {
     let aliases = [
-      "snapzy://record/window",
-      "snapzy://application-recording",
-      "snapzy://window-recording",
-      "snapzy://recording/window",
+      "localshot://record/window",
+      "localshot://application-recording",
+      "localshot://window-recording",
+      "localshot://recording/window",
     ]
 
     for urlString in aliases {
@@ -72,16 +70,15 @@ final class SnapzyDeepLinkHandlerTests: XCTestCase {
       ("history", .history),
       ("shortcuts", .shortcuts),
       ("permissions", .permissions),
-      ("cloud", .cloud),
       ("advanced", .advanced),
       ("about", .about),
     ]
 
     for (tabName, expectedTab) in cases {
-      let queryURL = try XCTUnwrap(URL(string: "snapzy://settings?tab=\(tabName)"))
+      let queryURL = try XCTUnwrap(URL(string: "localshot://settings?tab=\(tabName)"))
       XCTAssertEqual(SnapzyDeepLinkAction(url: queryURL), .openSettings(expectedTab), tabName)
 
-      let pathURL = try XCTUnwrap(URL(string: "snapzy://settings/\(tabName)"))
+      let pathURL = try XCTUnwrap(URL(string: "localshot://settings/\(tabName)"))
       XCTAssertEqual(SnapzyDeepLinkAction(url: pathURL), .openSettings(expectedTab), tabName)
     }
   }
@@ -89,10 +86,12 @@ final class SnapzyDeepLinkHandlerTests: XCTestCase {
   func testUnsupportedRoutesReturnNil() throws {
     let urls = [
       "https://capture/area",
-      "snapzy://",
-      "snapzy://capture/unknown",
-      "snapzy://record/stop",
-      "snapzy://open/unknown",
+      "localshot://",
+      "localshot://capture/unknown",
+      "localshot://record/stop",
+      "localshot://open/video-editor",
+      "localshot://open/cloud-uploads",
+      "localshot://open/unknown",
     ]
 
     for urlString in urls {

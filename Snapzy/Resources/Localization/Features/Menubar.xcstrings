@@ -326,31 +326,31 @@
         }
       }
     },
-    "menu.quit-snapzy" : {
+    "menu.quit-localshot" : {
       "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beenden Sie Snapzy"
+            "value" : "Beenden Sie LocalShot"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quit Snapzy"
+            "value" : "Quit LocalShot"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salir de Snapzy"
+            "value" : "Salir de LocalShot"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quitter Snapzy"
+            "value" : "Quitter LocalShot"
           }
         },
         "ja" : {
@@ -362,31 +362,31 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 종료"
+            "value" : "LocalShot 종료"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выйти из Snapzy"
+            "value" : "Выйти из LocalShot"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thoát Snapzy"
+            "value" : "Thoát LocalShot"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "退出 Snapzy"
+            "value" : "退出 LocalShot"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "退出 Snapzy"
+            "value" : "退出 LocalShot"
           }
         }
       }

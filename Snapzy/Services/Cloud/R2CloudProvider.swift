@@ -8,7 +8,7 @@
 import Foundation
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "R2CloudProvider")
+private let logger = Logger(subsystem: "LocalShot", category: "R2CloudProvider")
 
 /// Cloudflare R2 provider — thin wrapper around S3CloudProvider with R2 defaults.
 /// R2 uses S3-compatible API with region="auto" and custom account endpoint.

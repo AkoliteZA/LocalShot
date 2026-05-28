@@ -10,7 +10,7 @@ import Foundation
 import GRDB
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "CloudUploadHistoryStore")
+private let logger = Logger(subsystem: "LocalShot", category: "CloudUploadHistoryStore")
 
 /// Manages persistent storage of cloud upload records using SQLite via GRDB
 @MainActor

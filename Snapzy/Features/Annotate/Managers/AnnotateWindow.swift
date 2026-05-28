@@ -163,7 +163,8 @@ final class AnnotateWindow: NSWindow {
     }
 
     // Cloud Upload — configurable (default: ⌘U)
-    if AnnotateShortcutManager.shared.matchesCloudUpload(event) {
+    if LocalShotV1Policy.cloudUploadsEnabled,
+       AnnotateShortcutManager.shared.matchesCloudUpload(event) {
       NotificationCenter.default.post(name: .annotateCloudUpload, object: self)
       return true
     }

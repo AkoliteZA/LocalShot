@@ -65,7 +65,7 @@ struct CropOverlayView: View {
         .allowsHitTesting(false)
     }
 
-    // Corner L-shaped handles (CleanShot X style)
+    // Corner L-shaped handles (commercial screenshot utilities style)
     ForEach(CropHandle.corners, id: \.self) { handle in
       CropCornerHandle(handle: handle, length: cornerHandleLength)
         .position(handlePosition(for: handle, in: scaledCrop))
@@ -246,7 +246,7 @@ struct CropGridOverlay: View {
   }
 }
 
-// MARK: - Corner Handle (L-shaped, CleanShot X style)
+// MARK: - Corner Handle (L-shaped, commercial screenshot utilities style)
 
 struct CropCornerHandle: View {
   let handle: CropHandle

@@ -7,7 +7,7 @@
 
 import Vision
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 @MainActor
 final class OCRRecognitionTests: XCTestCase {
@@ -29,7 +29,7 @@ final class OCRRecognitionTests: XCTestCase {
     for testCase in cases {
       let profile = VisionOCRProfile.resolve(
         for: OCRRequest(
-          image: try OCRTestImageRenderer.renderImage(text: "Snapzy OCR"),
+          image: try OCRTestImageRenderer.renderImage(text: "LocalShot OCR"),
           preferredLanguageIdentifier: testCase.language
         )
       )
@@ -42,7 +42,7 @@ final class OCRRecognitionTests: XCTestCase {
   }
 
   func testVietnameseOCR_preservesDiacriticsForShortIssuePhrase() async throws {
-    try XCTSkipIf(!supportedVisionLanguages().contains("vi-VT"), "Vision Vietnamese OCR unavailable")
+    try skipIfVisionLanguageUnavailable("vi-VT")
 
     let result = try await OCRService.shared.recognize(
       OCRRequest(
@@ -58,7 +58,7 @@ final class OCRRecognitionTests: XCTestCase {
   }
 
   func testVietnameseOCR_preservesDiverseDiacriticsForCommonPhrases() async throws {
-    try XCTSkipIf(!supportedVisionLanguages().contains("vi-VT"), "Vision Vietnamese OCR unavailable")
+    try skipIfVisionLanguageUnavailable("vi-VT")
 
     let phrases = [
       "Tài sản cố định",
@@ -86,7 +86,7 @@ final class OCRRecognitionTests: XCTestCase {
   }
 
   func testVietnameseOCR_reflowsSameRowWordFragments() async throws {
-    try XCTSkipIf(!supportedVisionLanguages().contains("vi-VT"), "Vision Vietnamese OCR unavailable")
+    try skipIfVisionLanguageUnavailable("vi-VT")
 
     let result = try await OCRService.shared.recognize(
       OCRRequest(
@@ -118,7 +118,9 @@ final class OCRRecognitionTests: XCTestCase {
     let supportedLanguages = try supportedVisionLanguages()
 
     for testCase in cases {
-      try XCTSkipIf(!supportedLanguages.contains(testCase.visionLanguage), "Vision OCR language \(testCase.visionLanguage) unavailable")
+      guard isVisionLanguageUsable(testCase.visionLanguage, supportedLanguages: supportedLanguages) else {
+        continue
+      }
 
       let result = try await OCRService.shared.recognize(
         OCRRequest(
@@ -154,6 +156,52 @@ final class OCRRecognitionTests: XCTestCase {
 
   private func supportedVisionLanguages() throws -> Set<String> {
     Set(try VNRecognizeTextRequest().supportedRecognitionLanguages())
+  }
+
+  private func skipIfVisionLanguageUnavailable(_ visionLanguage: String) throws {
+    let supportedLanguages = try supportedVisionLanguages()
+    try XCTSkipIf(
+      !isVisionLanguageUsable(visionLanguage, supportedLanguages: supportedLanguages),
+      "Vision OCR language \(visionLanguage) unavailable or missing required local language model assets"
+    )
+  }
+
+  private func isVisionLanguageUsable(
+    _ visionLanguage: String,
+    supportedLanguages: Set<String>
+  ) -> Bool {
+    guard supportedLanguages.contains(visionLanguage) else { return false }
+
+    // Some macOS installs advertise Vietnamese OCR support while the local
+    // linguistic asset is incomplete. Vision then logs a missing vi.lm/lm.dat
+    // error and can terminate the test host during short-text recognition.
+    guard visionLanguage == "vi-VT" else { return true }
+    return hasInstalledLanguageModelData(languageCode: "vi")
+  }
+
+  private func hasInstalledLanguageModelData(languageCode: String) -> Bool {
+    let fileManager = FileManager.default
+    let roots = [
+      "/System/Library/AssetsV2/com_apple_MobileAsset_LinguisticData",
+      "/Library/AssetsV2/com_apple_MobileAsset_LinguisticData",
+    ].map { URL(fileURLWithPath: $0, isDirectory: true) }
+
+    for root in roots where fileManager.fileExists(atPath: root.path) {
+      guard let enumerator = fileManager.enumerator(
+        at: root,
+        includingPropertiesForKeys: [.isDirectoryKey],
+        options: [.skipsHiddenFiles]
+      ) else { continue }
+
+      for case let url as URL in enumerator where url.lastPathComponent == "\(languageCode).lm" {
+        let dataURL = url.appendingPathComponent("lm.dat")
+        if fileManager.fileExists(atPath: dataURL.path) {
+          return true
+        }
+      }
+    }
+
+    return false
   }
 
   private func normalizedForDiacriticRegression(_ text: String) -> String {

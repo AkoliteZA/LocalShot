@@ -17,20 +17,20 @@ enum CloudKeychainItem {
   var account: String {
     switch self {
     case .accessKey:
-      return "com.trongduong.snapzy.cloud.accessKey"
+      return "\(LocalShotBrand.queueLabelPrefix).cloud.accessKey"
     case .secretKey:
-      return "com.trongduong.snapzy.cloud.secretKey"
+      return "\(LocalShotBrand.queueLabelPrefix).cloud.secretKey"
     case .passwordHash:
-      return "com.trongduong.snapzy.cloud.passwordHash"
+      return "\(LocalShotBrand.queueLabelPrefix).cloud.passwordHash"
     }
   }
 
   var legacyAccounts: [String] {
     switch self {
     case .accessKey:
-      return ["com.snapzy.cloud.accessKey"]
+      return ["com.localshot.cloud.accessKey"]
     case .secretKey:
-      return ["com.snapzy.cloud.secretKey"]
+      return ["com.localshot.cloud.secretKey"]
     case .passwordHash:
       return []
     }
@@ -67,9 +67,9 @@ struct CloudKeychainStore {
     case addFailed(OSStatus)
   }
 
-  private static let logger = Logger(subsystem: "Snapzy", category: "CloudKeychainStore")
-  private static let currentService = "com.trongduong.snapzy.cloud"
-  private static let legacyService = "com.snapzy.cloud"
+  private static let logger = Logger(subsystem: "LocalShot", category: "CloudKeychainStore")
+  private static let currentService = "\(LocalShotBrand.queueLabelPrefix).cloud"
+  private static let legacyService = "com.localshot.cloud"
 
   static func read(item: CloudKeychainItem, context: String) -> CloudKeychainReadOutcome {
     let primaryLocation = Location(

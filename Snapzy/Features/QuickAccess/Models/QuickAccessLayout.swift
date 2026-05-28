@@ -28,7 +28,7 @@ enum QuickAccessLayout {
   /// Padding around the card stack (12pt for shadow clearance: radius 8 + y-offset 4)
   static let containerPadding: CGFloat = 12
 
-  // MARK: - Depth Stacking (CleanShot X style)
+  // MARK: - Depth Stacking (commercial screenshot utilities style)
 
   /// Scale reduction per card in stack (each card 5% smaller than previous)
   static let depthScaleStep: CGFloat = 0.05

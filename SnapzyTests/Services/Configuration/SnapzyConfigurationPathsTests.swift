@@ -7,7 +7,7 @@
 
 import Darwin
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 @MainActor
 final class SnapzyConfigurationPathsTests: XCTestCase {
@@ -16,7 +16,7 @@ final class SnapzyConfigurationPathsTests: XCTestCase {
 
     let url = SnapzyConfigurationPaths.suggestedConfigURL(homeDirectory: home)
 
-    XCTAssertEqual(url.path, "/Users/example/.config/snapzy/config.toml")
+    XCTAssertEqual(url.path, "/Users/example/.config/localshot/config.toml")
   }
 
   func testSuggestedConfigDirectoryURLUsesProvidedHomeDirectory() {
@@ -24,7 +24,7 @@ final class SnapzyConfigurationPathsTests: XCTestCase {
 
     let url = SnapzyConfigurationPaths.suggestedConfigDirectoryURL(homeDirectory: home)
 
-    XCTAssertEqual(url.path, "/Users/example/.config/snapzy")
+    XCTAssertEqual(url.path, "/Users/example/.config/localshot")
   }
 
   func testExpandedUserPathUsesProvidedHomeDirectory() {

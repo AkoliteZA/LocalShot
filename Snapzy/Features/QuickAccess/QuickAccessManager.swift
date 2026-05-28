@@ -11,7 +11,7 @@ import Foundation
 import os.log
 import SwiftUI
 
-private let logger = Logger(subsystem: "Snapzy", category: "QuickAccessManager")
+private let logger = Logger(subsystem: "LocalShot", category: "QuickAccessManager")
 
 /// Manages the quick access screenshot preview stack
 @MainActor

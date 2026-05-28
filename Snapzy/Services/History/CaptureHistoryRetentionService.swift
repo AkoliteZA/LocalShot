@@ -8,7 +8,7 @@
 import Foundation
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "CaptureHistoryRetentionService")
+private let logger = Logger(subsystem: "LocalShot", category: "CaptureHistoryRetentionService")
 
 /// Enforces retention policies for capture history records
 @MainActor

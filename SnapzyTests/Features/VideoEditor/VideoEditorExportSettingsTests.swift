@@ -9,7 +9,7 @@ import AppKit
 import AVFoundation
 import CoreGraphics
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class VideoEditorExportSettingsTests: XCTestCase {
 

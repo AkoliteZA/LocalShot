@@ -13,14 +13,13 @@ enum SnapzyConfigurationDefaultDocument {
   static func toml() -> String {
     var writer = SimpleTOMLWriter()
     writer.root("schema_version", 1)
-    writer.root("snapzy_min_version", Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.20.0")
+    writer.root("localshot_min_version", Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0")
 
     writeGeneral(&writer)
     writeCapture(&writer)
     writeRecording(&writer)
     writeQuickAccess(&writer)
     writeHistory(&writer)
-    writeCloud(&writer)
     writeAnnotate(&writer)
     writeShortcuts(&writer)
 
@@ -35,12 +34,8 @@ enum SnapzyConfigurationDefaultDocument {
     writer.value("start_at_login", false)
     writer.value("export_location", SandboxFileAccessManager.shared.defaultExportDirectory.path)
 
-    writer.section("updates")
-    writer.value("check_automatically", true)
-    writer.value("download_automatically", false)
-
     writer.section("diagnostics")
-    writer.value("enabled", true)
+    writer.value("enabled", LocalShotV1Policy.diagnosticsEnabledByDefault)
     writer.value("retention_days", LogCleanupScheduler.defaultRetentionDays)
   }
 
@@ -55,7 +50,7 @@ enum SnapzyConfigurationDefaultDocument {
 
     writer.section("capture.screenshot")
     writer.value("format", ImageFormatOption.png.rawValue)
-    writer.value("include_snapzy", false)
+    writer.value("include_localshot", false)
     writer.value("show_cursor", false)
 
     writer.section("capture.scrolling")
@@ -73,7 +68,7 @@ enum SnapzyConfigurationDefaultDocument {
 
   private static func writeRecording(_ writer: inout SimpleTOMLWriter) {
     writer.section("recording")
-    writer.value("format", VideoFormat.mov.rawValue)
+    writer.value("format", VideoFormat.mp4.rawValue)
     writer.value("quality", VideoQuality.high.rawValue)
     writer.value("fps", 30)
     writer.value("output_mode", RecordingOutputMode.video.rawValue)
@@ -81,7 +76,7 @@ enum SnapzyConfigurationDefaultDocument {
     writer.value("capture_microphone", false)
     writer.value("microphone_device_id", "")
     writer.value("remember_last_area", true)
-    writer.value("include_snapzy", false)
+    writer.value("include_localshot", false)
     writer.value("show_cursor", true)
     writer.value("highlight_clicks", false)
     writer.value("show_keystrokes", false)
@@ -197,7 +192,6 @@ enum SnapzyConfigurationDefaultDocument {
     writer.value("quick_access", true)
     writer.value("copy_file", true)
     writer.value("open_annotate", false)
-    writer.value("upload_to_cloud", false)
   }
 
   private static func writeGlobalShortcut(_ writer: inout SimpleTOMLWriter, kind: GlobalShortcutKind) {

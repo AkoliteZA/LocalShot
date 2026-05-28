@@ -7,61 +7,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy konnte den Zugriff auf diesen Ordner nicht aufrechterhalten. Bitte wählen Sie den Ordner erneut aus und bestätigen Sie die Berechtigung."
+            "value" : "LocalShot konnte den Zugriff auf diesen Ordner nicht aufrechterhalten. Bitte wählen Sie den Ordner erneut aus und bestätigen Sie die Berechtigung."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy could not persist access to this folder. Please choose the folder again and confirm permission."
+            "value" : "LocalShot could not persist access to this folder. Please choose the folder again and confirm permission."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy no pudo mantener el acceso a esta carpeta. Elija la carpeta nuevamente y confirme el permiso."
+            "value" : "LocalShot no pudo mantener el acceso a esta carpeta. Elija la carpeta nuevamente y confirme el permiso."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy n'a pas pu conserver l'accès à ce dossier. Veuillez choisir à nouveau le dossier et confirmer l'autorisation."
+            "value" : "LocalShot n'a pas pu conserver l'accès à ce dossier. Veuillez choisir à nouveau le dossier et confirmer l'autorisation."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy はこのフォルダーへのアクセスを維持できませんでした。もう一度フォルダーを選択し、許可を確認してください。"
+            "value" : "LocalShot はこのフォルダーへのアクセスを維持できませんでした。もう一度フォルダーを選択し、許可を確認してください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy는 이 폴더에 대한 액세스를 유지할 수 없습니다. 폴더를 다시 선택하고 권한을 확인해 주세요."
+            "value" : "LocalShot는 이 폴더에 대한 액세스를 유지할 수 없습니다. 폴더를 다시 선택하고 권한을 확인해 주세요."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy не удалось сохранить доступ к этой папке. Пожалуйста, выберите папку еще раз и подтвердите разрешение."
+            "value" : "LocalShot не удалось сохранить доступ к этой папке. Пожалуйста, выберите папку еще раз и подтвердите разрешение."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy không thể lưu quyền truy cập thư mục này. Vui lòng chọn lại thư mục và xác nhận quyền."
+            "value" : "LocalShot không thể lưu quyền truy cập thư mục này. Vui lòng chọn lại thư mục và xác nhận quyền."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 无法持久访问此文件夹。请再次选择该文件夹并确认权限。"
+            "value" : "LocalShot 无法持久访问此文件夹。请再次选择该文件夹并确认权限。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 無法持久訪問此檔案夾。請再次選擇該檔案夾並確認權限。"
+            "value" : "LocalShot 無法持久訪問此檔案夾。請再次選擇該檔案夾並確認權限。"
           }
         }
       }
@@ -137,61 +137,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wählen Sie, wo Snapzy Screenshots und Aufnahmen speichern soll"
+            "value" : "Wählen Sie, wo LocalShot Screenshots und Aufnahmen speichern soll"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choose where Snapzy should save screenshots and recordings"
+            "value" : "Choose where LocalShot should save screenshots and recordings"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Elija dónde Snapzy debe guardar capturas de pantalla y grabaciones"
+            "value" : "Elija dónde LocalShot debe guardar capturas de pantalla y grabaciones"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choisissez où Snapzy doit enregistrer les captures d'écran et les enregistrements"
+            "value" : "Choisissez où LocalShot doit enregistrer les captures d'écran et les enregistrements"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy がスクリーンショットと録画を保存する場所を選択します"
+            "value" : "LocalShot がスクリーンショットと録画を保存する場所を選択します"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy가 스크린샷과 녹음을 저장할 위치를 선택하세요"
+            "value" : "LocalShot가 스크린샷과 녹음을 저장할 위치를 선택하세요"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выберите, где Snapzy должен сохранять снимки экрана и записи"
+            "value" : "Выберите, где LocalShot должен сохранять снимки экрана и записи"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chọn nơi Snapzy sẽ lưu ảnh chụp và bản ghi"
+            "value" : "Chọn nơi LocalShot sẽ lưu ảnh chụp và bản ghi"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "选择 Snapzy 保存屏幕截图和录音的位置"
+            "value" : "选择 LocalShot 保存屏幕截图和录音的位置"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "選擇 Snapzy 保存螢幕截圖和錄音的位置"
+            "value" : "選擇 LocalShot 保存螢幕截圖和錄音的位置"
           }
         }
       }
@@ -592,61 +592,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy benötigt bestimmte Berechtigungen, um Ihren Bildschirm und Audio aufzunehmen."
+            "value" : "LocalShot benötigt bestimmte Berechtigungen, um Ihren Bildschirm und Audio aufzunehmen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy requires certain permissions to capture your screen and audio."
+            "value" : "LocalShot requires certain permissions to capture your screen and audio."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy requiere ciertos permisos para capturar su pantalla y audio."
+            "value" : "LocalShot requiere ciertos permisos para capturar su pantalla y audio."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy nécessite certaines autorisations pour capturer votre écran et votre audio."
+            "value" : "LocalShot nécessite certaines autorisations pour capturer votre écran et votre audio."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy が画面と音声をキャプチャするには、いくつかの権限が必要です。"
+            "value" : "LocalShot が画面と音声をキャプチャするには、いくつかの権限が必要です。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy가 화면과 오디오를 캡처하려면 특정 권한이 필요합니다."
+            "value" : "LocalShot가 화면과 오디오를 캡처하려면 특정 권한이 필요합니다."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy требует определенных разрешений для захвата экрана и звука."
+            "value" : "LocalShot требует определенных разрешений для захвата экрана и звука."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy cần một số quyền để chụp màn hình và ghi âm."
+            "value" : "LocalShot cần một số quyền để chụp màn hình và ghi âm."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 需要截屏、访问麦克风音频及文件等权限。"
+            "value" : "LocalShot 需要截屏、访问麦克风音频及文件等权限。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 需要擷取螢幕畫面、麥克風音訊與檔案等相關權限。"
+            "value" : "LocalShot 需要擷取螢幕畫面、麥克風音訊與檔案等相關權限。"
           }
         }
       }

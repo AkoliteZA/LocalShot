@@ -10,7 +10,7 @@ import Combine
 import Foundation
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "CloudManager")
+private let logger = Logger(subsystem: "LocalShot", category: "CloudManager")
 
 /// Central manager for cloud storage operations.
 /// Acts as an Adapter/Facade — consumers don't need to know which provider is active.
@@ -46,6 +46,14 @@ final class CloudManager: ObservableObject {
   }
 
   private func loadState() {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      isConfigured = false
+      providerType = nil
+      cachedConfiguration = nil
+      cachedMaskedAccessKey = DisplayStrings.hidden
+      return
+    }
+
     isConfigured = UserDefaults.standard.bool(forKey: PreferencesKeys.cloudConfigured)
     if let typeRaw = UserDefaults.standard.string(forKey: PreferencesKeys.cloudProviderType),
       let type = CloudProviderType(rawValue: typeRaw)
@@ -74,6 +82,10 @@ final class CloudManager: ObservableObject {
     accessKey: String,
     secretKey: String
   ) throws {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      throw CloudError.notConfigured
+    }
+
     DiagnosticLogger.shared.log(
       .info,
       .cloud,
@@ -270,6 +282,10 @@ final class CloudManager: ObservableObject {
 
   /// Create an in-memory snapshot of the current cloud configuration for transfer export.
   func exportTransferPayload() throws -> CloudCredentialTransferPayload {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      throw CloudError.notConfigured
+    }
+
     guard let configuration = loadConfiguration(),
       let credentials = loadCredentialPair(context: "exportTransferPayload")
     else {
@@ -321,6 +337,8 @@ final class CloudManager: ObservableObject {
 
   /// Create the active cloud provider from saved configuration.
   func createProvider() -> CloudProvider? {
+    guard LocalShotV1Policy.cloudUploadsEnabled else { return nil }
+
     guard let config = loadConfiguration() else {
       DiagnosticLogger.shared.log(.warning, .cloud, "Cloud provider creation skipped; configuration missing")
       return nil
@@ -507,6 +525,10 @@ final class CloudManager: ObservableObject {
   /// Updates `isUploading` and `uploadProgress` for UI binding.
   /// - Parameter existingKey: If provided, overwrites existing cloud object with same key
   func upload(fileURL: URL, existingKey: String? = nil) async throws -> CloudUploadResult {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      throw CloudError.notConfigured
+    }
+
     guard let provider = createProvider(),
       let config = loadConfiguration()
     else {
@@ -611,6 +633,10 @@ final class CloudManager: ObservableObject {
 
   /// Delete a single object from cloud storage and remove local record.
   func deleteFromCloud(record: CloudUploadRecord) async throws {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      throw CloudError.notConfigured
+    }
+
     guard let provider = createProvider() else {
       DiagnosticLogger.shared.log(.warning, .cloud, "Cloud delete requested while provider is not configured")
       throw CloudError.notConfigured
@@ -652,6 +678,10 @@ final class CloudManager: ObservableObject {
   /// Also removes the matching record from upload history.
   /// Used for background cleanup when re-uploading with a new key.
   func deleteByKey(key: String) async throws {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      throw CloudError.notConfigured
+    }
+
     guard let provider = createProvider() else {
       DiagnosticLogger.shared.log(.warning, .cloud, "Cloud delete-by-key requested while provider is not configured")
       throw CloudError.notConfigured
@@ -670,6 +700,10 @@ final class CloudManager: ObservableObject {
   /// Delete all objects from cloud storage and clear local records.
   /// Continues on individual failures to delete as many as possible.
   func deleteAllFromCloud(records: [CloudUploadRecord]) async throws {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      throw CloudError.notConfigured
+    }
+
     guard let provider = createProvider() else {
       DiagnosticLogger.shared.log(.warning, .cloud, "Bulk cloud delete requested while provider is not configured")
       throw CloudError.notConfigured
@@ -739,7 +773,7 @@ final class CloudManager: ObservableObject {
       for: .applicationSupportDirectory, in: .userDomainMask
     ).first!
     return appSupport
-      .appendingPathComponent("Snapzy", isDirectory: true)
+      .appendingPathComponent(LocalShotBrand.applicationSupportDirectoryName, isDirectory: true)
       .appendingPathComponent("thumbnails", isDirectory: true)
   }
 

@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class CaptureOutputNamingTests: XCTestCase {
 
@@ -49,8 +49,8 @@ final class CaptureOutputNamingTests: XCTestCase {
       date: fixedDate,
       defaults: defaults
     )
-    // Default template: "Snapzy_{datetime}_{ms}"
-    XCTAssertTrue(result.hasPrefix("Snapzy_"), "Expected template-based name, got: \(result)")
+    // Default template: "LocalShot_{datetime}_{ms}"
+    XCTAssertTrue(result.hasPrefix("LocalShot_"), "Expected template-based name, got: \(result)")
     XCTAssertTrue(result.contains("_"), "Expected datetime separators")
   }
 
@@ -61,7 +61,7 @@ final class CaptureOutputNamingTests: XCTestCase {
       date: fixedDate,
       defaults: defaults
     )
-    XCTAssertTrue(result.hasPrefix("Snapzy_"), "Expected template-based name, got: \(result)")
+    XCTAssertTrue(result.hasPrefix("LocalShot_"), "Expected template-based name, got: \(result)")
   }
 
   func testResolveBaseName_withWhitespaceOnlyCustomName_fallsBackToTemplate() {
@@ -71,7 +71,7 @@ final class CaptureOutputNamingTests: XCTestCase {
       date: fixedDate,
       defaults: defaults
     )
-    XCTAssertTrue(result.hasPrefix("Snapzy_"))
+    XCTAssertTrue(result.hasPrefix("LocalShot_"))
   }
 
   // MARK: - Template Token Expansion
@@ -287,8 +287,8 @@ final class CaptureOutputNamingTests: XCTestCase {
   // MARK: - CaptureOutputKind Properties
 
   func testCaptureOutputKind_defaultTemplates() {
-    XCTAssertEqual(CaptureOutputKind.screenshot.defaultTemplate, "Snapzy_{datetime}_{ms}")
-    XCTAssertEqual(CaptureOutputKind.recording.defaultTemplate, "Snapzy_Recording_{datetime}")
+    XCTAssertEqual(CaptureOutputKind.screenshot.defaultTemplate, "LocalShot_{datetime}_{ms}")
+    XCTAssertEqual(CaptureOutputKind.recording.defaultTemplate, "LocalShot_Recording_{datetime}")
   }
 
   func testCaptureOutputKind_typeTokenValues() {
@@ -309,7 +309,7 @@ final class CaptureOutputNamingTests: XCTestCase {
       defaults: defaults
     )
 
-    // Fallback format: "Snapzy_{yyyy-MM-dd_HH-mm-ss-SSS}"
-    XCTAssertTrue(result.hasPrefix("Snapzy_"), "Expected fallback name, got: \(result)")
+    // Fallback format: "LocalShot_{yyyy-MM-dd_HH-mm-ss-SSS}"
+    XCTAssertTrue(result.hasPrefix("LocalShot_"), "Expected fallback name, got: \(result)")
   }
 }

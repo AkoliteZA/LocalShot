@@ -13,11 +13,11 @@ final class LegacyLicenseCleanupService {
   static let shared = LegacyLicenseCleanupService()
 
   private let defaults = UserDefaults.standard
-  private let keychainService = "com.snapzy.license"
+  private let keychainService = "com.localshot.license"
   private let defaultsKeys = [
-    "com.snapzy.license.cache",
-    "com.snapzy.license.key",
-    "com.snapzy.telemetry.events",
+    "com.localshot.license.cache",
+    "com.localshot.license.key",
+    "com.localshot.telemetry.events",
     "polar_org_id",
     "device_limit",
   ]

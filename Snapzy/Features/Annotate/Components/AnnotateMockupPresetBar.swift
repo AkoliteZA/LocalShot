@@ -2,7 +2,7 @@
 //  MockupPresetBar.swift
 //  Snapzy
 //
-//  Horizontal bar with preset thumbnails (CleanShot style)
+//  Horizontal bar with preset thumbnails (commercial screenshot utilities style)
 //
 
 import SwiftUI

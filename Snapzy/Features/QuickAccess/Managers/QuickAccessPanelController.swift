@@ -3,7 +3,7 @@
 //  Snapzy
 //
 //  Controller for managing quick access panel lifecycle and positioning
-//  with CleanShot X-style slide animations
+//  with commercial screenshot utilities-style slide animations
 //
 
 import AppKit

@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class CloudCoreTests: XCTestCase {
 
@@ -134,7 +134,7 @@ final class CloudCoreTests: XCTestCase {
 
     XCTAssertEqual(
       CloudCredentialTransferService.suggestedArchiveFileName(for: payload),
-      "snapzy-cloud-cloudflare-r2-My-Bucket-2026.snapzycloud"
+      "localshot-cloud-cloudflare-r2-My-Bucket-2026.localshotcloud"
     )
   }
 
@@ -401,10 +401,10 @@ final class CloudCoreTests: XCTestCase {
     XCTAssertNotNil(putRequest)
     XCTAssertTrue(putRequest?.url?.absoluteString.contains("lifecycle") == true)
 
-    // Verify body contains the snapzy expiration rule
+    // Verify body contains the localshot expiration rule
     if let bodyData = putRequest?.httpBody,
        let body = String(data: bodyData, encoding: .utf8) {
-      XCTAssertTrue(body.contains("snapzy-auto-expire"))
+      XCTAssertTrue(body.contains("localshot-auto-expire"))
       XCTAssertTrue(body.contains("<Days>7</Days>"))
     } else {
       XCTFail("PUT lifecycle request should have body data")

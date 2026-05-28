@@ -2,7 +2,7 @@
 //  QuickAccessSound.swift
 //  Snapzy
 //
-//  Sound feedback for QuickAccess actions - CleanShot X inspired
+//  Sound feedback for QuickAccess actions - commercial screenshot utilities inspired
 //
 
 import AppKit

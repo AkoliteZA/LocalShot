@@ -9,7 +9,7 @@ import AppKit
 import Foundation
 import os.log
 
-private let logger = Logger(subsystem: "Snapzy", category: "SandboxFileAccess")
+private let logger = Logger(subsystem: "LocalShot", category: "SandboxFileAccess")
 
 @MainActor
 final class SandboxFileAccessManager {
@@ -40,10 +40,7 @@ final class SandboxFileAccessManager {
   }
 
   var defaultExportDirectory: URL {
-    if let desktop = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first {
-      return desktop.appendingPathComponent("Snapzy", isDirectory: true)
-    }
-    return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Snapzy", isDirectory: true)
+    return LocalShotBrand.defaultExportDirectory
   }
 
   func ensureExportLocationInitialized() {

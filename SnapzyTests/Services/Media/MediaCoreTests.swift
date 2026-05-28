@@ -7,7 +7,7 @@
 
 import CoreGraphics
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class MediaCoreTests: XCTestCase {
 
@@ -21,7 +21,7 @@ final class MediaCoreTests: XCTestCase {
   func testQRPayloadClassifier_distinguishesPlainTextAndCustomSchemes() {
     XCTAssertEqual(QRPayloadClassifier.classify("hello world"), .plainText)
     XCTAssertEqual(QRPayloadClassifier.classify("mailto:hello@example.com"), .urlScheme("mailto"))
-    XCTAssertEqual(QRPayloadClassifier.classify("snapzy://capture/area"), .urlScheme("snapzy"))
+    XCTAssertEqual(QRPayloadClassifier.classify("localshot://capture/area"), .urlScheme("localshot"))
   }
 
   func testQRCodeDetectionResult_hasCopyablePayloadsOnlyWhenDetectionsExist() {

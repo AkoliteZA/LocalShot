@@ -24,7 +24,7 @@ struct HistoryContextMenu: View {
       HistoryWindowController.shared.openItem(record)
     }
 
-    if CloudManager.shared.isConfigured {
+    if LocalShotV1Policy.cloudUploadsEnabled && CloudManager.shared.isConfigured {
       Button {
         manager.uploadToCloud(record)
       } label: {

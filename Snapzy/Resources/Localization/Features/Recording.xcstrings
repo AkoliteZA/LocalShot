@@ -1437,61 +1437,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy benötigt eine Mikrofonberechtigung. Bitte aktivieren Sie es in den Systemeinstellungen > Datenschutz und Sicherheit > Mikrofon."
+            "value" : "LocalShot benötigt eine Mikrofonberechtigung. Bitte aktivieren Sie es in den Systemeinstellungen > Datenschutz und Sicherheit > Mikrofon."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy needs microphone permission. Please enable it in System Settings > Privacy & Security > Microphone."
+            "value" : "LocalShot needs microphone permission. Please enable it in System Settings > Privacy & Security > Microphone."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy necesita permiso del micrófono. Habilítelo en Configuración del sistema > Privacidad y seguridad > Micrófono."
+            "value" : "LocalShot necesita permiso del micrófono. Habilítelo en Configuración del sistema > Privacidad y seguridad > Micrófono."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy a besoin de l'autorisation du microphone. Veuillez l'activer dans Paramètres système > Confidentialité et sécurité > Microphone."
+            "value" : "LocalShot a besoin de l'autorisation du microphone. Veuillez l'activer dans Paramètres système > Confidentialité et sécurité > Microphone."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy にはマイクの許可が必要です。 [システム設定] > [プライバシーとセキュリティ] > [マイク] で有効にしてください。"
+            "value" : "LocalShot にはマイクの許可が必要です。 [システム設定] > [プライバシーとセキュリティ] > [マイク] で有効にしてください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy에는 마이크 권한이 필요합니다. 시스템 설정 > 개인 정보 보호 및 보안 > 마이크에서 활성화해 주세요."
+            "value" : "LocalShot에는 마이크 권한이 필요합니다. 시스템 설정 > 개인 정보 보호 및 보안 > 마이크에서 활성화해 주세요."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy требуется разрешение микрофона. Включите его в «Настройки системы» > «Конфиденциальность и безопасность» > «Микрофон»."
+            "value" : "LocalShot требуется разрешение микрофона. Включите его в «Настройки системы» > «Конфиденциальность и безопасность» > «Микрофон»."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy cần quyền Microphone. Vui lòng bật trong Cài đặt hệ thống > Quyền riêng tư & Bảo mật > Microphone."
+            "value" : "LocalShot cần quyền Microphone. Vui lòng bật trong Cài đặt hệ thống > Quyền riêng tư & Bảo mật > Microphone."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 需要麦克风权限。请在系统设置 > 隐私和安全 > 麦克风中启用它。"
+            "value" : "LocalShot 需要麦克风权限。请在系统设置 > 隐私和安全 > 麦克风中启用它。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 需要麥克風權限。請在系統設置 > 隱私和安全 > 麥克風中啓用它。"
+            "value" : "LocalShot 需要麥克風權限。請在系統設置 > 隱私和安全 > 麥克風中啓用它。"
           }
         }
       }
@@ -1502,61 +1502,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy benötigt eine Mikrofonberechtigung, um Audio aufzunehmen. Bitte gewähren Sie den Zugriff in den Systemeinstellungen."
+            "value" : "LocalShot benötigt eine Mikrofonberechtigung, um Audio aufzunehmen. Bitte gewähren Sie den Zugriff in den Systemeinstellungen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy needs microphone permission to record audio. Please grant access in System Settings."
+            "value" : "LocalShot needs microphone permission to record audio. Please grant access in System Settings."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy necesita permiso del micrófono para grabar audio. Conceda acceso en Configuración del sistema."
+            "value" : "LocalShot necesita permiso del micrófono para grabar audio. Conceda acceso en Configuración del sistema."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy a besoin de l'autorisation du microphone pour enregistrer de l'audio. Veuillez accorder l'accès dans les paramètres système."
+            "value" : "LocalShot a besoin de l'autorisation du microphone pour enregistrer de l'audio. Veuillez accorder l'accès dans les paramètres système."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy が音声を録音するにはマイクの許可が必要です。システム設定でアクセスを許可してください。"
+            "value" : "LocalShot が音声を録音するにはマイクの許可が必要です。システム設定でアクセスを許可してください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy가 오디오를 녹음하려면 마이크 권한이 필요합니다. 시스템 설정에서 액세스 권한을 부여하세요."
+            "value" : "LocalShot가 오디오를 녹음하려면 마이크 권한이 필요합니다. 시스템 설정에서 액세스 권한을 부여하세요."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy требуется разрешение микрофона для записи звука. Пожалуйста, предоставьте доступ в настройках системы."
+            "value" : "LocalShot требуется разрешение микрофона для записи звука. Пожалуйста, предоставьте доступ в настройках системы."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy cần quyền Microphone để ghi âm. Vui lòng cấp quyền trong Cài đặt hệ thống."
+            "value" : "LocalShot cần quyền Microphone để ghi âm. Vui lòng cấp quyền trong Cài đặt hệ thống."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 需要麦克风权限才能录制音频。请在系统设置中授予访问权限。"
+            "value" : "LocalShot 需要麦克风权限才能录制音频。请在系统设置中授予访问权限。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 需要麥克風權限才能錄制音頻。請在系統設置中授予訪問權限。"
+            "value" : "LocalShot 需要麥克風權限才能錄制音頻。請在系統設置中授予訪問權限。"
           }
         }
       }
@@ -4882,61 +4882,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wählen Sie, wo Snapzy Screenshots und Aufnahmen speichern soll"
+            "value" : "Wählen Sie, wo LocalShot Screenshots und Aufnahmen speichern soll"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choose where Snapzy should save screenshots and recordings"
+            "value" : "Choose where LocalShot should save screenshots and recordings"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Elija dónde Snapzy debe guardar capturas de pantalla y grabaciones"
+            "value" : "Elija dónde LocalShot debe guardar capturas de pantalla y grabaciones"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choisissez où Snapzy doit enregistrer les captures d'écran et les enregistrements"
+            "value" : "Choisissez où LocalShot doit enregistrer les captures d'écran et les enregistrements"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy がスクリーンショットと録画を保存する場所を選択します"
+            "value" : "LocalShot がスクリーンショットと録画を保存する場所を選択します"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy가 스크린샷과 녹음을 저장할 위치를 선택하세요"
+            "value" : "LocalShot가 스크린샷과 녹음을 저장할 위치를 선택하세요"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выберите, где Snapzy должен сохранять снимки экрана и записи"
+            "value" : "Выберите, где LocalShot должен сохранять снимки экрана и записи"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chọn nơi Snapzy sẽ lưu ảnh chụp và bản ghi"
+            "value" : "Chọn nơi LocalShot sẽ lưu ảnh chụp và bản ghi"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "选择 Snapzy 保存屏幕截图和录音的位置"
+            "value" : "选择 LocalShot 保存屏幕截图和录音的位置"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "選擇 Snapzy 保存螢幕截圖和錄音的位置"
+            "value" : "選擇 LocalShot 保存螢幕截圖和錄音的位置"
           }
         }
       }
@@ -5857,61 +5857,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy benötigt eine Berechtigung zum Speichern des Ordners, um fortfahren zu können. Bitte wählen Sie im Onboarding einen Ordner aus oder gewähren Sie ihn jetzt."
+            "value" : "LocalShot benötigt eine Berechtigung zum Speichern des Ordners, um fortfahren zu können. Bitte wählen Sie im Onboarding einen Ordner aus oder gewähren Sie ihn jetzt."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy needs a save folder permission to continue. Please choose a folder in onboarding or grant it now."
+            "value" : "LocalShot needs a save folder permission to continue. Please choose a folder in onboarding or grant it now."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy necesita un permiso para guardar la carpeta para continuar. Elija una carpeta en la incorporación o concédala ahora."
+            "value" : "LocalShot necesita un permiso para guardar la carpeta para continuar. Elija una carpeta en la incorporación o concédala ahora."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy a besoin d'une autorisation de dossier de sauvegarde pour continuer. Veuillez choisir un dossier lors de l'intégration ou l'accorder maintenant."
+            "value" : "LocalShot a besoin d'une autorisation de dossier de sauvegarde pour continuer. Veuillez choisir un dossier lors de l'intégration ou l'accorder maintenant."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "続行するには Snapzy に保存フォルダの権限が必要です。オンボーディングでフォルダを選択するか、今すぐ権限を許可してください。"
+            "value" : "続行するには LocalShot に保存フォルダの権限が必要です。オンボーディングでフォルダを選択するか、今すぐ権限を許可してください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "계속하려면 Snapzy에 폴더 저장 권한이 필요합니다. 온보딩에서 폴더를 선택하거나 지금 부여하세요."
+            "value" : "계속하려면 LocalShot에 폴더 저장 권한이 필요합니다. 온보딩에서 폴더를 선택하거나 지금 부여하세요."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Чтобы продолжить, Snapzy требуется разрешение на сохранение папки. Пожалуйста, выберите папку при регистрации или предоставьте ее сейчас."
+            "value" : "Чтобы продолжить, LocalShot требуется разрешение на сохранение папки. Пожалуйста, выберите папку при регистрации или предоставьте ее сейчас."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy cần quyền vào thư mục lưu để tiếp tục. Hãy chọn thư mục trong onboarding hoặc cấp quyền ngay bây giờ."
+            "value" : "LocalShot cần quyền vào thư mục lưu để tiếp tục. Hãy chọn thư mục trong onboarding hoặc cấp quyền ngay bây giờ."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 需要保存文件夹权限才能继续。请在入门中选择一个文件夹或立即授予它。"
+            "value" : "LocalShot 需要保存文件夹权限才能继续。请在入门中选择一个文件夹或立即授予它。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Snapzy 需要保存檔案夾權限才能繼續。請在入門中選擇一個檔案夾或立即授予它。"
+            "value" : "LocalShot 需要保存檔案夾權限才能繼續。請在入門中選擇一個檔案夾或立即授予它。"
           }
         }
       }

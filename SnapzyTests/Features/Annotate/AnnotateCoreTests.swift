@@ -9,7 +9,7 @@ import CoreGraphics
 import AppKit
 import SwiftUI
 import XCTest
-@testable import Snapzy
+@testable import LocalShot
 
 final class AnnotateCoreTests: XCTestCase {
   // Keep AnnotateState alive for the test process; XCTest scope cleanup can
@@ -607,7 +607,7 @@ final class AnnotateCoreTests: XCTestCase {
     guard case .watermark(let text) = annotation.type else {
       return XCTFail("Expected watermark annotation, got \(annotation.type)")
     }
-    XCTAssertEqual(text, "Snapzy")
+    XCTAssertEqual(text, "LocalShot")
     XCTAssertEqual(annotation.bounds, CGRect(x: 290, y: 205, width: 420, height: 90))
   }
 
@@ -1460,7 +1460,7 @@ final class AnnotateCoreTests: XCTestCase {
     arrowStyle: ArrowStyle = .straight,
     blurType: BlurType = .pixelated,
     counterValue: Int = 1,
-    watermarkText: String = "Snapzy",
+    watermarkText: String = "LocalShot",
     bounds: CGRect = CGRect(x: 0, y: 0, width: 400, height: 300)
   ) -> AnnotationFactory.CreationContext {
     AnnotationFactory.CreationContext(
