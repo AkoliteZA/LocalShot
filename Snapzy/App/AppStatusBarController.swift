@@ -436,7 +436,9 @@ final class AppStatusBarController: ObservableObject {
     menu?.addItem(NSMenuItem.separator())
 
     let saveLocationItem = NSMenuItem(
-      title: "Saving to ~/Pictures/LocalShot",
+      title: MenuSaveLocationFormatter.title(
+        for: SandboxFileAccessManager.shared.exportLocationPath
+      ),
       action: nil,
       keyEquivalent: ""
     )
