@@ -1,6 +1,36 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "preferences-history.local-history-description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep screenshots, recordings, thumbnails, and metadata locally on this Mac"
+          }
+        }
+      }
+    },
+    "preferences-history.local-history-section": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local History"
+          }
+        }
+      }
+    },
+    "preferences-history.local-history-title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Store Capture History"
+          }
+        }
+      }
+    },
     "preferences-advanced.config-sync-confirmation-message": {
       "localizations": {
         "de": {

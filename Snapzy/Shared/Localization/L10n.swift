@@ -17,6 +17,7 @@ enum L10n {
     ("app-identity.", "Common"),
     ("permission-row.", "Permissions"),
     ("onboarding.", "Onboarding"),
+    ("sponsor.", "Onboarding"),
     ("preferences.tab.", "Settings"),
     ("preferences-general.", "Settings"),
     ("preferences-capture.", "Capture"),
@@ -1540,6 +1541,39 @@ enum L10n {
     )
   }
 
+  enum Sponsor {
+    static let onboardingTitle = string(
+      "onboarding.sponsor.title",
+      defaultValue: "Sponsor the Author",
+      comment: "Onboarding sponsor screen title"
+    )
+    static let onboardingDescription = string(
+      "onboarding.sponsor.description",
+      defaultValue: "LocalShot is now open-source. If it saves you time, consider supporting ongoing development.",
+      comment: "Onboarding sponsor screen description"
+    )
+    static let onboardingOptionalNote = string(
+      "onboarding.sponsor.optional-note",
+      defaultValue: "Support is optional. LocalShot remains fully usable without sponsoring.",
+      comment: "Onboarding sponsor screen optional support note"
+    )
+    static let directSupport = string(
+      "sponsor.direct-support",
+      defaultValue: "Direct support",
+      comment: "Sponsor option label for direct support"
+    )
+    static let oneTimeTip = string(
+      "sponsor.one-time-tip",
+      defaultValue: "One-time tip",
+      comment: "Sponsor option label for one-time support"
+    )
+    static let recurringSupport = string(
+      "sponsor.recurring-support",
+      defaultValue: "Recurring support",
+      comment: "Sponsor option label for recurring support"
+    )
+  }
+
   enum ShortcutOverlay {
     static let title = string(
       "shortcut-overlay.title",
@@ -1942,6 +1976,21 @@ enum L10n {
       "preferences-general.no-logs",
       defaultValue: "No logs",
       comment: "Label shown when there are no diagnostic log files"
+    )
+    static let reportIssueTitle = string(
+      "preferences-general.report-issue-title",
+      defaultValue: "Report a Problem",
+      comment: "General preferences diagnostics row title for reporting an issue"
+    )
+    static let reportIssueDescription = string(
+      "preferences-general.report-issue-description",
+      defaultValue: "Send a diagnostic log bundle at %@ when something goes wrong",
+      comment: "General preferences diagnostics row description for reporting an issue"
+    )
+    static let openReportPageButton = string(
+      "preferences-general.open-report-page-button",
+      defaultValue: "Open Report Page",
+      comment: "General preferences button title for opening the issue report page"
     )
     static let defaultSaveLocation = string(
       "preferences-general.default-save-location",
@@ -2918,6 +2967,26 @@ enum L10n {
       "preferences-about.github",
       defaultValue: "GitHub",
       comment: "Tooltip for GitHub link"
+    )
+    static let supportTitle = string(
+      "preferences-about.support-title",
+      defaultValue: "Support LocalShot",
+      comment: "About screen support section title"
+    )
+    static let supportDescription = string(
+      "preferences-about.support-description",
+      defaultValue: "LocalShot is open-source. Sponsor ongoing development if it helps your workflow.",
+      comment: "About screen support section description"
+    )
+    static let reportProblem = string(
+      "preferences-about.report-problem",
+      defaultValue: "Report a Problem",
+      comment: "About screen report problem link title"
+    )
+    static let reportBug = string(
+      "preferences-about.report-bug",
+      defaultValue: "Report a Bug",
+      comment: "About screen report bug link title"
     )
   }
 

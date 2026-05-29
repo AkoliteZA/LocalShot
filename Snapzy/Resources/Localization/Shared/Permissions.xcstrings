@@ -1,6 +1,26 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "preferences-permissions.local-build-note-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save Folder access is granted from LocalShot's folder picker, not System Settings. Microphone appears in System Settings only after LocalShot asks once. If prompts return after rebuilds, run the install script, reset LocalShot permissions, and grant once from /Applications/LocalShot.app."
+          }
+        }
+      }
+    },
+    "preferences-permissions.local-build-note-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local Build Permission Note"
+          }
+        }
+      }
+    },
     "file-access.bookmark-save-failed-message" : {
       "extractionState" : "stale",
       "localizations" : {

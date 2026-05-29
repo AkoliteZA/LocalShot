@@ -123,7 +123,8 @@ final class HistoryFloatingLayoutTests: XCTestCase {
         "Cloud upload disabled",
         "No accounts",
         "No telemetry",
-        "No auto-update checks",
+        "No auto-update checks in v1",
+        "Storage: ~/Library/Application Support/LocalShot",
       ]
     )
   }

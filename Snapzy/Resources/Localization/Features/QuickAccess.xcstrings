@@ -1,6 +1,36 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "preferences-quick-access.action-ocr" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OCR"
+          }
+        }
+      }
+    },
+    "quick-access.ocr-image-unavailable" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to read screenshot for OCR"
+          }
+        }
+      }
+    },
+    "quick-access.ocr-unsupported-item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OCR is only available for screenshots"
+          }
+        }
+      }
+    },
     "preferences-quick-access.action-edit" : {
       "extractionState" : "stale",
       "localizations" : {

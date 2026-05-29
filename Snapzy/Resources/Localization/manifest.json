@@ -1,5 +1,5 @@
 {
-  "sourceDirectory": "LocalShot/Resources/Localization",
+  "sourceDirectory": "Snapzy/Resources/Localization",
   "sourceLanguage": "en",
   "version": "1.0",
   "fragments": [
@@ -64,6 +64,7 @@
       "file": "Features/Onboarding.xcstrings",
       "prefixes": [
         "onboarding.",
+        "sponsor.",
         "splash."
       ]
     },

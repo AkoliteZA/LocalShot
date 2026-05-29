@@ -1,6 +1,56 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "preferences-shortcuts.make-default-button" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make Default"
+          }
+        }
+      }
+    },
+    "preferences-shortcuts.make-default-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assign ⌘⇧3, ⌘⇧4, and ⌘⇧5 to LocalShot and turn off the overlapping macOS screenshot shortcuts."
+          }
+        }
+      }
+    },
+    "preferences-shortcuts.make-default-fallback" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS did not allow LocalShot to change those shortcuts automatically. Open Keyboard Shortcuts Settings and turn off the Screenshot shortcuts."
+          }
+        }
+      }
+    },
+    "preferences-shortcuts.make-default-success" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LocalShot is now using the standard screenshot shortcuts."
+          }
+        }
+      }
+    },
+    "preferences-shortcuts.make-default-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make LocalShot the Default"
+          }
+        }
+      }
+    },
     "preferences-shortcuts.action-required" : {
       "extractionState" : "stale",
       "localizations" : {

@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "app-identity.ad-hoc-signature" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This local build is ad-hoc signed. The install script gives packaged builds a stable LocalShot requirement, but a trusted local code-signing identity is still stronger for long-term permission stability."
+          }
+        }
+      }
+    },
     "action.capture-area" : {
       "extractionState" : "stale",
       "localizations" : {
