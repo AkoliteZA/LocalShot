@@ -15,11 +15,31 @@ private let logger = Logger(subsystem: "LocalShot", category: "SandboxFileAccess
 final class SandboxFileAccessManager {
   static let shared = SandboxFileAccessManager()
 
-  private let defaults = UserDefaults.standard
+  private let defaults: UserDefaults
+  private let fileManager: FileManager
+  private let defaultExportDirectoryProvider: () -> URL
+  private let securityScopeAccessProvider: (URL) -> Bool
+  private let securityScopeStopProvider: (URL) -> Void
   private var didPromptForMissingExportPermissionThisSession = false
   private var didAttemptLegacyMigrationThisSession = false
 
-  private init() {}
+  init(
+    defaults: UserDefaults = .standard,
+    fileManager: FileManager = .default,
+    defaultExportDirectoryProvider: @escaping () -> URL = { LocalShotBrand.defaultExportDirectory },
+    securityScopeAccessProvider: @escaping (URL) -> Bool = {
+      $0.startAccessingSecurityScopedResource()
+    },
+    securityScopeStopProvider: @escaping (URL) -> Void = {
+      $0.stopAccessingSecurityScopedResource()
+    }
+  ) {
+    self.defaults = defaults
+    self.fileManager = fileManager
+    self.defaultExportDirectoryProvider = defaultExportDirectoryProvider
+    self.securityScopeAccessProvider = securityScopeAccessProvider
+    self.securityScopeStopProvider = securityScopeStopProvider
+  }
 
   struct ScopedAccess: Sendable {
     let url: URL
@@ -40,7 +60,7 @@ final class SandboxFileAccessManager {
   }
 
   var defaultExportDirectory: URL {
-    return LocalShotBrand.defaultExportDirectory
+    return defaultExportDirectoryProvider()
   }
 
   func ensureExportLocationInitialized() {
@@ -68,18 +88,19 @@ final class SandboxFileAccessManager {
   var hasPersistedExportPermission: Bool {
     ensureExportLocationInitialized()
     guard let bookmarkURL = resolveExportBookmarkURL(removeInvalidBookmark: true) else {
-      return false
+      return canWriteToExportDirectory(exportLocationURL)
     }
 
-    let didStart = bookmarkURL.startAccessingSecurityScopedResource()
+    let didStart = securityScopeAccessProvider(bookmarkURL)
     if didStart {
-      bookmarkURL.stopAccessingSecurityScopedResource()
+      securityScopeStopProvider(bookmarkURL)
       return true
     }
 
-    // A failed startAccessing means the persisted scope is unusable.
-    // Require user to re-grant via folder picker.
-    return false
+    // Some local/dev builds can write to the chosen folder even when macOS
+    // reports that no security scope was started. Probe the directory before
+    // surfacing another permission prompt.
+    return canWriteToExportDirectory(bookmarkURL)
   }
 
   func resolvedExportDirectoryURL() -> URL {
@@ -292,6 +313,32 @@ final class SandboxFileAccessManager {
           "success": didMigrate ? "true" : "false",
         ]
       )
+    }
+  }
+
+  private func canWriteToExportDirectory(_ directoryURL: URL) -> Bool {
+    let directory = directoryURL.standardizedFileURL
+    let probeURL = directory.appendingPathComponent(
+      ".localshot-permission-check-\(UUID().uuidString)",
+      isDirectory: false
+    )
+
+    do {
+      try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+      guard fileManager.createFile(atPath: probeURL.path, contents: Data()) else {
+        return false
+      }
+      try? fileManager.removeItem(at: probeURL)
+      return true
+    } catch {
+      try? fileManager.removeItem(at: probeURL)
+      DiagnosticLogger.shared.logError(
+        .fileAccess,
+        error,
+        "Export directory write probe failed",
+        context: ["directory": directory.lastPathComponent]
+      )
+      return false
     }
   }
 
