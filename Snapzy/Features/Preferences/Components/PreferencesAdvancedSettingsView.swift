@@ -10,7 +10,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct AdvancedSettingsView: View {
-  @AppStorage(PreferencesKeys.diagnosticsEnabled) private var diagnosticsEnabled = true
+  @AppStorage(PreferencesKeys.diagnosticsEnabled) private var diagnosticsEnabled = false
   @AppStorage(PreferencesKeys.diagnosticsRetentionDays) private var diagnosticsRetentionDays = LogCleanupScheduler.defaultRetentionDays
 
   @State private var needsConfigAccess = SnapzyConfigurationService.shared.needsUserSelectedConfigAccess

@@ -36,8 +36,8 @@ struct SplashOnboardingRootView: View {
   @StateObject private var onboardingLocalization = OnboardingLocalizationController()
   @ObservedObject private var screenCaptureManager = ScreenCaptureManager.shared
 
-  private static let defaultOnboardingSteps: [SplashScreen] = [
-    .language, .permissions, .configAccess, .shortcuts, .diagnostics, .completion,
+  static let defaultOnboardingStepsForLocalShotV1: [SplashScreen] = [
+    .language, .permissions, .configAccess, .shortcuts, .completion,
   ]
 
   init(
@@ -49,7 +49,7 @@ struct SplashOnboardingRootView: View {
   ) {
     self.needsOnboarding = needsOnboarding
     self.showSponsorPrompt = showSponsorPrompt
-    self.onboardingSteps = onboardingSteps ?? Self.defaultOnboardingSteps
+    self.onboardingSteps = onboardingSteps ?? Self.defaultOnboardingStepsForLocalShotV1
     self.onDismiss = onDismiss
     _currentScreen = State(initialValue: initialScreen)
   }
@@ -104,10 +104,10 @@ struct SplashOnboardingRootView: View {
         case .shortcuts:
           ShortcutsView(
             onBack: { navigateBackward(to: .configAccess) },
-            onDecline: { navigateForward(to: .diagnostics) },
+            onDecline: { navigateForward(to: .completion) },
             onAccept: {
               KeyboardShortcutManager.shared.enable()
-              navigateForward(to: .diagnostics)
+              navigateForward(to: .completion)
             }
           )
           .transition(stepTransition)
@@ -121,7 +121,7 @@ struct SplashOnboardingRootView: View {
 
         case .completion:
           CompletionView(
-            onBack: { navigateBackward(to: .diagnostics) },
+            onBack: { navigateBackward(to: .shortcuts) },
             onComplete: handleComplete
           )
           .transition(stepTransition)

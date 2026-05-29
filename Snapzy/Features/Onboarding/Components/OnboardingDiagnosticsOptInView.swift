@@ -12,7 +12,7 @@ struct DiagnosticsOptInView: View {
   let onNext: () -> Void
 
   @EnvironmentObject private var onboardingLocalization: OnboardingLocalizationController
-  @AppStorage(PreferencesKeys.diagnosticsEnabled) private var diagnosticsEnabled = true
+  @AppStorage(PreferencesKeys.diagnosticsEnabled) private var diagnosticsEnabled = false
 
   var body: some View {
     OnboardingStepContainer(onBack: onBack) {
