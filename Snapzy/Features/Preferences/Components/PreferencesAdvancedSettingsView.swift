@@ -154,7 +154,7 @@ struct AdvancedSettingsView: View {
         }
       }
     }
-    .formStyle(.grouped)
+    .preferencesFormSurface()
     .onAppear {
       refreshConfigAccessState()
       if LocalShotV1Policy.diagnosticsPreferencesVisible {

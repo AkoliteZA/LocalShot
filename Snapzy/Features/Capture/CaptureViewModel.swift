@@ -249,6 +249,13 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
     return session
   }
 
+  private func hasVisibleOwnCaptureWindow() -> Bool {
+    NSApp.windows.contains {
+      $0.isVisible &&
+      $0.className != "NSStatusBarWindow"
+    }
+  }
+
   // MARK: - Quick Access Settings
 
   var quickAccessEnabled: Bool {
@@ -569,6 +576,8 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
 
     // Hide only normal-level app windows (not overlay panels) to avoid hiding pooled overlay windows
     let hiddenWindowSession = hideVisibleNormalWindowsIfNeeded(shouldHideOwnWindows)
+    let canUseFastPathWhenOwnApplicationHidden = excludeOwnApplication
+      && !hasVisibleOwnCaptureWindow()
 
     // Give WindowServer enough time to fully remove hidden app windows before
     // the frozen backdrop is prepared.
@@ -592,10 +601,11 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
             showCursor: showCursor,
             excludeDesktopIcons: excludeDesktopIcons,
             excludeDesktopWidgets: excludeDesktopWidgets,
-            excludeOwnApplication: excludeOwnApplication
+            excludeOwnApplication: excludeOwnApplication,
+            allowFastPathWhenOwnApplicationHidden: canUseFastPathWhenOwnApplicationHidden
           ) {
             frozenSession = FrozenAreaCaptureSession.fromSnapshot(fastSnapshot)
-            captureMode = "coregraphics"
+            captureMode = excludeOwnApplication ? "coregraphics-own-app-hidden" : "coregraphics"
           } else {
             let shareableContentTask = prefetchedContentTask ?? self.captureManager.prefetchShareableContent(
               includeDesktopWindows: excludeDesktopIcons || excludeDesktopWidgets
@@ -681,6 +691,8 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
       includeDesktopWindows: excludeDesktopIcons || excludeDesktopWidgets
     )
     let hiddenWindowSession = hideVisibleNormalWindowsIfNeeded(excludeOwnApplication)
+    let canUseFastPathWhenOwnApplicationHidden = excludeOwnApplication
+      && !hasVisibleOwnCaptureWindow()
     let snapshotDelay = hiddenWindowSession.didHideWindows ? frozenSnapshotWindowHideSettleDelay : 0
 
     DispatchQueue.main.asyncAfter(deadline: .now() + snapshotDelay) { [weak self] in
@@ -699,6 +711,7 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
             excludeDesktopIcons: excludeDesktopIcons,
             excludeDesktopWidgets: excludeDesktopWidgets,
             excludeOwnApplication: excludeOwnApplication,
+            allowFastPathWhenOwnApplicationHidden: canUseFastPathWhenOwnApplicationHidden,
             prefetchedContentTask: prefetchedContentTask
           )
           frozenSession = preparedSession.session
@@ -780,9 +793,13 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
     excludeDesktopIcons: Bool,
     excludeDesktopWidgets: Bool,
     excludeOwnApplication: Bool,
+    allowFastPathWhenOwnApplicationHidden: Bool,
     prefetchedContentTask: ShareableContentPrefetchTask?
   ) async throws -> (session: FrozenAreaCaptureSession, mode: String) {
-    if !showCursor, !excludeDesktopIcons, !excludeDesktopWidgets, !excludeOwnApplication {
+    if !showCursor,
+       !excludeDesktopIcons,
+       !excludeDesktopWidgets,
+       (!excludeOwnApplication || allowFastPathWhenOwnApplicationHidden) {
       let snapshots = NSScreen.screens.compactMap { screen -> FrozenDisplaySnapshot? in
         guard let displayID = screen.displayID else { return nil }
         return captureManager.captureFastDisplaySnapshot(
@@ -790,11 +807,13 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
           showCursor: false,
           excludeDesktopIcons: false,
           excludeDesktopWidgets: false,
-          excludeOwnApplication: false
+          excludeOwnApplication: excludeOwnApplication,
+          allowFastPathWhenOwnApplicationHidden: allowFastPathWhenOwnApplicationHidden
         )
       }
       if !snapshots.isEmpty, snapshots.count == NSScreen.screens.count {
-        return (FrozenAreaCaptureSession.fromSnapshots(snapshots), "coregraphics-all")
+        let mode = excludeOwnApplication ? "coregraphics-own-app-hidden-all" : "coregraphics-all"
+        return (FrozenAreaCaptureSession.fromSnapshots(snapshots), mode)
       }
     }
 

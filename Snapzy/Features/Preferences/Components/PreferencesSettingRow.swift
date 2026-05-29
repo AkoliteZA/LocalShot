@@ -41,5 +41,6 @@ struct SettingRow<Content: View>: View {
       content()
     }
     .padding(.vertical, 4)
+    .preferencesRowSurface()
   }
 }

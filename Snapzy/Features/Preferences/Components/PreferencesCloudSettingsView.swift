@@ -87,7 +87,7 @@ struct CloudSettingsView: View {
 
       uploadsWindowSection
     }
-    .formStyle(.grouped)
+    .preferencesFormSurface()
     .alert(L10n.CloudSettings.resetConfigurationTitle, isPresented: $showResetConfirmation) {
       Button(L10n.CloudSettings.reset, role: .destructive) {
         cloudManager.clearConfiguration()

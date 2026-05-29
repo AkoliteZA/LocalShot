@@ -2,7 +2,7 @@
 
 ## Scope
 
-LocalShot v1 is a private local-first macOS screenshot and recording utility based on Snapzy. It keeps local capture, quick access, annotation, OCR, screen recording, GIF export, pinning, and history.
+LocalShot v1 is a local-first macOS screenshot and recording utility forked from Snapzy by Trong Duong Duc. It keeps local capture, quick access, annotation, OCR, screen recording, GIF export, pinning, and history while preserving the original BSD 3-Clause attribution.
 
 ## Explicit Non-Goals
 
@@ -11,7 +11,7 @@ LocalShot v1 is a private local-first macOS screenshot and recording utility bas
 - Telemetry or analytics
 - External crash-report submission
 - Public auto-update checks
-- Notarized public installer
+- Automatic public update feed
 - Complex video timeline editing
 
 ## Scrolling Capture Limitations

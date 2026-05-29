@@ -104,6 +104,6 @@ struct PreferencesLanguageSettingRow: View {
       PreferencesLanguageSettingRow()
     }
   }
-  .formStyle(.grouped)
+  .preferencesFormSurface()
   .frame(width: 640, height: 180)
 }

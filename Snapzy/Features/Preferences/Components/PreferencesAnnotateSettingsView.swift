@@ -64,7 +64,7 @@ struct AnnotateSettingsView: View {
         .disabled(annotateCloseAfterDrag)
       }
     }
-    .formStyle(.grouped)
+    .preferencesFormSurface()
   }
 }
 

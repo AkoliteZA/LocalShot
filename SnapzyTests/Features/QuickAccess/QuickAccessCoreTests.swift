@@ -223,12 +223,29 @@ final class QuickAccessCoreTests: XCTestCase {
       QuickAccessActionSlot.defaultAssignments,
       [
         .centerTop: .copy,
-        .centerBottom: .saveOrOpen,
+        .centerBottom: .delete,
         .topTrailing: .ocr,
-        .topLeading: .delete,
+        .topLeading: .dismiss,
         .bottomLeading: .edit,
         .bottomTrailing: .pinToScreen,
       ]
+    )
+  }
+
+  func testQuickAccessActionConfigurationStore_defaultsExposeManualCloseButton() {
+    let defaults = makeIsolatedDefaults()
+    let store = makeActionConfigurationStore(defaults: defaults)
+
+    XCTAssertEqual(store.action(in: .topLeading), .dismiss)
+    XCTAssertEqual(QuickAccessActionKind.dismiss.systemImage, "xmark")
+    XCTAssertTrue(store.isEnabled(.dismiss))
+    XCTAssertTrue(store.orderedActions(includeDisabled: false).contains(.delete))
+  }
+
+  func testQuickAccessFloatingTooltipsUseTwoSecondHoverDelay() {
+    XCTAssertEqual(
+      QuickAccessTooltipConfiguration.displayDelayNanoseconds,
+      2_000_000_000
     )
   }
 
@@ -364,6 +381,57 @@ final class QuickAccessCoreTests: XCTestCase {
     XCTAssertEqual(store.orderedActions(includeDisabled: false), QuickAccessActionKind.defaultOrder)
     XCTAssertEqual(store.slotAssignments, QuickAccessActionSlot.defaultAssignments)
     XCTAssertEqual(store.action(in: .topTrailing), .ocr)
+  }
+
+  func testQuickAccessActionConfigurationStore_migratesPreviousDefaultSlotsToManualClose() {
+    let defaults = makeIsolatedDefaults()
+    defaults.set(
+      QuickAccessActionKind.defaultOrder.map(\.rawValue),
+      forKey: PreferencesKeys.quickAccessActionOrder
+    )
+    defaults.set(
+      QuickAccessActionKind.defaultOrder.map(\.rawValue),
+      forKey: PreferencesKeys.quickAccessEnabledActions
+    )
+    defaults.set(
+      [
+        QuickAccessActionSlot.centerTop.rawValue: QuickAccessActionKind.copy.rawValue,
+        QuickAccessActionSlot.centerBottom.rawValue: QuickAccessActionKind.saveOrOpen.rawValue,
+        QuickAccessActionSlot.topTrailing.rawValue: QuickAccessActionKind.ocr.rawValue,
+        QuickAccessActionSlot.topLeading.rawValue: QuickAccessActionKind.delete.rawValue,
+        QuickAccessActionSlot.bottomLeading.rawValue: QuickAccessActionKind.edit.rawValue,
+        QuickAccessActionSlot.bottomTrailing.rawValue: QuickAccessActionKind.pinToScreen.rawValue,
+      ],
+      forKey: PreferencesKeys.quickAccessActionSlotAssignments
+    )
+
+    let store = makeActionConfigurationStore(defaults: defaults)
+
+    XCTAssertEqual(store.slotAssignments, QuickAccessActionSlot.defaultAssignments)
+    XCTAssertEqual(store.action(in: .topLeading), .dismiss)
+    XCTAssertTrue(store.orderedActions(includeDisabled: false).contains(.delete))
+  }
+
+  func testQuickAccessActionConfigurationStore_migratesPersistedTrashCornerToCloseWithoutResettingOtherSlots() {
+    let defaults = makeIsolatedDefaults()
+    defaults.set(
+      [
+        QuickAccessActionSlot.centerTop.rawValue: QuickAccessActionKind.copy.rawValue,
+        QuickAccessActionSlot.centerBottom.rawValue: "",
+        QuickAccessActionSlot.topTrailing.rawValue: QuickAccessActionKind.ocr.rawValue,
+        QuickAccessActionSlot.topLeading.rawValue: QuickAccessActionKind.delete.rawValue,
+        QuickAccessActionSlot.bottomLeading.rawValue: QuickAccessActionKind.edit.rawValue,
+        QuickAccessActionSlot.bottomTrailing.rawValue: QuickAccessActionKind.pinToScreen.rawValue,
+      ],
+      forKey: PreferencesKeys.quickAccessActionSlotAssignments
+    )
+
+    let store = makeActionConfigurationStore(defaults: defaults)
+
+    XCTAssertEqual(store.action(in: .topLeading), .dismiss)
+    XCTAssertEqual(store.action(in: .centerBottom), .delete)
+    XCTAssertEqual(store.action(in: .topTrailing), .ocr)
+    XCTAssertTrue(store.orderedActions(includeDisabled: false).contains(.delete))
   }
 
   func testQuickAccessActionConfigurationStore_filtersCloudUploadForLocalShotV1() {

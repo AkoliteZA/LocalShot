@@ -68,6 +68,31 @@ final class ShortcutCoreTests: XCTestCase {
     XCTAssertEqual(relevant, [.fullscreen, .area, .recording])
   }
 
+  func testDisablingSystemScreenshotHotkeys_preservesValuesAndDisablesScreenshotIDs() {
+    let hotkeys: [String: Any] = [
+      "28": [
+        "enabled": true,
+        "value": ["parameters": [36, Int(kVK_ANSI_4), 1179648], "type": "standard"],
+      ],
+      "30": [
+        "enabled": true,
+        "value": ["parameters": [35, Int(kVK_ANSI_3), 1179648], "type": "standard"],
+      ],
+      "60": ["enabled": true],
+    ]
+
+    let updated = SystemScreenshotShortcutManager.hotkeysByDisablingSystemScreenshotShortcuts(hotkeys)
+
+    for id in ["28", "29", "30", "31", "184"] {
+      let entry = try? XCTUnwrap(updated[id] as? [String: Any])
+      XCTAssertEqual(entry?["enabled"] as? Bool, false)
+    }
+
+    let areaEntry = updated["28"] as? [String: Any]
+    XCTAssertNotNil(areaEntry?["value"])
+    XCTAssertEqual((updated["60"] as? [String: Any])?["enabled"] as? Bool, true)
+  }
+
   func testAreaAnnotateDefaultEnabledUnlessPersistedDisabled() {
     let freshDefaults = KeyboardShortcutManager.disabledShortcutSet(from: nil)
     XCTAssertFalse(freshDefaults.contains(.areaAnnotate))

@@ -192,7 +192,7 @@ struct HistorySettingsView: View {
         }
       }
     }
-    .formStyle(.grouped)
+    .preferencesFormSurface()
     .onAppear {
       updateCaptureStorageSize()
     }

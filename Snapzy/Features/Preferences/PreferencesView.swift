@@ -49,7 +49,10 @@ struct PreferencesView: View {
         .tabItem { Label(L10n.Preferences.aboutTab, systemImage: "info.circle.fill") }
         .tag(PreferencesTab.about)
     }
-    .frame(width: 760, height: 550)
+    .frame(minWidth: 760, minHeight: 550)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .preferencesRootSurface()
+    .preferredColorScheme(themeManager.systemAppearance)
   }
 }
 

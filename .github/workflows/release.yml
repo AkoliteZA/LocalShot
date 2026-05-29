@@ -1,0 +1,93 @@
+name: Build Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, for example v1.20.1"
+        required: true
+        type: string
+      prerelease:
+        description: "Mark release as prerelease"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  build-release:
+    runs-on: macos-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate tag
+        run: |
+          set -euo pipefail
+          if ! printf '%s\n' "${{ inputs.tag }}" | grep -Eq '^v[0-9]+[.][0-9]+[.][0-9]+([-.][A-Za-z0-9.]+)?$'; then
+            echo "::error::Tag must look like v1.20.1"
+            exit 1
+          fi
+
+      - name: Package app
+        run: |
+          set -euo pipefail
+          CONFIGURATION=Release ./scripts/localshot-build.sh package
+          codesign --verify --deep --strict --verbose=2 build/package/LocalShot.app
+
+      - name: Create release archive
+        run: |
+          set -euo pipefail
+          TAG="${{ inputs.tag }}"
+          ARCHIVE="LocalShot-${TAG}.zip"
+          ditto -c -k --keepParent build/package/LocalShot.app "build/${ARCHIVE}"
+          shasum -a 256 "build/${ARCHIVE}" > "build/${ARCHIVE}.sha256"
+          echo "archive=build/${ARCHIVE}" >> "$GITHUB_ENV"
+          echo "checksum=build/${ARCHIVE}.sha256" >> "$GITHUB_ENV"
+
+      - name: Create release notes
+        run: |
+          set -euo pipefail
+          TAG="${{ inputs.tag }}"
+          {
+            echo "# LocalShot ${TAG}"
+            echo
+            echo "Download the zip, unzip it, move LocalShot.app to Applications, then open it once with Right-click > Open if macOS warns that the app cannot be verified."
+            echo
+            echo "This build is ad-hoc signed by default. A Developer ID-notarized build can be published later by extending this workflow with Apple signing and notarization secrets."
+            echo
+            echo "## Checksum"
+            echo
+            echo '```'
+            cat "${checksum}"
+            echo '```'
+          } > build/release-notes.md
+
+      - name: Publish GitHub release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ inputs.tag }}"
+          git tag -f "$TAG"
+          git push origin "$TAG" --force
+
+          FLAGS=()
+          if [ "${{ inputs.prerelease }}" = "true" ]; then
+            FLAGS+=(--prerelease)
+          fi
+
+          gh release create "$TAG" \
+            "${archive}" \
+            "${checksum}" \
+            --title "LocalShot ${TAG}" \
+            --notes-file build/release-notes.md \
+            "${FLAGS[@]}"

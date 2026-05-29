@@ -594,7 +594,10 @@ struct QuickAccessCardView: View {
       .onTapGesture {
         manager.togglePin(id: item.id)
       }
-      .help(item.isPinned ? L10n.PreferencesQuickAccess.unpinAction : L10n.PreferencesQuickAccess.pinToScreenAction)
+      .quickAccessTooltip(
+        item.isPinned ? L10n.PreferencesQuickAccess.unpinAction : L10n.PreferencesQuickAccess.pinToScreenAction,
+        placement: .trailing
+      )
   }
 
   private var hoverOverlay: some View {
@@ -618,9 +621,12 @@ struct QuickAccessCardView: View {
 
   @ViewBuilder
   private func staggeredButton(action: QuickAccessActionKind, delay: Int) -> some View {
-    QuickAccessTextButton(label: actionTitle(for: action)) {
-      performAction(action)
-    }
+    QuickAccessTextButton(
+      label: actionTitle(for: action),
+      action: { performAction(action) },
+      helpText: actionTitle(for: action),
+      tooltipPlacement: .trailing
+    )
       .disabled(!isActionEnabled(action))
       .opacity(isActionEnabled(action) ? 1 : 0.6)
       .transition(buttonTransition(delay: delay))
@@ -639,34 +645,50 @@ struct QuickAccessCardView: View {
   private var cornerButtons: some View {
     ZStack {
       if let action = overlayAction(in: .topTrailing) {
-        cornerButton(action, delay: 2)
+        cornerButton(action, in: .topTrailing, delay: 2)
           .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
       }
       if let action = overlayAction(in: .topLeading) {
-        cornerButton(action, delay: 3)
+        cornerButton(action, in: .topLeading, delay: 3)
           .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
       }
       if let action = overlayAction(in: .bottomLeading) {
-        cornerButton(action, delay: 4)
+        cornerButton(action, in: .bottomLeading, delay: 4)
           .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
       }
       if let action = overlayAction(in: .bottomTrailing) {
-        cornerButton(action, delay: 5)
+        cornerButton(action, in: .bottomTrailing, delay: 5)
           .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
       }
     }
   }
 
-  private func cornerButton(_ action: QuickAccessActionKind, delay: Int) -> some View {
+  private func cornerButton(
+    _ action: QuickAccessActionKind,
+    in slot: QuickAccessActionSlot,
+    delay: Int
+  ) -> some View {
     QuickAccessIconButton(
       icon: actionIcon(for: action),
       action: { performAction(action) },
-      helpText: actionTitle(for: action)
+      helpText: actionTitle(for: action),
+      tooltipPlacement: tooltipPlacement(for: slot)
     )
     .transition(cornerButtonTransition(delay: delay))
     .padding(6)
     .disabled(!isActionEnabled(action))
     .opacity(isActionEnabled(action) ? 1 : 0.6)
+  }
+
+  private func tooltipPlacement(for slot: QuickAccessActionSlot) -> QuickAccessTooltipPlacement {
+    switch slot {
+    case .topLeading, .bottomLeading:
+      return .trailing
+    case .topTrailing, .bottomTrailing:
+      return .leading
+    case .centerTop, .centerBottom:
+      return .trailing
+    }
   }
 
   private func cornerButtonTransition(delay: Int) -> AnyTransition {

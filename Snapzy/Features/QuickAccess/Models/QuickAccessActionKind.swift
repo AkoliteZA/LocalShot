@@ -41,9 +41,9 @@ enum QuickAccessActionSlot: String, CaseIterable, Codable, Hashable, Identifiabl
 
   static let defaultAssignments: [QuickAccessActionSlot: QuickAccessActionKind] = [
     .centerTop: .copy,
-    .centerBottom: .saveOrOpen,
+    .centerBottom: .delete,
     .topTrailing: .ocr,
-    .topLeading: .delete,
+    .topLeading: .dismiss,
     .bottomLeading: .edit,
     .bottomTrailing: .pinToScreen,
   ]

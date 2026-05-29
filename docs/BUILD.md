@@ -24,7 +24,8 @@ The helper uses:
 
 ## Notes
 
-- v1 is for local personal use.
+- Public release builds are ad-hoc signed unless a maintainer configures a
+  Developer ID certificate and notarization workflow.
 - By default the helper signs the packaged app ad-hoc with a stable LocalShot
   designated requirement. After one reset and re-grant, this keeps ordinary
   local rebuilds from changing the TCC identity macOS records for Screen
@@ -49,4 +50,4 @@ The helper uses:
   Save Folder access is granted from LocalShot's folder picker, not System
   Settings. Microphone appears in System Settings only after LocalShot requests
   microphone access once.
-- Notarization, public release feeds, and update checks are not part of v1.
+- Public update feeds and in-app update checks are not part of v1.

@@ -1,42 +1,102 @@
 # LocalShot
 
-LocalShot is a private, local-first macOS screenshot and screen-recording utility forked from Snapzy.
+LocalShot is a local-first macOS screenshot and screen-recording app.
 
-This v1 fork is for personal local use on macOS 13+. It keeps the Snapzy BSD-3-Clause attribution and focuses on capture, quick access, annotation, OCR, pinning, local history, MP4 recording, and GIF export without cloud upload, accounts, telemetry, crash reporting, or public auto-update infrastructure.
+This repository is explicitly a fork of Snapzy by Trong Duong Duc, not an
+original project written from scratch. LocalShot keeps the Snapzy BSD 3-Clause
+license and attribution while adding LocalShot-specific branding, privacy
+defaults, shortcut controls, settings updates, Quick Access behavior, and local
+release tooling.
 
-## Privacy Defaults
+The app is built with Swift, SwiftUI, AppKit, CoreGraphics, and
+ScreenCaptureKit. It targets macOS 13 or newer.
 
-- Saves exports to `~/Pictures/LocalShot` by default.
-- Stores app data under `~/Library/Application Support/LocalShot`.
-- Uses `localshot://` for local automation links.
-- Does not configure cloud storage, login, account tokens, telemetry IDs, crash-report submission, public update feeds, or update checks in v1.
-- Keeps diagnostic logging controls hidden and clamps imported/local settings off for v1.
+![LocalShot banner](banner.png)
 
-## Build
+## Features
 
-Use the local helper:
+- Area, window, full-screen, previous-area, and scrolling screenshots
+- Quick Access card with copy, annotate, OCR, pin, delete, and drag actions
+- Pinned screenshots that stay above normal windows
+- Local annotation tools for shapes, arrows, text, crop, blur, pixelate, and markers
+- OCR text capture
+- Local history with search, copy, reveal, annotate, pin, and delete
+- MP4 screen recording with optional microphone and system audio where supported
+- GIF export presets
+- Configurable shortcuts, including an option to make LocalShot the default screenshot app
+- No cloud account, telemetry, analytics, crash-report submission, or public update feed
+
+## Download
+
+Download the latest build from the
+[GitHub Releases](https://github.com/AkoliteZA/LocalShot/releases) page once
+releases are published.
+
+Current public builds are ad-hoc signed unless a maintainer publishes a
+Developer ID-notarized release. macOS may warn that the app cannot be verified.
+If you trust the downloaded release, open it from Finder with
+**Right-click > Open** the first time.
+
+## Install From Source
+
+Requirements:
+
+- macOS 13+
+- Xcode with macOS SDK support
+- Git
+
+Build and install locally:
+
+```sh
+git clone https://github.com/AkoliteZA/LocalShot.git
+cd LocalShot
+./scripts/localshot-build.sh install
+open /Applications/LocalShot.app
+```
+
+The helper keeps Xcode's internal project and scheme names as `Snapzy`, but the
+built product is `LocalShot.app`.
+
+## Permissions
+
+LocalShot uses macOS privacy permissions for capture and recording:
+
+- Screen Recording: required for screenshots and screen recording
+- Microphone: required only for microphone recording
+- Save Folder access: granted from LocalShot's folder picker
+- Accessibility: requested only by features that need it
+
+For permission-sensitive testing, use the installed app at
+`/Applications/LocalShot.app`, not a DerivedData build copy.
+
+## Privacy
+
+By default LocalShot stores data locally:
+
+- Exports: `~/Pictures/LocalShot`
+- App data: `~/Library/Application Support/LocalShot`
+- History database: `~/Library/Application Support/LocalShot/localshot.db`
+
+The v1 LocalShot build intentionally removes public cloud upload, accounts,
+telemetry, analytics, crash-report submission, and update-check surfaces.
+
+## Development
+
+Useful commands:
 
 ```sh
 ./scripts/localshot-build.sh build
 ./scripts/localshot-build.sh package
 ./scripts/localshot-build.sh install
-```
-
-The helper builds the existing Xcode scheme with local DerivedData and source package folders. It signs ad-hoc for local use when possible and does not notarize.
-
-## Verify
-
-Run the repeatable v1 verifier:
-
-```sh
 ./scripts/localshot-verify.sh --install-app --with-launch-smoke
 ```
 
-The verifier builds/tests/packages the app, checks bundle metadata and guardrails, records current TCC permission rows for `com.personal.localshot`, verifies the package has no network or Apple Events automation entitlement, installs to `/Applications/LocalShot.app` when requested, and can launch-smoke either the package or installed app. Live capture and recording checks still require macOS Screen Recording and Microphone permission grants.
+More detail is in [docs/BUILD.md](docs/BUILD.md) and
+[docs/LOCALSHOT_V1.md](docs/LOCALSHOT_V1.md).
 
 ## Local URLs
 
-LocalShot registers a private URL scheme for local automation:
+LocalShot registers a local URL scheme:
 
 | Action | URL |
 | --- | --- |
@@ -51,8 +111,13 @@ LocalShot registers a private URL scheme for local automation:
 | Show shortcuts list | `localshot://show/shortcuts` |
 | Open Settings | `localshot://settings` |
 
-Cloud upload and complex video-editor deep links are intentionally disabled in v1.
+## Contributing
 
-## Attribution
+Bug reports, feature ideas, documentation improvements, and focused pull
+requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-LocalShot is based on Snapzy by Trong Duong Duc, used under the BSD 3-Clause License. See `LICENSE` for the original license notice.
+## License And Attribution
+
+LocalShot is a fork of Snapzy by Trong Duong Duc and is distributed under the
+BSD 3-Clause License. The original author and license notice are preserved in
+[LICENSE](LICENSE), with additional attribution in [NOTICE.md](NOTICE.md).

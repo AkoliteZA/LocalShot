@@ -57,7 +57,7 @@ struct AboutSettingsView: View {
           .foregroundColor(.secondary)
       }
     }
-    .formStyle(.grouped)
+    .preferencesFormSurface()
   }
 
   private func privacyRow(_ icon: String, _ title: String) -> some View {

@@ -1,97 +1,88 @@
-# Contributing to Snapzy
+# Contributing To LocalShot
 
-Thanks for contributing to Snapzy.
+Thanks for helping improve LocalShot.
 
-Snapzy is an open-source native macOS screenshot and screen recording app built with SwiftUI and ScreenCaptureKit. This guide keeps contributions aligned with the current project workflow and structure.
+LocalShot is a native macOS screenshot and screen-recording app built with
+SwiftUI, AppKit, CoreGraphics, and ScreenCaptureKit. Contributions should keep
+the app local-first, privacy-conscious, and straightforward to build.
 
-## Ways to contribute
+## Ways To Contribute
 
 - Report bugs
 - Propose features or UX improvements
 - Improve documentation
-- Submit code fixes or new features
-- Help test changes on macOS
+- Submit focused fixes or new features
+- Test changes on macOS 13 or newer
 
-## Before you start
+## Before You Start
 
 - Search existing issues and pull requests before opening a new one.
-- For larger changes, open an issue first so the approach can be discussed before implementation.
-- Keep contributions focused. Small, reviewable pull requests move faster than broad refactors.
+- For larger changes, open an issue first so the approach can be discussed.
+- Keep pull requests focused. Small, reviewable changes move fastest.
+- Avoid unrelated renames, formatting sweeps, or broad refactors.
 
-## Development setup
+## Development Setup
 
-Use [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for local setup, cloning, opening the Xcode project, and running a debug build.
+Read [docs/BUILD.md](docs/BUILD.md) for build, package, install, and signing
+notes.
 
-If you need archive, export, or DMG packaging commands, see [docs/BUILD.md](docs/BUILD.md).
+Common commands:
 
-## Project conventions
+```sh
+./scripts/localshot-build.sh build
+./scripts/localshot-build.sh install
+./scripts/localshot-verify.sh --install-app --with-launch-smoke
+```
 
-Snapzy uses a feature-based structure with limited nesting.
+The Xcode project and scheme are still named `Snapzy` internally. The product
+name, bundle identifier, URL scheme, support paths, and user-facing app name are
+LocalShot.
 
-- Keep primary feature entry points at the root of each feature folder.
-- Use `Components`, `Managers`, `Services`, and `Models` only when needed.
-- Prefer colocating feature-specific logic with the feature.
-- Avoid unrelated renames or directory reshuffles in the same pull request.
+## Project Conventions
 
-See [docs/STRUCTURE.md](docs/STRUCTURE.md) for the current architecture guidance.
-
-## Contribution workflow
-
-1. Create a branch from `main`.
-2. Make one focused change.
-3. Update documentation when behavior, setup, or workflow changes.
-4. Validate the change locally.
-5. Open a pull request with clear context and test notes.
-
-## Coding guidelines
-
-- Follow the existing Swift and SwiftUI style already used in the repository.
-- Prefer clear, descriptive type and file names.
-- Keep changes scoped to the problem being solved.
-- Add comments only when the intent is not obvious from the code.
-- Preserve existing user-facing behavior unless the pull request explicitly changes it.
+- Follow the existing Swift and SwiftUI style.
+- Keep changes close to the feature they affect.
+- Prefer feature folders with `Components`, `Models`, `Services`, or `Managers`
+  only when they add clarity.
+- Add comments only when intent is not obvious from the code.
+- Update documentation when behavior, setup, privacy, permissions, or release
+  workflow changes.
+- Preserve local-first behavior unless the issue or pull request explicitly
+  discusses a change.
 
 ## Validation
 
-Before opening a pull request, verify the following:
+Before opening a pull request, include what you tested. Depending on the change,
+that may include:
 
-- The project builds successfully in Xcode or via `xcodebuild`
-- The affected feature works as expected on macOS
-- Permission-sensitive flows are tested when relevant, especially screen recording
-- New UI behavior includes screenshots or recordings in the pull request when helpful
+- Xcode build or `./scripts/localshot-build.sh build`
+- Focused unit tests
+- `./scripts/localshot-verify.sh --install-app --with-launch-smoke`
+- Manual Screen Recording or Microphone permission checks
+- Screenshots or short recordings for UI changes
 
-If your change affects capture, recording, annotation, export, onboarding, or updates, include manual test steps in the pull request description.
+Permission-sensitive flows should be tested with `/Applications/LocalShot.app`,
+not a DerivedData app copy.
 
-## Pull request checklist
+## Pull Request Checklist
 
-- Describe what changed and why
-- Link the related issue when one exists
-- Keep the pull request focused and reviewable
-- Include screenshots or short recordings for UI changes
-- Note any follow-up work or known limitations
-- Confirm how you tested the change
+- Describe what changed and why.
+- Link related issues when available.
+- Keep the change focused and reviewable.
+- Include screenshots or recordings for visible UI changes.
+- Note limitations or follow-up work.
+- Explain how you tested it.
 
-## Commit messages
+## Commit Messages
 
-Use short, imperative commit messages. Prefixes such as `feat:`, `fix:`, `docs:`, `refactor:`, and `chore:` are preferred when they fit the change.
+Use short, imperative messages. Conventional prefixes are welcome when useful:
 
-Examples:
+- `feat: add capture option`
+- `fix: speed up area capture startup`
+- `docs: clarify install steps`
+- `chore: update release workflow`
 
-- `fix: prevent duplicate quick access panels`
-- `docs: update local build instructions`
-- `chore: clean up release workflow notes`
+## Security Issues
 
-## Reporting bugs
-
-When filing a bug report, include:
-
-- macOS version
-- Snapzy version or commit SHA
-- Steps to reproduce
-- Expected behavior
-- Actual behavior
-- Screenshots or screen recordings if relevant
-
-## Security issues
-
-Please do not report security vulnerabilities in public issues. Contact the repository maintainer privately through GitHub first so the issue can be handled responsibly.
+Please do not report security vulnerabilities in public issues. See
+[SECURITY.md](SECURITY.md).

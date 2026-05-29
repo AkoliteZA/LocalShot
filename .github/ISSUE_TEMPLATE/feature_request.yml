@@ -1,12 +1,12 @@
-name: ✨ Feature Request
-description: Suggest a new feature or improvement for Snapzy
+name: Feature Request
+description: Suggest a new feature or improvement for LocalShot
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for suggesting a feature! Please describe your idea so we can evaluate and prioritize it.
+        Thanks for suggesting a feature. Please describe your idea so we can evaluate and prioritize it.
 
   - type: textarea
     id: problem
@@ -22,7 +22,7 @@ body:
     attributes:
       label: Proposed Solution
       description: Describe the solution or feature you'd like to see.
-      placeholder: It would be great if Snapzy could...
+      placeholder: It would be great if LocalShot could...
     validations:
       required: true
 
@@ -38,7 +38,7 @@ body:
     id: feature-area
     attributes:
       label: Feature Area
-      description: Which part of Snapzy does this relate to?
+      description: Which part of LocalShot does this relate to?
       options:
         - Screenshots
         - Screen Recording
@@ -48,7 +48,7 @@ body:
         - Shortcuts / Quick Access
         - Export / Sharing
         - Settings / Preferences
-        - Auto-Update (Sparkle)
+        - Releases / Installation
         - Other
     validations:
       required: true

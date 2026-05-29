@@ -65,7 +65,12 @@ struct QuickAccessPinWindowView: View {
 
   private var unlockedControls: some View {
     ZStack {
-      chromeButton(systemName: "xmark", help: L10n.PreferencesQuickAccess.unpinAction, action: onClose)
+      chromeButton(
+        systemName: "xmark",
+        help: L10n.PreferencesQuickAccess.unpinAction,
+        tooltipPlacement: .trailing,
+        action: onClose
+      )
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(controlInset)
 
@@ -82,7 +87,8 @@ struct QuickAccessPinWindowView: View {
   private var lockButton: some View {
     chromeButton(
       systemName: state.isLocked ? "lock.fill" : "lock.open",
-      help: state.isLocked ? L10n.QuickAccess.unlockPinnedWindow : L10n.QuickAccess.lockPinnedWindow
+      help: state.isLocked ? L10n.QuickAccess.unlockPinnedWindow : L10n.QuickAccess.lockPinnedWindow,
+      tooltipPlacement: .leading
     ) {
       state.isLocked.toggle()
       onLockChanged()
@@ -117,7 +123,7 @@ struct QuickAccessPinWindowView: View {
     }
     .animation(reduceMotion ? nil : .easeInOut(duration: 0.15), value: isZoomHovering)
     .animation(reduceMotion ? nil : .easeInOut(duration: 0.15), value: isZoomPickerPresented)
-    .help(L10n.QuickAccess.zoomPinnedWindow)
+    .quickAccessTooltip(L10n.QuickAccess.zoomPinnedWindow, placement: .bottom)
   }
 
   private var zoomPicker: some View {
@@ -188,7 +194,7 @@ struct QuickAccessPinWindowView: View {
     .onHover { isDragHovering = $0 }
     .animation(reduceMotion ? nil : .easeInOut(duration: 0.15), value: isDragHovering)
     .animation(reduceMotion ? nil : .easeInOut(duration: 0.15), value: isDragActive)
-    .help(L10n.AnnotateUI.dragToAppHelp)
+    .quickAccessTooltip(L10n.AnnotateUI.dragToAppHelp, placement: .top)
   }
 
   private var dragGrip: some View {
@@ -202,7 +208,12 @@ struct QuickAccessPinWindowView: View {
     .frame(width: 10)
   }
 
-  private func chromeButton(systemName: String, help: String, action: @escaping () -> Void) -> some View {
+  private func chromeButton(
+    systemName: String,
+    help: String,
+    tooltipPlacement: QuickAccessTooltipPlacement = .bottom,
+    action: @escaping () -> Void
+  ) -> some View {
     Button(action: action) {
       Image(systemName: systemName)
         .font(.system(size: 12, weight: .bold))
@@ -219,7 +230,7 @@ struct QuickAccessPinWindowView: View {
         .shadow(color: Color.black.opacity(0.12), radius: 6, x: 0, y: 2)
     }
     .buttonStyle(.plain)
-    .help(help)
+    .quickAccessTooltip(help, placement: tooltipPlacement)
   }
 
   private var dragForegroundColor: Color {
@@ -291,6 +302,7 @@ private struct PinWindowZoomOptionButton: View {
     }
     .buttonStyle(.plain)
     .onHover { isHovering = $0 }
+    .quickAccessTooltip(title, placement: .trailing)
     .animation(.easeInOut(duration: 0.12), value: isHovering)
   }
 

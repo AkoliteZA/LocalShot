@@ -252,9 +252,10 @@ final class ScreenCaptureManager: ObservableObject {
     showCursor: Bool,
     excludeDesktopIcons: Bool,
     excludeDesktopWidgets: Bool,
-    excludeOwnApplication: Bool = false
+    excludeOwnApplication: Bool = false,
+    allowFastPathWhenOwnApplicationHidden: Bool = false
   ) -> FrozenDisplaySnapshot? {
-    guard !excludeOwnApplication else { return nil }
+    guard !excludeOwnApplication || allowFastPathWhenOwnApplicationHidden else { return nil }
     guard !showCursor else { return nil }
     guard !excludeDesktopIcons else { return nil }
     guard !excludeDesktopWidgets else { return nil }

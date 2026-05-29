@@ -11,6 +11,8 @@ import SwiftUI
 struct QuickAccessTextButton: View {
   let label: String
   let action: () -> Void
+  var helpText: String? = nil
+  var tooltipPlacement: QuickAccessTooltipPlacement = .top
 
   @Environment(\.isEnabled) private var isEnabled
   @State private var isHovering = false
@@ -28,6 +30,7 @@ struct QuickAccessTextButton: View {
         )
     }
     .buttonStyle(.plain)
+    .quickAccessTooltip(helpText ?? label, placement: tooltipPlacement)
     .onHover { hovering in
       guard isEnabled else {
         isHovering = false

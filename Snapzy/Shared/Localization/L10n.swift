@@ -2693,6 +2693,31 @@ enum L10n {
       defaultValue: "No overlapping macOS screenshot shortcuts were found for the LocalShot shortcuts you currently have enabled.",
       comment: "Description for success state when there are no system shortcut conflicts"
     )
+    static let makeDefaultTitle = string(
+      "preferences-shortcuts.make-default-title",
+      defaultValue: "Make LocalShot the Default",
+      comment: "Shortcuts preferences setting title for assigning standard screenshot shortcuts to LocalShot"
+    )
+    static let makeDefaultDescription = string(
+      "preferences-shortcuts.make-default-description",
+      defaultValue: "Assign ⌘⇧3, ⌘⇧4, and ⌘⇧5 to LocalShot and turn off the overlapping macOS screenshot shortcuts.",
+      comment: "Shortcuts preferences setting description for assigning standard screenshot shortcuts to LocalShot"
+    )
+    static let makeDefaultButton = string(
+      "preferences-shortcuts.make-default-button",
+      defaultValue: "Make Default",
+      comment: "Button title for making LocalShot the default screenshot shortcut handler"
+    )
+    static let makeDefaultSuccess = string(
+      "preferences-shortcuts.make-default-success",
+      defaultValue: "LocalShot is now using the standard screenshot shortcuts.",
+      comment: "Status message after successfully assigning standard screenshot shortcuts to LocalShot"
+    )
+    static let makeDefaultFallback = string(
+      "preferences-shortcuts.make-default-fallback",
+      defaultValue: "macOS did not allow LocalShot to change those shortcuts automatically. Open Keyboard Shortcuts Settings and turn off the Screenshot shortcuts.",
+      comment: "Status message when automatic system shortcut changes fail"
+    )
     static let globalSection = string(
       "preferences-shortcuts.global-section",
       defaultValue: "Global Shortcuts",

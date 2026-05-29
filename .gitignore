@@ -1,16 +1,24 @@
+.DS_Store
 .claude
 .agent1
+.codex
 
 sparkle_private_key.pem
+*.pem
+*.p12
+*.cer
+*.mobileprovision
 
 # Packages/**/*.build
 .build
 /build
+DerivedData
+*.xcresult
 
 # Secrets - never commit
 Snapzy/Config/Secrets.xcconfig
 *.xcuserstate
+xcuserdata/
+*.xcuserdatad/
 
 /plans
-
-.codex

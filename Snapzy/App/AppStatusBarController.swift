@@ -44,6 +44,7 @@ final class AppStatusBarController: ObservableObject {
     setupStatusItem()
     buildMenu()
     observeRecordingState()
+    observeThemeState()
 
     // Pre-allocate area selection windows for instant activation (<150ms)
     AreaSelectionController.shared.prepareWindowPool()
@@ -158,6 +159,17 @@ final class AppStatusBarController: ObservableObject {
       .receive(on: RunLoop.main)
       .sink { [weak self] _ in
         self?.renderStatusItem()
+      }
+      .store(in: &cancellables)
+  }
+
+  private func observeThemeState() {
+    ThemeManager.shared.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        DispatchQueue.main.async {
+          self?.applyThemeToTrackedPreferencesWindow()
+        }
       }
       .store(in: &cancellables)
   }
@@ -577,14 +589,16 @@ final class AppStatusBarController: ObservableObject {
     }
 
     let contentView = PreferencesView()
-      .preferredColorScheme(ThemeManager.shared.systemAppearance)
     let window = NSWindow(
-      contentRect: NSRect(x: 0, y: 0, width: 980, height: 720),
-      styleMask: [.titled, .closable, .miniaturizable, .resizable],
+      contentRect: NSRect(x: 0, y: 0, width: 760, height: 550),
+      styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
       backing: .buffered,
       defer: false
     )
     window.title = "\(LocalShotBrand.appName) Settings"
+    applyPreferencesTheme(to: window)
+    window.titlebarAppearsTransparent = true
+    window.titleVisibility = .hidden
     window.contentViewController = NSHostingController(rootView: contentView)
     window.isReleasedWhenClosed = false
     window.setFrameAutosaveName("\(LocalShotBrand.appName)SettingsWindow")
@@ -594,6 +608,18 @@ final class AppStatusBarController: ObservableObject {
     NSApp.activate(ignoringOtherApps: true)
     window.makeKeyAndOrderFront(nil)
     syncTrackedPreferencesWindowExclusion()
+  }
+
+  private func applyThemeToTrackedPreferencesWindow() {
+    guard let trackedPreferencesWindow else { return }
+    applyPreferencesTheme(to: trackedPreferencesWindow)
+  }
+
+  private func applyPreferencesTheme(to window: NSWindow) {
+    window.appearance = ThemeManager.shared.nsAppearance
+    window.backgroundColor = PreferencesSurfacePalette.backgroundColor(
+      for: ThemeManager.shared.systemAppearance
+    )
   }
 
   @objc private func windowDidClose(_ notification: Notification) {

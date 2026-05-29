@@ -13,7 +13,7 @@ import Foundation
 /// and macOS built-in screenshot shortcuts.
 ///
 /// Requires entitlement:
-///   com.apple.security.temporary-exception.shared-preference.read-only
+///   com.apple.security.temporary-exception.shared-preference.read-write
 ///   → com.apple.symbolichotkeys
 @MainActor
 final class SystemScreenshotShortcutManager {
@@ -122,6 +122,41 @@ final class SystemScreenshotShortcutManager {
     !conflictDescriptions(for: kind, shortcut: shortcut).isEmpty
   }
 
+  /// Disable Apple's built-in screenshot hotkeys so LocalShot can own the
+  /// standard screenshot combinations such as ⌘⇧4.
+  func disableSystemScreenshotShortcuts() -> Bool {
+    guard var hotkeys = readHotkeys() else {
+      DiagnosticLogger.shared.log(
+        .warning,
+        .action,
+        "Cannot disable system screenshot shortcuts because symbolic hotkeys are unreadable"
+      )
+      return false
+    }
+
+    hotkeys = Self.hotkeysByDisablingSystemScreenshotShortcuts(hotkeys)
+    let didWrite = writeHotkeys(hotkeys)
+    if didWrite {
+      notifySystemHotkeysChanged()
+      DiagnosticLogger.shared.log(.info, .action, "Disabled macOS screenshot symbolic hotkeys")
+    } else {
+      DiagnosticLogger.shared.log(.warning, .action, "Failed to write macOS screenshot symbolic hotkeys")
+    }
+    return didWrite
+  }
+
+  nonisolated static func hotkeysByDisablingSystemScreenshotShortcuts(
+    _ hotkeys: [String: Any]
+  ) -> [String: Any] {
+    var updated = hotkeys
+    for id in SystemHotkeyID.allCases {
+      var entry = updated[String(id.rawValue)] as? [String: Any] ?? [:]
+      entry["enabled"] = false
+      updated[String(id.rawValue)] = entry
+    }
+    return updated
+  }
+
   /// Open System Settings to the Keyboard Shortcuts → Screenshots pane
   func openSystemScreenshotSettings() {
     // Mark prompt as seen
@@ -185,6 +220,35 @@ final class SystemScreenshotShortcutManager {
       "All methods failed to read com.apple.symbolichotkeys"
     )
     return nil
+  }
+
+  private func writeHotkeys(_ hotkeys: [String: Any]) -> Bool {
+    let domain = "com.apple.symbolichotkeys" as CFString
+    var wrote = false
+
+    if let prefs = UserDefaults(suiteName: "com.apple.symbolichotkeys") {
+      prefs.set(hotkeys, forKey: "AppleSymbolicHotKeys")
+      wrote = prefs.synchronize() || wrote
+    }
+
+    CFPreferencesSetAppValue(
+      "AppleSymbolicHotKeys" as CFString,
+      hotkeys as CFDictionary,
+      domain
+    )
+    wrote = CFPreferencesAppSynchronize(domain) || wrote
+
+    return wrote
+  }
+
+  private func notifySystemHotkeysChanged() {
+    CFNotificationCenterPostNotification(
+      CFNotificationCenterGetDistributedCenter(),
+      CFNotificationName("com.apple.symbolichotkeys.changed" as CFString),
+      nil,
+      nil,
+      true
+    )
   }
 
   /// Check if a specific symbolic hotkey is enabled

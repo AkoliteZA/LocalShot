@@ -1,12 +1,12 @@
-name: 🐛 Bug Report
-description: Report a bug or unexpected behavior in Snapzy
+name: Bug Report
+description: Report a bug or unexpected behavior in LocalShot
 title: "[Bug]: "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a bug! Please fill out the sections below so we can reproduce and fix the issue.
+        Thanks for taking the time to report a bug. Please fill out the sections below so we can reproduce and fix the issue.
 
   - type: textarea
     id: description
@@ -23,7 +23,7 @@ body:
       label: Steps to Reproduce
       description: Steps to reproduce the behavior.
       placeholder: |
-        1. Open Snapzy
+        1. Open LocalShot
         2. Click on '...'
         3. See error
     validations:
@@ -56,11 +56,11 @@ body:
       required: false
 
   - type: input
-    id: snapzy-version
+    id: localshot-version
     attributes:
-      label: Snapzy Version
-      description: Which version of Snapzy are you using?
-      placeholder: e.g. 1.0.7
+      label: LocalShot Version
+      description: Which version of LocalShot are you using?
+      placeholder: e.g. 1.20.1
     validations:
       required: true
 
@@ -81,10 +81,9 @@ body:
     id: install-method
     attributes:
       label: Installation Method
-      description: How did you install Snapzy?
+      description: How did you install LocalShot?
       options:
-        - Homebrew
-        - DMG download
+        - GitHub release download
         - Shell script
         - Built from source
     validations:

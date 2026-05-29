@@ -28,6 +28,10 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
       rawOrder: rawOrder,
       rawEnabledActions: rawEnabledActions,
       rawSlotAssignments: rawSlotAssignments
+    ) || Self.isDefaultConfigurationBeforeManualClose(
+      rawOrder: rawOrder,
+      rawEnabledActions: rawEnabledActions,
+      rawSlotAssignments: rawSlotAssignments
     ) {
       actionOrder = QuickAccessActionKind.defaultOrder
       enabledActions = QuickAccessActionKind.defaultEnabledActions
@@ -36,13 +40,22 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
       return
     }
 
+    let migratedRawSlotAssignments = Self.rawSlotAssignmentsApplyingCurrentDefaultMigrations(
+      rawSlotAssignments
+    )
+    let shouldPersistSlotMigration = migratedRawSlotAssignments != rawSlotAssignments
+
     actionOrder = Self.normalizedOrder(from: rawOrder)
     enabledActions = Self.normalizedEnabledActions(
       from: rawEnabledActions
     )
     slotAssignments = Self.normalizedSlotAssignments(
-      from: rawSlotAssignments
+      from: migratedRawSlotAssignments
     )
+
+    if shouldPersistSlotMigration {
+      save()
+    }
   }
 
   func orderedActions(includeDisabled: Bool) -> [QuickAccessActionKind] {
@@ -202,6 +215,64 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
     return assignments
   }
 
+  private static func rawSlotAssignmentsApplyingCurrentDefaultMigrations(
+    _ rawAssignments: [String: String]?
+  ) -> [String: String]? {
+    guard var rawAssignments else { return nil }
+
+    if shouldMigrateTrashCornerToClose(rawAssignments) {
+      rawAssignments[QuickAccessActionSlot.topLeading.rawValue] = QuickAccessActionKind.dismiss.rawValue
+    }
+
+    if shouldMigrateDeleteBelowCopy(rawAssignments) {
+      rawAssignments[QuickAccessActionSlot.centerBottom.rawValue] = QuickAccessActionKind.delete.rawValue
+    }
+
+    return rawAssignments
+  }
+
+  private static func shouldMigrateTrashCornerToClose(
+    _ rawAssignments: [String: String]
+  ) -> Bool {
+    guard rawAssignments[QuickAccessActionSlot.topLeading.rawValue] == QuickAccessActionKind.delete.rawValue,
+          rawAssignments[QuickAccessActionSlot.topTrailing.rawValue] == QuickAccessActionKind.ocr.rawValue,
+          rawAssignments[QuickAccessActionSlot.bottomLeading.rawValue] == QuickAccessActionKind.edit.rawValue,
+          rawAssignments[QuickAccessActionSlot.bottomTrailing.rawValue] == QuickAccessActionKind.pinToScreen.rawValue else {
+      return false
+    }
+
+    let assignedActionIDs = Set(rawAssignments.values.filter { !$0.isEmpty })
+    guard !assignedActionIDs.contains(QuickAccessActionKind.dismiss.rawValue) else {
+      return false
+    }
+
+    let centerBottomAction = rawAssignments[QuickAccessActionSlot.centerBottom.rawValue]
+    return centerBottomAction == nil
+      || centerBottomAction == ""
+      || centerBottomAction == QuickAccessActionKind.saveOrOpen.rawValue
+  }
+
+  private static func shouldMigrateDeleteBelowCopy(
+    _ rawAssignments: [String: String]
+  ) -> Bool {
+    guard rawAssignments[QuickAccessActionSlot.centerTop.rawValue] == QuickAccessActionKind.copy.rawValue,
+          rawAssignments[QuickAccessActionSlot.topLeading.rawValue] == QuickAccessActionKind.dismiss.rawValue,
+          rawAssignments[QuickAccessActionSlot.topTrailing.rawValue] == QuickAccessActionKind.ocr.rawValue,
+          rawAssignments[QuickAccessActionSlot.bottomLeading.rawValue] == QuickAccessActionKind.edit.rawValue,
+          rawAssignments[QuickAccessActionSlot.bottomTrailing.rawValue] == QuickAccessActionKind.pinToScreen.rawValue else {
+      return false
+    }
+
+    let centerBottomAction = rawAssignments[QuickAccessActionSlot.centerBottom.rawValue]
+    guard centerBottomAction == nil
+      || centerBottomAction == ""
+      || centerBottomAction == QuickAccessActionKind.saveOrOpen.rawValue else {
+      return false
+    }
+
+    return !rawAssignments.values.contains(QuickAccessActionKind.delete.rawValue)
+  }
+
   private static let legacyDefaultOrderBeforeOCR: [QuickAccessActionKind] = [
     .copy,
     .saveOrOpen,
@@ -215,6 +286,15 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
     .centerTop: .copy,
     .centerBottom: .saveOrOpen,
     .topTrailing: .dismiss,
+    .topLeading: .delete,
+    .bottomLeading: .edit,
+    .bottomTrailing: .pinToScreen,
+  ]
+
+  private static let defaultSlotAssignmentsBeforeManualClose: [QuickAccessActionSlot: QuickAccessActionKind] = [
+    .centerTop: .copy,
+    .centerBottom: .saveOrOpen,
+    .topTrailing: .ocr,
     .topLeading: .delete,
     .bottomLeading: .edit,
     .bottomTrailing: .pinToScreen,
@@ -243,6 +323,27 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
       legacyDefaultOrderBeforeOCR.map(\.rawValue),
       (legacyDefaultOrderBeforeOCR + [.ocr]).map(\.rawValue),
     ]
+  }
+
+  private static func isDefaultConfigurationBeforeManualClose(
+    rawOrder: [String]?,
+    rawEnabledActions: [String]?,
+    rawSlotAssignments: [String: String]?
+  ) -> Bool {
+    let defaultEnabledActionIDs = QuickAccessActionKind.defaultOrder
+      .filter { QuickAccessActionKind.defaultEnabledActions.contains($0) }
+      .map(\.rawValue)
+
+    guard rawOrder == QuickAccessActionKind.defaultOrder.map(\.rawValue),
+          rawEnabledActions == defaultEnabledActionIDs,
+          let rawSlotAssignments,
+          rawSlotAssignments.count == QuickAccessActionSlot.allCases.count else {
+      return false
+    }
+
+    return QuickAccessActionSlot.allCases.allSatisfy { slot in
+      rawSlotAssignments[slot.rawValue] == defaultSlotAssignmentsBeforeManualClose[slot]?.rawValue
+    }
   }
 
   private func rawSlotAssignments(

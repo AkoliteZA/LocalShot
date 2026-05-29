@@ -62,7 +62,7 @@ struct GeneralSettingsView: View {
 
       }
     }
-    .formStyle(.grouped)
+    .preferencesFormSurface()
     .onAppear {
       startAtLogin = LoginItemManager.isEnabled
       initializeExportLocation()

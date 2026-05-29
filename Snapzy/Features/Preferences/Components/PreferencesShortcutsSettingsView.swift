@@ -39,6 +39,7 @@ struct ShortcutsSettingsView: View {
   @State private var isConfirmedDisable: Bool = false
   @State private var hasSystemConflict: Bool = false
   @State private var isRefreshingConflict: Bool = false
+  @State private var defaultShortcutStatus: DefaultShortcutStatus?
 
   private let manager = KeyboardShortcutManager.shared
   private let validator = ShortcutValidationService.shared
@@ -227,6 +228,31 @@ struct ShortcutsSettingsView: View {
         Text(L10n.PreferencesShortcuts.globalSectionDescription)
           .font(.caption)
           .foregroundColor(.secondary)
+
+        SettingRow(
+          icon: "command.square",
+          title: L10n.PreferencesShortcuts.makeDefaultTitle,
+          description: L10n.PreferencesShortcuts.makeDefaultDescription
+        ) {
+          Button {
+            makeLocalShotDefault()
+          } label: {
+            Label(L10n.PreferencesShortcuts.makeDefaultButton, systemImage: "checkmark.seal")
+          }
+          .buttonStyle(.borderedProminent)
+          .controlSize(.small)
+        }
+
+        if let defaultShortcutStatus {
+          HStack(spacing: 8) {
+            Image(systemName: defaultShortcutStatus.icon)
+              .foregroundColor(defaultShortcutStatus.tint)
+            Text(defaultShortcutStatus.message)
+              .font(.caption)
+              .foregroundColor(.secondary)
+          }
+          .padding(.vertical, 2)
+        }
 
         SettingRow(icon: "keyboard", title: L10n.PreferencesShortcuts.enableShortcutsTitle, description: L10n.PreferencesShortcuts.enableShortcutsDescription) {
           Toggle("", isOn: $shortcutsEnabled)
@@ -529,7 +555,7 @@ struct ShortcutsSettingsView: View {
         }
       }
     }
-    .formStyle(.grouped)
+    .preferencesFormSurface()
     .safeAreaInset(edge: .bottom) {
       HStack {
         Spacer()
@@ -598,6 +624,40 @@ struct ShortcutsSettingsView: View {
     // Reset annotation tool + action shortcuts
     annotateManager.resetToDefaults()
     hasSystemConflict = SystemScreenshotShortcutManager.shared.hasConflictingSystemShortcuts()
+  }
+
+  private func makeLocalShotDefault() {
+    shortcutsEnabled = true
+    manager.enable()
+
+    fullscreenShortcut = .defaultFullscreen
+    areaShortcut = .defaultArea
+    recordingShortcut = .defaultRecording
+    globalShortcutEnabled[.fullscreen] = true
+    globalShortcutEnabled[.area] = true
+    globalShortcutEnabled[.recording] = true
+
+    manager.setShortcutEnabled(true, for: .fullscreen)
+    manager.setShortcutEnabled(true, for: .area)
+    manager.setShortcutEnabled(true, for: .recording)
+    manager.setFullscreenShortcut(.defaultFullscreen)
+    manager.setAreaShortcut(.defaultArea)
+    manager.setRecordingShortcut(.defaultRecording)
+
+    let didDisableSystemShortcuts =
+      SystemScreenshotShortcutManager.shared.disableSystemScreenshotShortcuts()
+
+    globalValidationIssues.removeValue(forKey: .fullscreen)
+    globalValidationIssues.removeValue(forKey: .area)
+    globalValidationIssues.removeValue(forKey: .recording)
+    hasSystemConflict = SystemScreenshotShortcutManager.shared.hasConflictingSystemShortcuts()
+
+    if didDisableSystemShortcuts && !hasSystemConflict {
+      defaultShortcutStatus = .success(L10n.PreferencesShortcuts.makeDefaultSuccess)
+    } else {
+      defaultShortcutStatus = .warning(L10n.PreferencesShortcuts.makeDefaultFallback)
+      SystemScreenshotShortcutManager.shared.openSystemScreenshotSettings()
+    }
   }
 
   /// Re-check system shortcut conflict status with spinner animation
@@ -840,6 +900,20 @@ struct ShortcutsSettingsView: View {
     if inScreenshot && inRecording { return .both }
     if inRecording { return .recordingOnly }
     return .screenshotOnly
+  }
+}
+
+private struct DefaultShortcutStatus {
+  let message: String
+  let icon: String
+  let tint: Color
+
+  static func success(_ message: String) -> DefaultShortcutStatus {
+    DefaultShortcutStatus(message: message, icon: "checkmark.circle.fill", tint: .green)
+  }
+
+  static func warning(_ message: String) -> DefaultShortcutStatus {
+    DefaultShortcutStatus(message: message, icon: "exclamationmark.triangle.fill", tint: .orange)
   }
 }
 

@@ -579,7 +579,7 @@ struct CaptureSettingsView: View {
           }
         }
       }
-      .formStyle(.grouped)
+      .preferencesFormSurface()
     }
     .onAppear(perform: refreshMicrophoneDevices)
   }

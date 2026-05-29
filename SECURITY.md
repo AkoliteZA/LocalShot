@@ -1,26 +1,47 @@
-# LocalShot Security and Privacy
+# Security And Privacy
 
-LocalShot v1 is a local-only personal fork. The app is expected to work without network access for capture, annotation, OCR, recording, GIF export, pinning, and local history.
+LocalShot is a local-first macOS utility. Capture, annotation, OCR, recording,
+GIF export, pinning, and history are designed to work without cloud services.
+
+## Reporting A Vulnerability
+
+Please do not open a public issue for suspected security vulnerabilities.
+Instead, use GitHub's private vulnerability reporting if it is enabled on the
+repository, or contact the maintainer privately through GitHub.
+
+Include:
+
+- LocalShot version or commit SHA
+- macOS version
+- Steps to reproduce
+- Expected and actual behavior
+- Any relevant logs, screenshots, or crash reports
+
+## Supported Versions
+
+Only the current `main` branch and the latest GitHub release are expected to
+receive fixes.
 
 ## Entitlements
 
-The v1 app keeps only the entitlements needed for a sandboxed local macOS utility:
+The app keeps a small sandboxed entitlement set:
 
 | Entitlement | Purpose |
 | --- | --- |
 | `com.apple.security.app-sandbox` | Run in the macOS App Sandbox |
 | `com.apple.security.files.user-selected.read-write` | Save and open user-selected files |
 | `com.apple.security.device.audio-input` | Record microphone audio when enabled by the user |
-| `com.apple.security.temporary-exception.shared-preference.read-only` | Inspect system hotkey preferences for conflict warnings |
+| `com.apple.security.temporary-exception.shared-preference.read-write` | Inspect and optionally disable overlapping macOS screenshot shortcuts when the user makes LocalShot the default |
 
-Network client entitlement and public updater helper exceptions are intentionally absent.
+Network client/server entitlements and public updater helper exceptions are
+intentionally absent from the v1 LocalShot app.
 
 ## Local Data
 
 - Exports: `~/Pictures/LocalShot`
 - App support: `~/Library/Application Support/LocalShot`
 - History database: `~/Library/Application Support/LocalShot/localshot.db`
-- Local diagnostics: hidden and clamped off for v1
+- Local diagnostics: hidden and clamped off in v1
 
 ## Disabled In V1
 
@@ -29,8 +50,8 @@ Network client entitlement and public updater helper exceptions are intentionall
 - Telemetry and analytics
 - Crash-report submission
 - Public auto-update checks
-- Notarized public release workflow
 
 ## Permissions
 
-macOS may request Screen Recording and Microphone permissions. Accessibility should only be requested if a specific local feature requires it.
+macOS may request Screen Recording and Microphone permissions. Accessibility
+should only be requested if a specific local feature requires it.
