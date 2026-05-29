@@ -432,6 +432,92 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
     startAreaCapture(initialInteractionMode: .manualRegion)
   }
 
+  var hasPreviousCaptureArea: Bool {
+    CaptureAreaMemory.load() != nil
+  }
+
+  func capturePreviousArea() {
+    if isAreaSelectionActive || isCapturing {
+      DiagnosticLogger.shared.log(.debug, .capture, "capturePreviousArea blocked: capture already active")
+      return
+    }
+
+    guard hasPermission else {
+      requestPermission()
+      return
+    }
+
+    guard let previousRect = CaptureAreaMemory.load() else {
+      lastCaptureResult = .failure(.captureFailed("No previous capture area"))
+      AppToastManager.shared.show(
+        message: "No previous capture area",
+        style: .warning,
+        variant: .compact
+      )
+      DiagnosticLogger.shared.log(.warning, .capture, "Previous area capture aborted: no saved area")
+      return
+    }
+
+    guard
+      let resolvedSaveDirectory = fileAccessManager.ensureExportDirectoryForOperation(
+        promptMessage: L10n.Recording.chooseSaveLocationMessage)
+    else {
+      lastCaptureResult = .failure(.saveFailed(L10n.ScreenCapture.saveLocationPermissionRequired))
+      return
+    }
+    saveDirectory = resolvedSaveDirectory
+
+    isAreaSelectionActive = true
+    isCapturing = true
+    DiagnosticLogger.shared.log(.info, .capture, "Previous area capture flow started", context: [
+      "rect": "\(Int(previousRect.width))x\(Int(previousRect.height))",
+      "format": resolvedFormat.fileExtension,
+    ])
+
+    let showCursor = showsCursorInScreenshots
+    let excludeDesktopIcons = DesktopIconManager.shared.isIconHidingEnabled
+    let excludeDesktopWidgets = DesktopIconManager.shared.isWidgetHidingEnabled
+    let excludeOwnApplication = !includesOwnAppInScreenshots
+    let prefetchedContentTask = captureManager.prefetchShareableContent(
+      includeDesktopWindows: excludeDesktopIcons || excludeDesktopWidgets
+    )
+    let hiddenWindowSession = hideVisibleNormalWindowsIfNeeded(excludeOwnApplication)
+
+    Task { @MainActor in
+      defer {
+        self.isCapturing = false
+        self.isAreaSelectionActive = false
+        hiddenWindowSession.restore()
+      }
+
+      if hiddenWindowSession.didHideWindows {
+        try? await Task.sleep(nanoseconds: UInt64(windowHideSettleDelay * 1_000_000_000))
+      }
+
+      let actualSaveDirectory = self.tempCaptureManager.resolveSaveDirectory(
+        for: .screenshot,
+        exportDirectory: resolvedSaveDirectory
+      )
+
+      let result = await self.captureManager.captureArea(
+        rect: previousRect,
+        saveDirectory: actualSaveDirectory,
+        format: self.resolvedFormat,
+        showCursor: showCursor,
+        excludeDesktopIcons: excludeDesktopIcons,
+        excludeDesktopWidgets: excludeDesktopWidgets,
+        excludeOwnApplication: excludeOwnApplication,
+        prefetchedContentTask: prefetchedContentTask
+      )
+      self.lastCaptureResult = result
+
+      if case .success = result {
+        CaptureAreaMemory.save(previousRect)
+        SoundManager.playScreenshotCapture()
+      }
+    }
+  }
+
   func captureApplication() {
     startAreaCapture(initialInteractionMode: .applicationWindow)
   }
@@ -834,6 +920,7 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
               self.lastCaptureResult = result
 
               if case .success = result {
+                CaptureAreaMemory.save(selection.rect)
                 SoundManager.playScreenshotCapture()
               }
             } catch let error as CaptureError {
@@ -869,6 +956,7 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
             self.lastCaptureResult = result
 
             if case .success = result {
+              CaptureAreaMemory.save(selection.rect)
               SoundManager.playScreenshotCapture()
             }
           } else {

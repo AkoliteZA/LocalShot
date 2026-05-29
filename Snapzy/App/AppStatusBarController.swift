@@ -327,11 +327,12 @@ final class AppStatusBarController: ObservableObject {
 
     let previousAreaItem = NSMenuItem(
       title: "Capture Previous Area",
-      action: nil,
+      action: #selector(capturePreviousAreaAction),
       keyEquivalent: ""
     )
+    previousAreaItem.target = self
     previousAreaItem.image = NSImage(systemSymbolName: "rectangle.stack", accessibilityDescription: nil)
-    previousAreaItem.isEnabled = false
+    previousAreaItem.isEnabled = viewModel.hasPermission && viewModel.hasPreviousCaptureArea
     menu?.addItem(previousAreaItem)
 
     let scrollingCaptureItem = NSMenuItem(
@@ -477,6 +478,11 @@ final class AppStatusBarController: ObservableObject {
   @objc private func captureAreaAction() {
     logMenuAction("captureArea")
     viewModel?.captureArea()
+  }
+
+  @objc private func capturePreviousAreaAction() {
+    logMenuAction("capturePreviousArea")
+    viewModel?.capturePreviousArea()
   }
 
   @objc private func captureAreaAnnotateAction() {
