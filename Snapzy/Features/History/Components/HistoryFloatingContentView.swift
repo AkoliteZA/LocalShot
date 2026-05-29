@@ -7,6 +7,22 @@
 
 import SwiftUI
 
+struct HistoryPrivacyChecklistItem: Identifiable, Equatable {
+  let id: String
+  let title: String
+  let systemImage: String
+}
+
+enum HistoryPrivacyChecklist {
+  static let items: [HistoryPrivacyChecklistItem] = [
+    .init(id: "local-only", title: "Local-only", systemImage: "checkmark.shield"),
+    .init(id: "cloud-upload-disabled", title: "Cloud upload disabled", systemImage: "icloud.slash"),
+    .init(id: "no-accounts", title: "No accounts", systemImage: "person.crop.circle.badge.xmark"),
+    .init(id: "no-telemetry", title: "No telemetry", systemImage: "chart.bar.xaxis"),
+    .init(id: "no-auto-update-checks", title: "No auto-update checks", systemImage: "arrow.triangle.2.circlepath"),
+  ]
+}
+
 struct HistoryFloatingContentView: View {
   @ObservedObject var manager: HistoryFloatingManager
   @ObservedObject private var themeManager = ThemeManager.shared
@@ -238,6 +254,7 @@ struct HistoryFloatingContentView: View {
     ZStack(alignment: .bottom) {
       VStack(spacing: 18) {
         expandedHeader
+        expandedPrivacyStrip
 
         if expandedRecords.isEmpty {
           expandedEmptyState
@@ -366,6 +383,34 @@ struct HistoryFloatingContentView: View {
         size: 34,
         action: manager.hide
       )
+    }
+  }
+
+  private var expandedPrivacyStrip: some View {
+    HStack(spacing: 8) {
+      ForEach(HistoryPrivacyChecklist.items) { item in
+        Label {
+          Text(item.title)
+            .font(.system(size: 10.5, weight: .semibold))
+            .lineLimit(1)
+            .minimumScaleFactor(0.86)
+        } icon: {
+          Image(systemName: item.systemImage)
+            .font(.system(size: 10.5, weight: .bold))
+            .symbolRenderingMode(.hierarchical)
+        }
+        .foregroundColor(.primary.opacity(0.78))
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(privacyChipFill, in: Capsule())
+        .overlay(
+          Capsule()
+            .stroke(privacyChipBorder, lineWidth: 1)
+        )
+        .help(item.title)
+      }
+
+      Spacer(minLength: 0)
     }
   }
 
@@ -551,6 +596,22 @@ struct HistoryFloatingContentView: View {
 
   private var selectionBarBorder: Color {
     colorScheme == .dark ? Color.white.opacity(0.16) : Color.white.opacity(0.7)
+  }
+
+  private var privacyChipFill: AnyShapeStyle {
+    let accent = Color.accentColor.opacity(colorScheme == .dark ? 0.14 : 0.16)
+    let surface = colorScheme == .dark ? Color.white.opacity(0.055) : Color.white.opacity(0.62)
+    return AnyShapeStyle(
+      LinearGradient(
+        colors: [accent, surface],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+      )
+    )
+  }
+
+  private var privacyChipBorder: Color {
+    Color.accentColor.opacity(colorScheme == .dark ? 0.3 : 0.26)
   }
 
   private var unselectedPillBackground: AnyShapeStyle {

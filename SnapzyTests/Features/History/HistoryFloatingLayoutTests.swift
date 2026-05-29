@@ -111,6 +111,23 @@ final class HistoryFloatingLayoutTests: XCTestCase {
     XCTAssertNotEqual(HistoryFloatingPresentationMode.compact, HistoryFloatingPresentationMode.expanded)
   }
 
+  // MARK: - HistoryPrivacyChecklist
+
+  func testPrivacyChecklistReflectsLocalShotV1Guardrails() {
+    let titles = HistoryPrivacyChecklist.items.map(\.title)
+
+    XCTAssertEqual(
+      titles,
+      [
+        "Local-only",
+        "Cloud upload disabled",
+        "No accounts",
+        "No telemetry",
+        "No auto-update checks",
+      ]
+    )
+  }
+
   // MARK: - Helpers
 
   private func makeDefaults(
