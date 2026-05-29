@@ -87,6 +87,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
 
   func applicationWillFinishLaunching(_ notification: Notification) {
+    registerURLHandler()
+  }
+
+  private func registerURLHandler() {
     NSAppleEventManager.shared().setEventHandler(
       self,
       andSelector: #selector(handleGetURLEvent(_:withReplyEvent:)),
@@ -101,6 +105,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     AppIdentityManager.shared.refresh()
+    registerURLHandler()
 
     // Cleanup orphaned temp capture files from previous sessions
     TempCaptureManager.shared.cleanupOrphanedFiles()
@@ -133,12 +138,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       return
     }
 
-    guard let coordinator else {
-      pendingDeepLinkURLs.append(url)
-      return
-    }
-
-    coordinator.handleDeepLink(url)
+    handleDeepLinkURL(url)
   }
 
   private func flushPendingDeepLinks() {
@@ -160,9 +160,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   ///
   /// Note: macOS 13+ prefers `application(_:open:)` over the legacy
   /// `application(_:openFiles:)`, and the latter is silently skipped on
-  /// recent OS releases. We only act on file URLs here so that the existing
-  /// Apple Event handler for `localshot://` deep links keeps working.
+  /// recent OS releases. Some macOS paths also deliver custom URL schemes
+  /// here, so file-open and localshot:// deep links are both routed.
   func application(_ application: NSApplication, open urls: [URL]) {
+    let deepLinkURLs = urls.filter { $0.scheme?.lowercased() == LocalShotBrand.urlScheme }
+    if !deepLinkURLs.isEmpty {
+      DiagnosticLogger.shared.log(
+        .info,
+        .action,
+        "Received open-url deeplink request",
+        context: ["count": "\(deepLinkURLs.count)"]
+      )
+      deepLinkURLs.forEach(handleDeepLinkURL)
+    }
+
     let fileURLs = urls.filter { $0.isFileURL }
     guard !fileURLs.isEmpty else { return }
 
@@ -180,6 +191,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       // are queued and flushed once the coordinator is ready.
       pendingOpenFileURLs.append(contentsOf: fileURLs)
     }
+  }
+
+  private func handleDeepLinkURL(_ url: URL) {
+    guard let coordinator else {
+      pendingDeepLinkURLs.append(url)
+      return
+    }
+
+    coordinator.handleDeepLink(url)
   }
 
   private func openImageURLs(_ urls: [URL]) {
@@ -207,6 +227,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var pendingOpenFileURLCountForTesting: Int {
       pendingOpenFileURLs.count
+    }
+
+    var pendingDeepLinkURLCountForTesting: Int {
+      pendingDeepLinkURLs.count
     }
   #endif
 }

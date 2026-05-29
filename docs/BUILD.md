@@ -20,6 +20,7 @@ The helper uses:
 - Source packages: `build/SourcePackages`
 - Product: `build/DerivedData/Build/Products/Debug/LocalShot.app`
 - Package copy: `build/package/LocalShot.app`
+- Installed copy: `/Applications/LocalShot.app`
 
 ## Notes
 
@@ -38,7 +39,10 @@ The helper uses:
   `LOCALSHOT_CODE_SIGN_IDENTITY` set to the certificate name, then reset and
   re-grant macOS permissions once for that signed app.
 - For permission-sensitive testing, quit DerivedData test copies and run the
-  installed `/Applications/LocalShot.app`. Save Folder access is granted from
-  LocalShot's folder picker, not System Settings. Microphone appears in
-  System Settings only after LocalShot requests microphone access once.
+  installed `/Applications/LocalShot.app`. The install command unregisters
+  build/package copies from LaunchServices and re-registers the installed app
+  so `localshot://` links and macOS privacy prompts target the same bundle.
+  Save Folder access is granted from LocalShot's folder picker, not System
+  Settings. Microphone appears in System Settings only after LocalShot requests
+  microphone access once.
 - Notarization, public release feeds, and update checks are not part of v1.

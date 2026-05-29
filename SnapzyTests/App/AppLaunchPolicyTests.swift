@@ -77,4 +77,23 @@ final class AppLaunchPolicyTests: XCTestCase {
     XCTAssertFalse(delegate.hasCoordinatorForTesting)
     XCTAssertEqual(delegate.pendingOpenFileURLCountForTesting, 1)
   }
+
+  func testAppDelegate_skippedLaunchKeepsDeepLinksQueuedFromOpenURLDelegate() throws {
+    let delegate = AppDelegate(
+      launchPolicyProvider: {
+        AppLaunchPolicy(environment: [:], screenCountProvider: { 0 })
+      }
+    )
+    let url = try XCTUnwrap(URL(string: "localshot://settings/permissions"))
+
+    delegate.applicationDidFinishLaunching(
+      Notification(name: NSApplication.didFinishLaunchingNotification)
+    )
+    delegate.application(NSApplication.shared, open: [url])
+
+    XCTAssertFalse(delegate.didFinishLaunchingForTesting)
+    XCTAssertFalse(delegate.hasCoordinatorForTesting)
+    XCTAssertEqual(delegate.pendingDeepLinkURLCountForTesting, 1)
+    XCTAssertEqual(delegate.pendingOpenFileURLCountForTesting, 0)
+  }
 }

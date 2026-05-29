@@ -11,6 +11,8 @@ PRODUCT_APP="${DERIVED_DATA}/Build/Products/${CONFIGURATION}/LocalShot.app"
 PACKAGE_DIR="${ROOT_DIR}/build/package"
 PACKAGE_APP="${PACKAGE_DIR}/LocalShot.app"
 BUNDLE_ID="com.personal.localshot"
+INSTALLED_APP="/Applications/LocalShot.app"
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
 CODE_SIGN_IDENTITY_VALUE="${LOCALSHOT_CODE_SIGN_IDENTITY:--}"
 CODE_SIGN_KEYCHAIN_VALUE="${LOCALSHOT_CODE_SIGN_KEYCHAIN:-}"
 
@@ -131,10 +133,28 @@ strip_v1_disabled_package_surfaces() {
 
 install_app() {
   package_app
-  rm -rf "/Applications/LocalShot.app"
-  ditto "${PACKAGE_APP}" "/Applications/LocalShot.app"
-  xattr -cr "/Applications/LocalShot.app" >/dev/null 2>&1 || true
-  echo "Installed /Applications/LocalShot.app"
+  rm -rf "${INSTALLED_APP}"
+  ditto "${PACKAGE_APP}" "${INSTALLED_APP}"
+  xattr -cr "${INSTALLED_APP}" >/dev/null 2>&1 || true
+  refresh_launch_services_registration
+  echo "Installed ${INSTALLED_APP}"
+}
+
+refresh_launch_services_registration() {
+  if [[ ! -x "${LSREGISTER}" ]]; then
+    return
+  fi
+
+  # Keep permission prompts and localshot:// deep links tied to the installed
+  # app. Xcode and package builds can leave extra LocalShot.app registrations
+  # with different ad-hoc code hashes, which confuses macOS privacy routing.
+  for app in "${PRODUCT_APP}" "${PACKAGE_APP}"; do
+    if [[ -d "${app}" ]]; then
+      "${LSREGISTER}" -u "${app}" >/dev/null 2>&1 || true
+    fi
+  done
+
+  "${LSREGISTER}" -f -R -trusted "${INSTALLED_APP}" >/dev/null 2>&1 || true
 }
 
 reset_permissions() {
@@ -172,6 +192,17 @@ certificate, then run:
 
 Optionally set LOCALSHOT_CODE_SIGN_KEYCHAIN to the keychain containing it.
 INFO
+  fi
+
+  echo
+  echo "Registered LocalShot app copies:"
+  if [[ -x "${LSREGISTER}" ]]; then
+    "${LSREGISTER}" -dump 2>/dev/null \
+      | awk '/path:[[:space:]].*LocalShot\.app/{path=$0} /identifier:[[:space:]]+com\.personal\.localshot/{print path}' \
+      | sed 's/^[[:space:]]*path:[[:space:]]*/  /' \
+      | sort -u
+  else
+    echo "  LaunchServices registrar not found"
   fi
 }
 
