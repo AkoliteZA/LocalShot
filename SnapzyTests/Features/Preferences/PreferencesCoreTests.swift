@@ -73,6 +73,10 @@ final class PreferencesCoreTests: XCTestCase {
     XCTAssertEqual(tabs.count, 9)
   }
 
+  func testAdvancedDiagnosticsControlsAreHiddenForLocalShotV1() {
+    XCTAssertFalse(LocalShotV1Policy.diagnosticsPreferencesVisible)
+  }
+
   func testPermissionsRecoveryNoteShowsWhenAnyPermissionNeedsRecovery() {
     XCTAssertFalse(
       PermissionsRecoveryNotePolicy.shouldShow(

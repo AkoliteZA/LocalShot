@@ -110,54 +110,59 @@ struct AdvancedSettingsView: View {
         }
       }
 
-      Section(L10n.PreferencesAdvanced.diagnosticsSection) {
-        SettingRow(
-          icon: "doc.text.magnifyingglass",
-          title: L10n.PreferencesAdvanced.diagnosticLoggingTitle,
-          description: L10n.PreferencesAdvanced.diagnosticLoggingDescription
-        ) {
-          Toggle("", isOn: $diagnosticsEnabled)
-            .labelsHidden()
-        }
-
-        SettingRow(
-          icon: "calendar.badge.clock",
-          title: L10n.PreferencesAdvanced.logRetentionTitle,
-          description: L10n.PreferencesAdvanced.logRetentionDescription(diagnosticsRetentionDays)
-        ) {
-          HStack(spacing: 8) {
-            Text("\(diagnosticsRetentionDays)d")
-              .frame(width: 36, alignment: .trailing)
-              .monospacedDigit()
-              .foregroundColor(.secondary)
-            Stepper(
-              "",
-              value: Binding(
-                get: { diagnosticsRetentionDays },
-                set: { diagnosticsRetentionDays = $0 }
-              ),
-              in: LogCleanupScheduler.retentionDaysRange
-            )
-            .labelsHidden()
+      if LocalShotV1Policy.diagnosticsPreferencesVisible {
+        Section(L10n.PreferencesAdvanced.diagnosticsSection) {
+          SettingRow(
+            icon: "doc.text.magnifyingglass",
+            title: L10n.PreferencesAdvanced.diagnosticLoggingTitle,
+            description: L10n.PreferencesAdvanced.diagnosticLoggingDescription
+          ) {
+            Toggle("", isOn: $diagnosticsEnabled)
+              .labelsHidden()
           }
-          .frame(width: 120, alignment: .trailing)
-        }
 
-        SettingRow(icon: "folder", title: L10n.PreferencesAdvanced.logFilesTitle, description: logSizeText) {
-          Button(L10n.PreferencesAdvanced.openFolderButton) {
-            revealLogFolder()
+          SettingRow(
+            icon: "calendar.badge.clock",
+            title: L10n.PreferencesAdvanced.logRetentionTitle,
+            description: L10n.PreferencesAdvanced.logRetentionDescription(diagnosticsRetentionDays)
+          ) {
+            HStack(spacing: 8) {
+              Text("\(diagnosticsRetentionDays)d")
+                .frame(width: 36, alignment: .trailing)
+                .monospacedDigit()
+                .foregroundColor(.secondary)
+              Stepper(
+                "",
+                value: Binding(
+                  get: { diagnosticsRetentionDays },
+                  set: { diagnosticsRetentionDays = $0 }
+                ),
+                in: LogCleanupScheduler.retentionDaysRange
+              )
+              .labelsHidden()
+            }
+            .frame(width: 120, alignment: .trailing)
           }
-          .buttonStyle(.bordered)
-          .controlSize(.small)
+
+          SettingRow(icon: "folder", title: L10n.PreferencesAdvanced.logFilesTitle, description: logSizeText) {
+            Button(L10n.PreferencesAdvanced.openFolderButton) {
+              revealLogFolder()
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+          }
         }
       }
     }
     .formStyle(.grouped)
     .onAppear {
       refreshConfigAccessState()
-      updateLogSize()
+      if LocalShotV1Policy.diagnosticsPreferencesVisible {
+        updateLogSize()
+      }
     }
     .onChange(of: diagnosticsRetentionDays) { _ in
+      guard LocalShotV1Policy.diagnosticsPreferencesVisible else { return }
       LogCleanupScheduler.shared.performCleanupNow()
       updateLogSize()
     }

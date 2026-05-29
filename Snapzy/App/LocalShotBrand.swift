@@ -35,6 +35,7 @@ enum LocalShotV1Policy {
   static let cloudUploadsEnabled = false
   static let updaterEnabled = false
   static let diagnosticsEnabledByDefault = false
+  static let diagnosticsPreferencesVisible = false
   static let problemReportsEnabled = false
   static let complexVideoEditorEntryPointsEnabled = false
   static let sponsorPromptsEnabled = false
