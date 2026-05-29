@@ -3588,7 +3588,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Low"
+            "value" : "Small"
           }
         },
         "es" : {
@@ -3653,7 +3653,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Medium"
+            "value" : "Balanced"
           }
         },
         "es" : {

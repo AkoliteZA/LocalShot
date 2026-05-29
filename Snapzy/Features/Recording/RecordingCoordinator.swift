@@ -797,6 +797,7 @@ final class RecordingCoordinator: ObservableObject {
   private func stopRecording() {
     // Capture output mode before cleanup closes the toolbar
     let outputMode = toolbarWindow?.state.outputMode ?? .video
+    let quality = toolbarWindow?.state.selectedQuality ?? RecordingToolbarPreferences.selectedQuality()
 
     Task {
       let url = await recorder.stopRecording()
@@ -817,7 +818,7 @@ final class RecordingCoordinator: ObservableObject {
 
         if outputMode == .gif {
           // GIF mode: add to QuickAccess immediately with processing state
-          await handleGIFConversion(videoURL: url)
+          await handleGIFConversion(videoURL: url, quality: quality)
         } else {
           // Video mode: normal post-capture flow
           await PostCaptureActionHandler.shared.handleVideoCapture(url: url)
@@ -827,8 +828,11 @@ final class RecordingCoordinator: ObservableObject {
   }
 
   /// Handle GIF conversion: add to QuickAccess with progress, convert, and update
-  private func handleGIFConversion(videoURL: URL) async {
-    DiagnosticLogger.shared.log(.info, .recording, "GIF conversion started", context: ["file": videoURL.lastPathComponent])
+  private func handleGIFConversion(videoURL: URL, quality: VideoQuality) async {
+    DiagnosticLogger.shared.log(.info, .recording, "GIF conversion started", context: [
+      "file": videoURL.lastPathComponent,
+      "quality": quality.rawValue,
+    ])
     let quickAccess = QuickAccessManager.shared
     let sourceAccess = SandboxFileAccessManager.shared.beginAccessingURL(videoURL)
     let outputDirectoryAccess = SandboxFileAccessManager.shared.beginAccessingURL(
@@ -857,6 +861,7 @@ final class RecordingCoordinator: ObservableObject {
     do {
       let gifURL = try await GIFConverter.convert(
         videoURL: videoURL,
+        options: .preset(for: quality),
         onProgress: { progress in
           quickAccess.updateProcessingState(id: itemId, state: .processing(progress: progress))
         }

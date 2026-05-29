@@ -5816,12 +5816,12 @@ enum L10n {
     )
     static let qualityMedium = string(
       "recording-toolbar.quality-medium",
-      defaultValue: "Medium",
+      defaultValue: "Balanced",
       comment: "Recording quality preset label"
     )
     static let qualityLow = string(
       "recording-toolbar.quality-low",
-      defaultValue: "Low",
+      defaultValue: "Small",
       comment: "Recording quality preset label"
     )
     static let fullscreenCapture = string(

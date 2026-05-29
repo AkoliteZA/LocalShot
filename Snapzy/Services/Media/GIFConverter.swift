@@ -30,6 +30,17 @@ final class GIFConverter {
 
     /// Balanced defaults: 15fps @ up to 960px wide
     nonisolated static let `default` = Options()
+
+    nonisolated static func preset(for quality: VideoQuality) -> Options {
+      switch quality {
+      case .low:
+        return Options(fps: 10, maxWidth: 640)
+      case .medium:
+        return Options(fps: 15, maxWidth: 960)
+      case .high:
+        return Options(fps: 20, maxWidth: 1280)
+      }
+    }
   }
 
   /// Convert a video file to animated GIF

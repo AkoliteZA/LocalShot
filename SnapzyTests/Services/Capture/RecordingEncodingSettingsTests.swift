@@ -25,6 +25,23 @@ final class RecordingEncodingSettingsTests: XCTestCase {
     XCTAssertGreaterThan(VideoQuality.medium.bitsPerPixelPerFrame, VideoQuality.low.bitsPerPixelPerFrame)
   }
 
+  func testVideoQualityDisplayNamesMatchLocalShotRecordingPresets() {
+    XCTAssertEqual(VideoQuality.low.displayName, "Small")
+    XCTAssertEqual(VideoQuality.medium.displayName, "Balanced")
+    XCTAssertEqual(VideoQuality.high.displayName, "High")
+  }
+
+  func testGIFOptionsUseRecordingQualityPresets() {
+    let small = GIFConverter.Options.preset(for: .low)
+    let balanced = GIFConverter.Options.preset(for: .medium)
+    let high = GIFConverter.Options.preset(for: .high)
+
+    XCTAssertLessThan(small.fps, balanced.fps)
+    XCTAssertLessThan(balanced.fps, high.fps)
+    XCTAssertLessThan(small.maxWidth, balanced.maxWidth)
+    XCTAssertLessThan(balanced.maxWidth, high.maxWidth)
+  }
+
   // MARK: - preferredCodec
 
   func testPreferredCodec_mp4_alwaysH264() {
