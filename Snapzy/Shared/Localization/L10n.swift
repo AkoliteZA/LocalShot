@@ -1350,7 +1350,7 @@ enum L10n {
     )
     static let chooseFolderMessage = string(
       "onboarding.permissions.choose-folder-message",
-      defaultValue: "Choose a folder for LocalShot captures (default: Desktop/LocalShot)",
+      defaultValue: "Choose a folder for LocalShot captures (default: Pictures/LocalShot)",
       comment: "Open panel message for selecting export directory during onboarding"
     )
     static let screenRecordingIdentityBlocked = string(
@@ -1999,7 +1999,7 @@ enum L10n {
     )
     static let defaultSaveLocation = string(
       "preferences-general.default-save-location",
-      defaultValue: "Desktop/LocalShot",
+      defaultValue: "Pictures/LocalShot",
       comment: "Default export location display label"
     )
     static func accessNotGranted(_ folderName: String) -> String {

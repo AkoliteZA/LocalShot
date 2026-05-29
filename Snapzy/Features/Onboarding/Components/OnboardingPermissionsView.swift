@@ -376,7 +376,7 @@ struct PermissionsView: View {
   private var chooseFolderMessageTitle: String {
     onboardingLocalization.string(
       "onboarding.permissions.choose-folder-message",
-      defaultValue: "Choose a folder for LocalShot captures (default: Desktop/LocalShot)",
+      defaultValue: "Choose a folder for LocalShot captures (default: Pictures/LocalShot)",
       comment: "Open panel message for selecting export directory during onboarding"
     )
   }
