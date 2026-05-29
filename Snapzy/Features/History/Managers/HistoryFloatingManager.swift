@@ -232,7 +232,8 @@ final class HistoryFloatingManager: ObservableObject {
   }
 
   func cloudUploadState(for record: CaptureHistoryRecord) -> HistoryCloudUploadState? {
-    cloudUploadStates[record.id]
+    guard LocalShotV1Policy.cloudUploadsEnabled else { return nil }
+    return cloudUploadStates[record.id]
   }
 
   func uploadToCloud(_ record: CaptureHistoryRecord) {

@@ -76,6 +76,24 @@ final class QuickAccessCoreTests: XCTestCase {
     XCTAssertNotEqual(base, pinned)
   }
 
+  func testQuickAccessItem_hidesLegacyCloudURLForLocalShotV1Sharing() {
+    XCTAssertFalse(LocalShotV1Policy.cloudUploadsEnabled)
+
+    let item = QuickAccessItem(
+      id: UUID(),
+      url: URL(fileURLWithPath: "/tmp/demo.png"),
+      thumbnail: NSImage(size: CGSize(width: 16, height: 16)),
+      capturedAt: Date(),
+      itemType: .screenshot,
+      duration: nil,
+      cloudURL: URL(string: "https://cdn.example.com/demo.png"),
+      cloudKey: "legacy/demo.png"
+    )
+
+    XCTAssertNil(item.shareableCloudURL)
+    XCTAssertNil(LocalShotV1Policy.shareableCloudURL(item.cloudURL))
+  }
+
   func testQuickAccessPinWindowSizing_enforcesMinimumInteractiveSizeForTinyImages() {
     let sizes = QuickAccessPinWindowSizing.sizes(
       for: CGSize(width: 24, height: 16),

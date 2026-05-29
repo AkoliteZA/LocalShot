@@ -99,6 +99,10 @@ struct QuickAccessItem: Identifiable, Equatable {
     itemType == .video
   }
 
+  var shareableCloudURL: URL? {
+    LocalShotV1Policy.shareableCloudURL(cloudURL)
+  }
+
   /// Formatted duration string for display (e.g., "01:30s")
   var formattedDuration: String? {
     guard let duration = duration, duration.isFinite, duration >= 0 else {

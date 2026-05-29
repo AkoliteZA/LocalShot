@@ -741,7 +741,7 @@ final class QuickAccessManager: ObservableObject {
     )
   }
 
-  /// Copy item to clipboard (cloud link if available, otherwise image or video file URL)
+  /// Copy item to clipboard (local image or video file URL in LocalShot v1)
   func copyToClipboard(id: UUID) {
     guard let item = items.first(where: { $0.id == id }) else {
       DiagnosticLogger.shared.log(
@@ -753,8 +753,7 @@ final class QuickAccessManager: ObservableObject {
       return
     }
 
-    // If cloud URL is available, copy the cloud link as text
-    if let cloudURL = item.cloudURL {
+    if let cloudURL = item.shareableCloudURL {
       let pasteboard = NSPasteboard.general
       pasteboard.clearContents()
       pasteboard.setString(cloudURL.absoluteString, forType: .string)
@@ -1223,6 +1222,15 @@ final class QuickAccessManager: ObservableObject {
 
   /// Set cloud URL and key for an item after successful upload
   func setCloudURL(id: UUID, url: URL, key: String) {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      DiagnosticLogger.shared.log(
+        .info,
+        .cloud,
+        "Quick access cloud URL ignored; disabled for LocalShot v1"
+      )
+      return
+    }
+
     guard let index = items.firstIndex(where: { $0.id == id }) else {
       DiagnosticLogger.shared.log(
         .warning,
@@ -1245,6 +1253,8 @@ final class QuickAccessManager: ObservableObject {
 
   /// Mark an item's cloud state as stale (local differs from cloud)
   func markCloudStale(id: UUID) {
+    guard LocalShotV1Policy.cloudUploadsEnabled else { return }
+
     guard let index = items.firstIndex(where: { $0.id == id }) else {
       DiagnosticLogger.shared.log(
         .warning,

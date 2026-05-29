@@ -37,4 +37,9 @@ enum LocalShotV1Policy {
   static let diagnosticsEnabledByDefault = false
   static let problemReportsEnabled = false
   static let complexVideoEditorEntryPointsEnabled = false
+
+  static func shareableCloudURL(_ url: URL?) -> URL? {
+    guard cloudUploadsEnabled else { return nil }
+    return url
+  }
 }

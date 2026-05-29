@@ -51,6 +51,9 @@ final class AnnotateWindowController: NSWindowController, NSWindowDelegate {
   init(item: QuickAccessItem, sessionData: AnnotationSessionData? = nil) {
     self.quickAccessItemId = item.id
     self.sourceFileAccess = fileAccessManager.beginAccessingURL(item.url)
+    let cloudURL = item.shareableCloudURL
+    let cloudKey = LocalShotV1Policy.cloudUploadsEnabled ? item.cloudKey : nil
+    let isCloudStale = LocalShotV1Policy.cloudUploadsEnabled && item.isCloudStale
 
     if let sessionData = sessionData {
       // Restore from cache: decompress original image + editable annotations
@@ -62,9 +65,9 @@ final class AnnotateWindowController: NSWindowController, NSWindowDelegate {
         image: image,
         url: item.url,
         quickAccessItemId: item.id,
-        cloudURL: item.cloudURL,
-        cloudKey: item.cloudKey,
-        isCloudStale: item.isCloudStale,
+        cloudURL: cloudURL,
+        cloudKey: cloudKey,
+        isCloudStale: isCloudStale,
         appliesDefaultCanvasPresetOnNewImages: false
       )
       self.state.restoreEmbeddedImageAssets(from: sessionData.embeddedImageAssetsData)
@@ -86,7 +89,14 @@ final class AnnotateWindowController: NSWindowController, NSWindowDelegate {
       // First open: load image from disk and capture raw file bytes (fast, no re-encoding)
       let image = Self.loadImageWithCorrectScale(from: item.url) ?? item.thumbnail
       self.originalImageData = Self.readFileData(from: item.url)
-      self.state = AnnotateState(image: image, url: item.url, quickAccessItemId: item.id, cloudURL: item.cloudURL, cloudKey: item.cloudKey, isCloudStale: item.isCloudStale)
+      self.state = AnnotateState(
+        image: image,
+        url: item.url,
+        quickAccessItemId: item.id,
+        cloudURL: cloudURL,
+        cloudKey: cloudKey,
+        isCloudStale: isCloudStale
+      )
     }
 
     // Fixed window size for consistent experience
@@ -323,7 +333,8 @@ final class AnnotateWindowController: NSWindowController, NSWindowDelegate {
   }
 
   private var requiresCloudOverwriteConfirmation: Bool {
-    state.cloudURL != nil && (state.requiresRenderedOutputForSharing || state.isCloudStale)
+    guard LocalShotV1Policy.cloudUploadsEnabled else { return false }
+    return state.cloudURL != nil && (state.requiresRenderedOutputForSharing || state.isCloudStale)
   }
 
   private var shouldCloseAfterDrag: Bool {
@@ -888,8 +899,8 @@ final class AnnotateWindowController: NSWindowController, NSWindowDelegate {
     // Render once, use for everything
     let renderedImage = AnnotateExporter.renderFinalImage(state: state)
 
-    // Copy to clipboard — cloud link (text) if available, otherwise image
-    if let cloudURL = state.cloudURL {
+    // Copy to clipboard with LocalShot v1's local-only sharing policy.
+    if let cloudURL = LocalShotV1Policy.shareableCloudURL(state.cloudURL) {
       let pasteboard = NSPasteboard.general
       pasteboard.clearContents()
       pasteboard.setString(cloudURL.absoluteString, forType: .string)
@@ -949,6 +960,16 @@ final class AnnotateWindowController: NSWindowController, NSWindowDelegate {
   /// Save locally + re-upload to cloud + update QA card + close window.
   /// Used when user confirms overwrite on Save or Close-Save.
   private func performCloudReUploadAndClose() {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      DiagnosticLogger.shared.log(
+        .info,
+        .cloud,
+        "Annotate cloud re-upload ignored; disabled for LocalShot v1"
+      )
+      executeSave()
+      return
+    }
+
     guard let sourceURL = state.sourceURL else { return }
 
     // Render once
@@ -1043,6 +1064,16 @@ final class AnnotateWindowController: NSWindowController, NSWindowDelegate {
   /// Save locally + re-upload to cloud + copy cloud URL + close window.
   /// Used when user confirms overwrite on Copy (⌘⇧C).
   private func performCloudReUploadCopyAndClose() {
+    guard LocalShotV1Policy.cloudUploadsEnabled else {
+      DiagnosticLogger.shared.log(
+        .info,
+        .cloud,
+        "Annotate cloud copy re-upload ignored; disabled for LocalShot v1"
+      )
+      executeCopy()
+      return
+    }
+
     guard let sourceURL = state.sourceURL else { return }
 
     // Render once
