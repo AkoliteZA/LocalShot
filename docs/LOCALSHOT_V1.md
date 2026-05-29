@@ -54,8 +54,16 @@ Use the installed app at `/Applications/LocalShot.app` for permission-sensitive 
 Before testing:
 
 - Grant Screen Recording permission.
-- Grant Microphone permission before microphone recording tests.
+- Grant Save Folder access from LocalShot itself: Settings -> Permissions ->
+  Save Folder -> Grant Access opens the macOS folder picker and stores a
+  security-scoped bookmark. It is not a System Settings toggle.
+- Grant Microphone permission before microphone recording tests. If LocalShot is
+  not listed under System Settings -> Privacy & Security -> Microphone, click
+  the microphone Grant Access button in LocalShot first so macOS creates the row.
 - Grant Accessibility only if a tested feature explicitly requests it.
+- Use the installed app at `/Applications/LocalShot.app` for
+  permission-sensitive checks; quit any `build/DerivedData/.../LocalShot.app`
+  copy before granting permissions.
 - Disable network and confirm local capture, annotation, OCR, recording, GIF export, pinning, and history still work.
 
 Capture:

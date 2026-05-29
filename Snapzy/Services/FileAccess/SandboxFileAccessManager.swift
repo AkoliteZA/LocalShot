@@ -21,6 +21,7 @@ final class SandboxFileAccessManager {
   private let securityScopedBookmarkDataProvider: (URL) throws -> Data
   private let securityScopeAccessProvider: (URL) -> Bool
   private let securityScopeStopProvider: (URL) -> Void
+  private let appOwnedDirectoryProvider: () -> [URL]
   private var didPromptForMissingExportPermissionThisSession = false
   private var didAttemptLegacyMigrationThisSession = false
 
@@ -40,6 +41,20 @@ final class SandboxFileAccessManager {
     },
     securityScopeStopProvider: @escaping (URL) -> Void = {
       $0.stopAccessingSecurityScopedResource()
+    },
+    appOwnedDirectoryProvider: @escaping () -> [URL] = {
+      var directories = FileManager.default.urls(
+        for: .applicationSupportDirectory,
+        in: .userDomainMask
+      )
+      directories.append(
+        contentsOf: FileManager.default.urls(
+          for: .cachesDirectory,
+          in: .userDomainMask
+        )
+      )
+      directories.append(URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true))
+      return directories
     }
   ) {
     self.defaults = defaults
@@ -48,6 +63,7 @@ final class SandboxFileAccessManager {
     self.securityScopedBookmarkDataProvider = securityScopedBookmarkDataProvider
     self.securityScopeAccessProvider = securityScopeAccessProvider
     self.securityScopeStopProvider = securityScopeStopProvider
+    self.appOwnedDirectoryProvider = appOwnedDirectoryProvider
   }
 
   struct ScopedAccess: Sendable {
@@ -205,6 +221,10 @@ final class SandboxFileAccessManager {
   }
 
   func beginAccessingURL(_ targetURL: URL) -> ScopedAccess {
+    if isAppOwnedURL(targetURL) {
+      return ScopedAccess(url: targetURL, accessURL: targetURL, didStartAccessing: false)
+    }
+
     let scopeURL = resolveURLForScopedAccess(targetURL)
     var accessURL = scopeURL
     var didStartAccessing = scopeURL.startAccessingSecurityScopedResource()
@@ -250,6 +270,18 @@ final class SandboxFileAccessManager {
       return exportBookmarkURL
     }
     return targetURL
+  }
+
+  private func isAppOwnedURL(_ targetURL: URL) -> Bool {
+    let targetPath = normalizedPath(targetURL)
+    return appOwnedDirectoryProvider().contains { directoryURL in
+      let directoryPath = normalizedPath(directoryURL)
+      return targetPath == directoryPath || targetPath.hasPrefix(directoryPath + "/")
+    }
+  }
+
+  private func normalizedPath(_ url: URL) -> String {
+    url.standardizedFileURL.resolvingSymlinksInPath().path
   }
 
   private func resolveExportBookmarkURL(removeInvalidBookmark: Bool) -> URL? {

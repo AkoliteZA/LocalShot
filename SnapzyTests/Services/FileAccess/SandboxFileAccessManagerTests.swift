@@ -54,4 +54,36 @@ final class SandboxFileAccessManagerTests: XCTestCase {
     XCTAssertEqual(defaults.string(forKey: PreferencesKeys.exportLocation), normalizedDirectory.path)
     XCTAssertEqual(defaults.data(forKey: PreferencesKeys.exportLocationBookmark), Data([0x4c, 0x53]))
   }
+
+  func testAppOwnedFilesDoNotRequestSecurityScopedAccess() throws {
+    let defaults = UserDefaultsFactory.make()
+    let appSupportDirectory = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString, isDirectory: true)
+      .appendingPathComponent("Application Support", isDirectory: true)
+    let targetFile = appSupportDirectory
+      .appendingPathComponent("LocalShot", isDirectory: true)
+      .appendingPathComponent("Captures", isDirectory: true)
+      .appendingPathComponent("capture.png", isDirectory: false)
+    try FileManager.default.createDirectory(
+      at: targetFile.deletingLastPathComponent(),
+      withIntermediateDirectories: true
+    )
+    defer { try? FileManager.default.removeItem(at: appSupportDirectory) }
+
+    var securityScopeRequestCount = 0
+    let manager = SandboxFileAccessManager(
+      defaults: defaults,
+      defaultExportDirectoryProvider: { appSupportDirectory },
+      securityScopeAccessProvider: { _ in
+        securityScopeRequestCount += 1
+        return false
+      },
+      appOwnedDirectoryProvider: { [appSupportDirectory] }
+    )
+
+    let access = manager.beginAccessingURL(targetFile)
+    access.stop()
+
+    XCTAssertEqual(securityScopeRequestCount, 0)
+  }
 }

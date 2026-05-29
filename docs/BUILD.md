@@ -31,4 +31,8 @@ The helper uses:
   trusted local code-signing certificate and run builds with
   `LOCALSHOT_CODE_SIGN_IDENTITY="Certificate Common Name"`. If the certificate
   is in a non-default keychain, also set `LOCALSHOT_CODE_SIGN_KEYCHAIN`.
+- For permission-sensitive testing, quit DerivedData test copies and run the
+  installed `/Applications/LocalShot.app`. Save Folder access is granted from
+  LocalShot's folder picker, not System Settings. Microphone appears in
+  System Settings only after LocalShot requests microphone access once.
 - Notarization, public release feeds, and update checks are not part of v1.
