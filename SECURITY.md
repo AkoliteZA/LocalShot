@@ -20,7 +20,7 @@ Network client entitlement and public updater helper exceptions are intentionall
 - Exports: `~/Pictures/LocalShot`
 - App support: `~/Library/Application Support/LocalShot`
 - History database: `~/Library/Application Support/LocalShot/localshot.db`
-- Local diagnostics: disabled by default and stored locally only if enabled
+- Local diagnostics: hidden and clamped off for v1
 
 ## Disabled In V1
 

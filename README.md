@@ -10,7 +10,7 @@ This v1 fork is for personal local use on macOS 13+. It keeps the Snapzy BSD-3-C
 - Stores app data under `~/Library/Application Support/LocalShot`.
 - Uses `localshot://` for local automation links.
 - Does not configure cloud storage, login, account tokens, telemetry IDs, crash-report submission, public update feeds, or update checks in v1.
-- Keeps diagnostic logging disabled by default; any local logs stay on this Mac.
+- Keeps diagnostic logging controls hidden and clamps imported/local settings off for v1.
 
 ## Build
 

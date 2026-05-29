@@ -5,6 +5,7 @@
 //  LocalShot v1 identity and feature policy.
 //
 
+import Darwin
 import Foundation
 
 enum LocalShotBrand {
@@ -20,14 +21,29 @@ enum LocalShotBrand {
   static let databaseFileName = "localshot.db"
 
   static var defaultExportDirectory: URL {
-    let pictures = FileManager.default.urls(for: .picturesDirectory, in: .userDomainMask).first
-    return (pictures ?? FileManager.default.homeDirectoryForCurrentUser)
+    userHomeDirectory
+      .appendingPathComponent("Pictures", isDirectory: true)
       .appendingPathComponent(exportDirectoryName, isDirectory: true)
   }
 
   static var applicationSupportDirectory: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
       .appendingPathComponent(applicationSupportDirectoryName, isDirectory: true)
+  }
+
+  private static var userHomeDirectory: URL {
+    guard
+      let passwd = getpwuid(getuid()),
+      let home = passwd.pointee.pw_dir
+    else {
+      return FileManager.default.homeDirectoryForCurrentUser
+    }
+
+    let path = String(cString: home)
+    guard !path.isEmpty else {
+      return FileManager.default.homeDirectoryForCurrentUser
+    }
+    return URL(fileURLWithPath: path, isDirectory: true)
   }
 }
 

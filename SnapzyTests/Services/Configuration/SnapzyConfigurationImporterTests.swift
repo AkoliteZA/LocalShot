@@ -103,6 +103,26 @@ final class SnapzyConfigurationImporterTests: XCTestCase {
     )
   }
 
+  func testImportNormalizesPicturesRootExportLocationToLocalShotFolder() {
+    let defaults = UserDefaultsFactory.make()
+    let source = """
+    schema_version = 1
+
+    [general]
+    export_location = "~/Pictures"
+    """
+
+    let result = SnapzyConfigurationImporter.importTOML(source, defaults: defaults)
+
+    XCTAssertFalse(result.hasErrors)
+    XCTAssertEqual(defaults.string(forKey: PreferencesKeys.exportLocation), LocalShotBrand.defaultExportDirectory.path)
+    XCTAssertTrue(
+      result.issues.contains {
+        $0.severity == .warning && $0.message.contains("general.export_location")
+      }
+    )
+  }
+
   func testImportDoesNotEnableDiagnosticsForLocalShotV1() {
     let defaults = UserDefaultsFactory.make()
     defaults.set(false, forKey: PreferencesKeys.diagnosticsEnabled)

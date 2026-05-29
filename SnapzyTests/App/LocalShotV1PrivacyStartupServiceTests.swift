@@ -52,4 +52,16 @@ final class LocalShotV1PrivacyStartupServiceTests: XCTestCase {
       LocalShotV1Policy.diagnosticsEnabledByDefault
     )
   }
+
+  func testClearCloudDefaultsMigratesPicturesRootExportLocationToLocalShotFolder() {
+    let defaults = UserDefaultsFactory.make()
+    defaults.set(
+      LocalShotBrand.defaultExportDirectory.deletingLastPathComponent().path,
+      forKey: PreferencesKeys.exportLocation
+    )
+
+    LocalShotV1PrivacyStartupService.clearCloudDefaults(defaults: defaults)
+
+    XCTAssertEqual(defaults.string(forKey: PreferencesKeys.exportLocation), LocalShotBrand.defaultExportDirectory.path)
+  }
 }

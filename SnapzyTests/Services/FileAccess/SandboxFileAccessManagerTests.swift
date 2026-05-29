@@ -55,6 +55,31 @@ final class SandboxFileAccessManagerTests: XCTestCase {
     XCTAssertEqual(defaults.data(forKey: PreferencesKeys.exportLocationBookmark), Data([0x4c, 0x53]))
   }
 
+  func testResolvedExportDirectoryUsesStoredSubfolderWhenBookmarkCoversParent() throws {
+    let defaults = UserDefaultsFactory.make()
+    let parentDirectory = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString, isDirectory: true)
+    let childDirectory = parentDirectory
+      .appendingPathComponent("LocalShot", isDirectory: true)
+    try FileManager.default.createDirectory(at: childDirectory, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: parentDirectory) }
+
+    let bookmarkData = try parentDirectory.bookmarkData(
+      options: .withSecurityScope,
+      includingResourceValuesForKeys: nil,
+      relativeTo: nil
+    )
+    defaults.set(childDirectory.path, forKey: PreferencesKeys.exportLocation)
+    defaults.set(bookmarkData, forKey: PreferencesKeys.exportLocationBookmark)
+
+    let manager = SandboxFileAccessManager(
+      defaults: defaults,
+      defaultExportDirectoryProvider: { childDirectory }
+    )
+
+    XCTAssertEqual(manager.resolvedExportDirectoryURL(), childDirectory.standardizedFileURL)
+  }
+
   func testAppOwnedFilesDoNotRequestSecurityScopedAccess() throws {
     let defaults = UserDefaultsFactory.make()
     let appSupportDirectory = FileManager.default.temporaryDirectory

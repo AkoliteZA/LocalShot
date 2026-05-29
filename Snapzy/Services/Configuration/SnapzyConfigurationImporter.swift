@@ -102,7 +102,8 @@ enum SnapzyConfigurationImporter {
       mutations.append { LoginItemManager.setEnabled(startAtLogin) }
     }
     if let exportLocation = reader.string("general", "export_location") {
-      mutations.append { defaults.set(expandedPath(exportLocation), forKey: PreferencesKeys.exportLocation) }
+      let normalizedExportLocation = normalizedImportedExportLocation(exportLocation, reader: &reader)
+      mutations.append { defaults.set(normalizedExportLocation, forKey: PreferencesKeys.exportLocation) }
     }
     if let diagnosticsEnabled = reader.bool("diagnostics", "enabled") {
       if diagnosticsEnabled != LocalShotV1Policy.diagnosticsEnabledByDefault {
@@ -466,5 +467,26 @@ enum SnapzyConfigurationImporter {
 
   private static func expandedPath(_ path: String) -> String {
     SnapzyConfigurationPaths.expandedUserPath(path)
+  }
+
+  private static func normalizedImportedExportLocation(
+    _ path: String,
+    reader: inout SnapzyConfigurationReader
+  ) -> String {
+    let expanded = expandedPath(path)
+    let expandedURL = URL(fileURLWithPath: expanded, isDirectory: true).standardizedFileURL
+    let picturesRootURL = LocalShotBrand.defaultExportDirectory
+      .deletingLastPathComponent()
+      .standardizedFileURL
+
+    guard expandedURL.path == picturesRootURL.path else {
+      return expanded
+    }
+
+    let defaultExportDirectory = LocalShotBrand.defaultExportDirectory.path
+    reader.warning(
+      "general.export_location points at the Pictures folder; LocalShot v1 stores exports in \(defaultExportDirectory)."
+    )
+    return defaultExportDirectory
   }
 }

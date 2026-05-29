@@ -130,6 +130,14 @@ final class SandboxFileAccessManager {
 
   func resolvedExportDirectoryURL() -> URL {
     if let bookmarkURL = resolveExportBookmarkURL(removeInvalidBookmark: true) {
+      let configuredURL = exportLocationURL.standardizedFileURL
+      let bookmarkPath = normalizedPath(bookmarkURL)
+      let configuredPath = normalizedPath(configuredURL)
+
+      if configuredPath == bookmarkPath || configuredPath.hasPrefix(bookmarkPath + "/") {
+        return configuredURL
+      }
+
       return bookmarkURL
     }
     return exportLocationURL

@@ -36,5 +36,23 @@ enum LocalShotV1PrivacyStartupService {
     defaults.set(false, forKey: PreferencesKeys.cloudConfigured)
     defaults.set(false, forKey: PreferencesKeys.cloudPasswordEnabled)
     defaults.set(LocalShotV1Policy.diagnosticsEnabledByDefault, forKey: PreferencesKeys.diagnosticsEnabled)
+    normalizeExportLocation(defaults: defaults)
+  }
+
+  static func normalizeExportLocation(defaults: UserDefaults) {
+    guard let exportLocation = defaults.string(forKey: PreferencesKeys.exportLocation),
+          !exportLocation.isEmpty
+    else {
+      return
+    }
+
+    let exportURL = URL(fileURLWithPath: exportLocation, isDirectory: true).standardizedFileURL
+    let picturesRootURL = LocalShotBrand.defaultExportDirectory
+      .deletingLastPathComponent()
+      .standardizedFileURL
+
+    if exportURL.path == picturesRootURL.path {
+      defaults.set(LocalShotBrand.defaultExportDirectory.path, forKey: PreferencesKeys.exportLocation)
+    }
   }
 }
