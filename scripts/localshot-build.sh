@@ -15,17 +15,25 @@ INSTALLED_APP="/Applications/LocalShot.app"
 LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
 CODE_SIGN_IDENTITY_VALUE="${LOCALSHOT_CODE_SIGN_IDENTITY:--}"
 CODE_SIGN_KEYCHAIN_VALUE="${LOCALSHOT_CODE_SIGN_KEYCHAIN:-}"
+AD_HOC_DESIGNATED_REQUIREMENT="designated => identifier \"${BUNDLE_ID}\""
 
 codesign_args() {
-  printf '%s\0' \
+  local args=(
     --force \
     --sign "${CODE_SIGN_IDENTITY_VALUE}" \
     --entitlements "${ROOT_DIR}/Snapzy/Snapzy.entitlements" \
     --timestamp=none
+  )
+
+  if [[ "${CODE_SIGN_IDENTITY_VALUE}" == "-" ]]; then
+    args+=("-r=${AD_HOC_DESIGNATED_REQUIREMENT}")
+  fi
 
   if [[ -n "${CODE_SIGN_KEYCHAIN_VALUE}" ]]; then
-    printf '%s\0' --keychain "${CODE_SIGN_KEYCHAIN_VALUE}"
+    args+=(--keychain "${CODE_SIGN_KEYCHAIN_VALUE}")
   fi
+
+  printf '%s\0' "${args[@]}"
 }
 
 xcodebuild_signing_args=(
@@ -182,17 +190,27 @@ signing_info() {
   if [[ "${CODE_SIGN_IDENTITY_VALUE}" == "-" ]]; then
     cat <<'INFO'
 Using ad-hoc signing. This is valid for local builds, but macOS privacy
-permissions such as Screen Recording may need to be granted again after a
-rebuilt app is reinstalled because the code identity changes.
+permissions are sensitive to the code identity macOS records in TCC.
+The packaged app is signed with a stable LocalShot designated requirement so
+grants survive ordinary local rebuilds after you reset and grant once.
 
-To use a stable local identity, create or install a trusted code-signing
-certificate, then run:
+For stronger identity binding, create or install a trusted code-signing
+certificate and run:
 
   LOCALSHOT_CODE_SIGN_IDENTITY="Certificate Common Name" scripts/localshot-build.sh install
 
 Optionally set LOCALSHOT_CODE_SIGN_KEYCHAIN to the keychain containing it.
 INFO
   fi
+
+  echo
+  for app in "${PACKAGE_APP}" "${INSTALLED_APP}"; do
+    if [[ -d "${app}" ]]; then
+      echo "Designated requirement for ${app}:"
+      codesign -d -r- "${app}" 2>&1 | sed 's/^/  /'
+      echo
+    fi
+  done
 
   echo
   echo "Registered LocalShot app copies:"

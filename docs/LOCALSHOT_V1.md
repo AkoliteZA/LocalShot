@@ -53,6 +53,10 @@ Use the installed app at `/Applications/LocalShot.app` for permission-sensitive 
 
 Before testing:
 
+- Install with `./scripts/localshot-build.sh install` and launch
+  `/Applications/LocalShot.app`. The package uses a stable LocalShot designated
+  requirement for local ad-hoc builds so privacy grants do not follow
+  DerivedData or package copies.
 - Grant Screen Recording permission.
 - Grant Save Folder access from LocalShot itself: Settings -> Permissions ->
   Save Folder -> Grant Access opens the macOS folder picker and stores a
@@ -63,7 +67,9 @@ Before testing:
 - Grant Accessibility only if a tested feature explicitly requests it.
 - Use the installed app at `/Applications/LocalShot.app` for
   permission-sensitive checks; quit any `build/DerivedData/.../LocalShot.app`
-  copy before granting permissions.
+  copy before granting permissions. If a permission keeps returning after a
+  rebuild, run `./scripts/localshot-build.sh reset-permissions`, reinstall, and
+  grant once from the installed app.
 - Disable network and confirm local capture, annotation, OCR, recording, GIF export, pinning, and history still work.
 
 Capture:

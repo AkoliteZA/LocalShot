@@ -25,11 +25,12 @@ The helper uses:
 ## Notes
 
 - v1 is for local personal use.
-- By default the helper signs ad-hoc. That is enough to launch locally, but
-  macOS privacy permissions such as Screen Recording can be invalidated after
-  reinstalling a rebuilt app because the ad-hoc code identity changes.
-- To avoid repeated Screen Recording grants during development, install a
-  trusted local code-signing certificate and run builds with
+- By default the helper signs the packaged app ad-hoc with a stable LocalShot
+  designated requirement. After one reset and re-grant, this keeps ordinary
+  local rebuilds from changing the TCC identity macOS records for Screen
+  Recording.
+- For stronger identity binding, install a trusted local code-signing
+  certificate and run builds with
   `LOCALSHOT_CODE_SIGN_IDENTITY="Certificate Common Name"`. If the certificate
   is in a non-default keychain, also set `LOCALSHOT_CODE_SIGN_KEYCHAIN`.
 - You can create a stable local identity in Keychain Access with
@@ -42,6 +43,9 @@ The helper uses:
   installed `/Applications/LocalShot.app`. The install command unregisters
   build/package copies from LaunchServices and re-registers the installed app
   so `localshot://` links and macOS privacy prompts target the same bundle.
+  If permissions still loop after changing signing modes, run
+  `./scripts/localshot-build.sh reset-permissions`, reinstall, then grant from
+  the installed app once.
   Save Folder access is granted from LocalShot's folder picker, not System
   Settings. Microphone appears in System Settings only after LocalShot requests
   microphone access once.

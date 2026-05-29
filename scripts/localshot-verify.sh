@@ -10,6 +10,7 @@ DERIVED_DATA="${ROOT_DIR}/build/DerivedData"
 SOURCE_PACKAGES="${ROOT_DIR}/build/SourcePackages"
 PACKAGE_APP="${ROOT_DIR}/build/package/LocalShot.app"
 INSTALLED_APP="/Applications/LocalShot.app"
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
 EVIDENCE_DIR="${ROOT_DIR}/build/evidence"
 MOCKUPS_DIR="$(cd "${ROOT_DIR}/.." && pwd)/mockups"
 
@@ -146,6 +147,14 @@ install_packaged_app() {
     rm -rf "${INSTALLED_APP}"
     ditto "${PACKAGE_APP}" "${INSTALLED_APP}"
     xattr -cr "${INSTALLED_APP}" >/dev/null 2>&1 || true
+    if [[ -x "${LSREGISTER}" ]]; then
+      for app in "${DERIVED_DATA}/Build/Products/${CONFIGURATION}/LocalShot.app" "${PACKAGE_APP}"; do
+        if [[ -d "${app}" ]]; then
+          "${LSREGISTER}" -u "${app}" >/dev/null 2>&1 || true
+        fi
+      done
+      "${LSREGISTER}" -f -R -trusted "${INSTALLED_APP}" >/dev/null 2>&1 || true
+    fi
     codesign --verify --deep --strict --verbose=2 "${INSTALLED_APP}"
     /usr/libexec/PlistBuddy -c 'Print :CFBundleDisplayName' "${INSTALLED_APP}/Contents/Info.plist"
     /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "${INSTALLED_APP}/Contents/Info.plist"
@@ -281,6 +290,12 @@ run_capture \
   "package save-folder bookmark entitlement" \
   "${EVIDENCE_DIR}/package-bookmark-entitlement.txt" \
   bash -c 'tmp="$(mktemp)"; trap '\''rm -f "$tmp"'\'' EXIT; codesign -d --entitlements :- "$1" 2>/dev/null > "$tmp"; /usr/libexec/PlistBuddy -c "Print :com.apple.security.files.bookmarks.app-scope" "$tmp" | grep -qx true' \
+    _ "${PACKAGE_APP}"
+
+run_capture \
+  "package stable designated requirement" \
+  "${EVIDENCE_DIR}/package-designated-requirement.txt" \
+  bash -c 'requirement="$(codesign -d -r- "$1" 2>&1 | awk "/designated =>/{print}")"; printf "%s\n" "$requirement"; [[ "$requirement" == *"identifier \"com.personal.localshot\""* ]] && [[ "$requirement" != "# designated => cdhash "* ]]' \
     _ "${PACKAGE_APP}"
 
 {

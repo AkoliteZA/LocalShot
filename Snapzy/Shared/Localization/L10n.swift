@@ -1981,7 +1981,7 @@ enum L10n {
     )
     static let localBuildPermissionNoteDescription = string(
       "preferences-permissions.local-build-note-description",
-      defaultValue: "Save Folder access is granted from LocalShot's folder picker, not System Settings. Microphone appears in System Settings only after LocalShot asks once. If prompts return after rebuilds, macOS may be seeing a new ad-hoc-signed app; a stable local signing identity prevents repeated grants.",
+      defaultValue: "Save Folder access is granted from LocalShot's folder picker, not System Settings. Microphone appears in System Settings only after LocalShot asks once. If prompts return after rebuilds, run the install script, reset LocalShot permissions, and grant once from /Applications/LocalShot.app.",
       comment: "Description for note explaining repeated permission prompts after reinstalling ad-hoc-signed local builds"
     )
   }
@@ -6721,7 +6721,7 @@ enum L10n {
 
     static let adHocSignature = string(
       "app-identity.ad-hoc-signature",
-      defaultValue: "This local build is ad-hoc signed. macOS privacy grants may be invalidated after rebuilds; use a stable local code-signing identity for repeatable Screen Recording, Microphone, and folder access.",
+      defaultValue: "This local build is ad-hoc signed. The install script gives packaged builds a stable LocalShot requirement, but a trusted local code-signing identity is still stronger for long-term permission stability.",
       comment: "Non-blocking identity warning shown for ad-hoc-signed local development builds"
     )
 
