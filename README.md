@@ -13,6 +13,38 @@ ScreenCaptureKit. It targets macOS 13 or newer.
 
 ![LocalShot banner](banner.png)
 
+## Why Choose LocalShot?
+
+LocalShot is for people who like Snapzy's native macOS capture foundation but
+want a tighter local-first tool with fewer online/service surfaces and more
+control over the everyday screenshot workflow.
+
+Compared with upstream Snapzy, LocalShot adds:
+
+- **Local-only defaults**: screenshots, recordings, OCR, pins, and history are
+  designed to work without cloud upload, telemetry, public crash-report
+  submission, sponsor prompts, or public update checks.
+- **Default macOS screenshot shortcuts**: LocalShot can take over `⌘⇧3`,
+  `⌘⇧4`, and `⌘⇧5` from Settings and turn off the overlapping built-in macOS
+  screenshot shortcuts.
+- **Previous-area capture**: quickly recapture the last selected screenshot
+  region.
+- **Richer Quick Access cards**: copy, annotate, OCR, pin, delete, drag, and
+  close/dismiss actions can be arranged into configurable button slots.
+- **Quick Access OCR**: copy recognized text and QR content directly from the
+  floating screenshot card.
+- **Pinned screenshot controls**: keep screenshots above other windows and use
+  short hover tooltips for the pinned-window controls.
+- **LocalShot-specific packaging and verification**: scripts build, install,
+  verify, and reset permissions for `/Applications/LocalShot.app`, which helps
+  avoid macOS privacy-permission churn during local builds.
+- **Clear fork attribution**: LocalShot keeps Snapzy's BSD 3-Clause license and
+  credits while documenting the LocalShot-specific changes.
+
+Snapzy remains the broader upstream app, especially if you want built-in cloud
+upload, Sparkle updates, public support/sponsor surfaces, or the full video
+editor workflow. Choose LocalShot when you want the local, privacy-focused path.
+
 ## Features
 
 - Area, window, full-screen, previous-area, and scrolling screenshots
