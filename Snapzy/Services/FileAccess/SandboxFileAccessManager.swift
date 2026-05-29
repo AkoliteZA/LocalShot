@@ -18,6 +18,7 @@ final class SandboxFileAccessManager {
   private let defaults: UserDefaults
   private let fileManager: FileManager
   private let defaultExportDirectoryProvider: () -> URL
+  private let securityScopedBookmarkDataProvider: (URL) throws -> Data
   private let securityScopeAccessProvider: (URL) -> Bool
   private let securityScopeStopProvider: (URL) -> Void
   private var didPromptForMissingExportPermissionThisSession = false
@@ -27,6 +28,13 @@ final class SandboxFileAccessManager {
     defaults: UserDefaults = .standard,
     fileManager: FileManager = .default,
     defaultExportDirectoryProvider: @escaping () -> URL = { LocalShotBrand.defaultExportDirectory },
+    securityScopedBookmarkDataProvider: @escaping (URL) throws -> Data = {
+      try $0.bookmarkData(
+        options: .withSecurityScope,
+        includingResourceValuesForKeys: nil,
+        relativeTo: nil
+      )
+    },
     securityScopeAccessProvider: @escaping (URL) -> Bool = {
       $0.startAccessingSecurityScopedResource()
     },
@@ -37,6 +45,7 @@ final class SandboxFileAccessManager {
     self.defaults = defaults
     self.fileManager = fileManager
     self.defaultExportDirectoryProvider = defaultExportDirectoryProvider
+    self.securityScopedBookmarkDataProvider = securityScopedBookmarkDataProvider
     self.securityScopeAccessProvider = securityScopeAccessProvider
     self.securityScopeStopProvider = securityScopeStopProvider
   }
@@ -115,11 +124,7 @@ final class SandboxFileAccessManager {
     let normalizedURL = url.standardizedFileURL
 
     do {
-      let bookmarkData = try normalizedURL.bookmarkData(
-        options: .withSecurityScope,
-        includingResourceValuesForKeys: nil,
-        relativeTo: nil
-      )
+      let bookmarkData = try securityScopedBookmarkDataProvider(url)
       defaults.set(normalizedURL.path, forKey: PreferencesKeys.exportLocation)
       defaults.set(bookmarkData, forKey: PreferencesKeys.exportLocationBookmark)
       didPromptForMissingExportPermissionThisSession = false

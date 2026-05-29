@@ -28,4 +28,30 @@ final class SandboxFileAccessManagerTests: XCTestCase {
 
     XCTAssertTrue(manager.hasPersistedExportPermission)
   }
+
+  func testSetExportDirectoryCreatesBookmarkFromSelectedURLBeforeNormalizingStoredPath() throws {
+    let defaults = UserDefaultsFactory.make()
+    let selectedDirectory = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString, isDirectory: true)
+      .appendingPathComponent("..", isDirectory: true)
+      .appendingPathComponent("Chosen", isDirectory: true)
+    let normalizedDirectory = selectedDirectory.standardizedFileURL
+    try FileManager.default.createDirectory(at: normalizedDirectory, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: normalizedDirectory) }
+
+    var bookmarkSourceURL: URL?
+    let manager = SandboxFileAccessManager(
+      defaults: defaults,
+      defaultExportDirectoryProvider: { normalizedDirectory },
+      securityScopedBookmarkDataProvider: { url in
+        bookmarkSourceURL = url
+        return Data([0x4c, 0x53])
+      }
+    )
+
+    XCTAssertTrue(manager.setExportDirectory(selectedDirectory))
+    XCTAssertEqual(bookmarkSourceURL, selectedDirectory)
+    XCTAssertEqual(defaults.string(forKey: PreferencesKeys.exportLocation), normalizedDirectory.path)
+    XCTAssertEqual(defaults.data(forKey: PreferencesKeys.exportLocationBookmark), Data([0x4c, 0x53]))
+  }
 }
