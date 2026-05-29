@@ -20,6 +20,7 @@ RESULT_BUNDLE_PATH="${RESULT_BUNDLE_PATH:-${BUILD_DIR}/ci-test.xcresult}"
 LOG_PATH="${LOG_PATH:-${BUILD_DIR}/ci-test.log}"
 PRODUCT_APP_PATH="${PRODUCT_APP_PATH:-${DERIVED_DATA_PATH}/Build/Products/${CONFIGURATION}/LocalShot.app}"
 INSTALLED_APP_PATH="${INSTALLED_APP_PATH:-/Applications/LocalShot.app}"
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister"
 KEEP_RESULT=0
 OPEN_RESULT=0
 XCODEBUILD_ARGS=()
@@ -47,9 +48,20 @@ error() { printf "%berror:%b %s\n" "${RED}${BOLD}" "$RESET" "$*" >&2; }
 cleanup_test_app_registration() {
   pkill -f "${PRODUCT_APP_PATH}/Contents/MacOS/LocalShot" >/dev/null 2>&1 || true
 
-  if [ -d "${INSTALLED_APP_PATH}" ]; then
-    /System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister \
-      -f -R -trusted "${INSTALLED_APP_PATH}" >/dev/null 2>&1 || true
+  if [ -x "${LSREGISTER}" ]; then
+    if command -v mdfind >/dev/null 2>&1; then
+      mdfind 'kMDItemFSName == "LocalShot.app"c' 2>/dev/null | while IFS= read -r app; do
+        if [ "${app}" != "${INSTALLED_APP_PATH}" ] && [ -d "${app}" ]; then
+          "${LSREGISTER}" -u "${app}" >/dev/null 2>&1 || true
+        fi
+      done
+    elif [ -d "${PRODUCT_APP_PATH}" ]; then
+      "${LSREGISTER}" -u "${PRODUCT_APP_PATH}" >/dev/null 2>&1 || true
+    fi
+  fi
+
+  if [ -x "${LSREGISTER}" ] && [ -d "${INSTALLED_APP_PATH}" ]; then
+    "${LSREGISTER}" -f -R -trusted "${INSTALLED_APP_PATH}" >/dev/null 2>&1 || true
   fi
 }
 

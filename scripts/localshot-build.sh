@@ -17,6 +17,70 @@ CODE_SIGN_IDENTITY_VALUE="${LOCALSHOT_CODE_SIGN_IDENTITY:--}"
 CODE_SIGN_KEYCHAIN_VALUE="${LOCALSHOT_CODE_SIGN_KEYCHAIN:-}"
 AD_HOC_DESIGNATED_REQUIREMENT="designated => identifier \"${BUNDLE_ID}\""
 
+canonical_path() {
+  local path="$1"
+  local dir
+  local base
+  dir="$(dirname "${path}")"
+  base="$(basename "${path}")"
+  if [[ -d "${dir}" ]]; then
+    printf '%s/%s\n' "$(cd "${dir}" && pwd -P)" "${base}"
+  else
+    printf '%s\n' "${path}"
+  fi
+}
+
+unregister_launch_services_app() {
+  local app="$1"
+  if [[ -x "${LSREGISTER}" && -d "${app}" ]]; then
+    "${LSREGISTER}" -u "${app}" >/dev/null 2>&1 || true
+  fi
+}
+
+prune_launch_services_registrations() {
+  if [[ ! -x "${LSREGISTER}" ]]; then
+    return
+  fi
+
+  local installed_canonical
+  installed_canonical="$(canonical_path "${INSTALLED_APP}")"
+
+  # Xcode and test builds can register every DerivedData copy with Launch
+  # Services, which makes Spotlight/App Search show many identical LocalShot
+  # results. Keep only the installed app registered.
+  if command -v mdfind >/dev/null 2>&1; then
+    while IFS= read -r app; do
+      [[ -z "${app}" ]] && continue
+      if [[ "$(canonical_path "${app}")" != "${installed_canonical}" ]]; then
+        unregister_launch_services_app "${app}"
+      fi
+    done < <(mdfind 'kMDItemFSName == "LocalShot.app"c' 2>/dev/null || true)
+  fi
+
+  for app in "${PRODUCT_APP}" "${PACKAGE_APP}"; do
+    if [[ "$(canonical_path "${app}")" != "${installed_canonical}" ]]; then
+      unregister_launch_services_app "${app}"
+    fi
+  done
+}
+
+remove_search_duplicate_apps() {
+  if ! command -v mdfind >/dev/null 2>&1; then
+    return
+  fi
+
+  local installed_canonical
+  installed_canonical="$(canonical_path "${INSTALLED_APP}")"
+
+  while IFS= read -r app; do
+    [[ -z "${app}" ]] && continue
+    if [[ "$(canonical_path "${app}")" != "${installed_canonical}" && -d "${app}" ]]; then
+      unregister_launch_services_app "${app}"
+      rm -rf "${app}"
+    fi
+  done < <(mdfind 'kMDItemFSName == "LocalShot.app"c' 2>/dev/null || true)
+}
+
 codesign_args() {
   local args=(
     --force \
@@ -58,6 +122,7 @@ build_app() {
     -skipPackagePluginValidation \
     "${xcodebuild_signing_args[@]}" \
     build
+  prune_launch_services_registrations
 }
 
 package_app() {
@@ -153,15 +218,7 @@ refresh_launch_services_registration() {
     return
   fi
 
-  # Keep permission prompts and localshot:// deep links tied to the installed
-  # app. Xcode and package builds can leave extra LocalShot.app registrations
-  # with different ad-hoc code hashes, which confuses macOS privacy routing.
-  for app in "${PRODUCT_APP}" "${PACKAGE_APP}"; do
-    if [[ -d "${app}" ]]; then
-      "${LSREGISTER}" -u "${app}" >/dev/null 2>&1 || true
-    fi
-  done
-
+  prune_launch_services_registrations
   "${LSREGISTER}" -f -R -trusted "${INSTALLED_APP}" >/dev/null 2>&1 || true
 }
 
@@ -226,6 +283,7 @@ INFO
 
 case "${1:-build}" in
   clean)
+    prune_launch_services_registrations
     rm -rf "${DERIVED_DATA}" "${SOURCE_PACKAGES}" "${PACKAGE_DIR}"
     ;;
   build)
@@ -240,11 +298,19 @@ case "${1:-build}" in
   reset-permissions)
     reset_permissions
     ;;
+  clean-launch-services)
+    refresh_launch_services_registration
+    ;;
+  clean-search-duplicates)
+    prune_launch_services_registrations
+    remove_search_duplicate_apps
+    refresh_launch_services_registration
+    ;;
   signing-info)
     signing_info
     ;;
   *)
-    echo "Usage: $0 {clean|build|package|install|reset-permissions|signing-info}" >&2
+    echo "Usage: $0 {clean|build|package|install|reset-permissions|clean-launch-services|clean-search-duplicates|signing-info}" >&2
     exit 64
     ;;
 esac

@@ -148,11 +148,19 @@ install_packaged_app() {
     ditto "${PACKAGE_APP}" "${INSTALLED_APP}"
     xattr -cr "${INSTALLED_APP}" >/dev/null 2>&1 || true
     if [[ -x "${LSREGISTER}" ]]; then
-      for app in "${DERIVED_DATA}/Build/Products/${CONFIGURATION}/LocalShot.app" "${PACKAGE_APP}"; do
-        if [[ -d "${app}" ]]; then
+      if command -v mdfind >/dev/null 2>&1; then
+        while IFS= read -r app; do
+          [[ -z "${app}" ]] && continue
+          if [[ "${app}" != "${INSTALLED_APP}" && -d "${app}" ]]; then
+            "${LSREGISTER}" -u "${app}" >/dev/null 2>&1 || true
+          fi
+        done < <(mdfind 'kMDItemFSName == "LocalShot.app"c' 2>/dev/null || true)
+      else
+        for app in "${DERIVED_DATA}/Build/Products/${CONFIGURATION}/LocalShot.app" "${PACKAGE_APP}"; do
+          [[ -d "${app}" ]] || continue
           "${LSREGISTER}" -u "${app}" >/dev/null 2>&1 || true
-        fi
-      done
+        done
+      fi
       "${LSREGISTER}" -f -R -trusted "${INSTALLED_APP}" >/dev/null 2>&1 || true
     fi
     codesign --verify --deep --strict --verbose=2 "${INSTALLED_APP}"
