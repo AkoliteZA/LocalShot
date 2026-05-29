@@ -50,8 +50,7 @@ final class AppCoordinator {
     if defaults.object(forKey: PreferencesKeys.historyOpenOnLaunch) == nil {
       defaults.set(false, forKey: PreferencesKeys.historyOpenOnLaunch)
     }
-    defaults.set(false, forKey: PreferencesKeys.cloudConfigured)
-    defaults.set(false, forKey: PreferencesKeys.cloudPasswordEnabled)
+    LocalShotV1PrivacyStartupService.run(defaults: defaults)
 
     // Floating history panel defaults
     if defaults.object(forKey: "history.floating.enabled") == nil {
