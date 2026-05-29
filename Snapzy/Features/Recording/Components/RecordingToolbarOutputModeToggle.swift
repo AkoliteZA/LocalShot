@@ -39,7 +39,7 @@ struct ToolbarOutputModeDropdown: View {
       OutputModePopoverContent(state: state)
     }
     .accessibilityLabel(
-      "\(L10n.RecordingToolbar.outputModeAccessibilityPrefix): \(state.outputMode.displayName)"
+      "\(L10n.RecordingToolbar.outputModeAccessibilityPrefix): \(state.outputMode.displayName(format: state.selectedFormat))"
     )
     .accessibilityHint(L10n.RecordingToolbar.outputModeHint)
   }
@@ -62,7 +62,7 @@ struct RecordButtonWithBadge: View {
           .font(.system(size: 13, weight: .regular))
 
         // Output mode badge
-        Text(state.outputMode.displayName)
+        Text(state.outputMode.displayName(format: state.selectedFormat))
           .font(.system(size: 8, weight: .semibold))
           .foregroundColor(badgeTextColor)
           .padding(.horizontal, 5)
@@ -89,7 +89,9 @@ struct RecordButtonWithBadge: View {
         .fill(Color.primary.opacity(isHovered && !state.isPreparingToRecord ? 0.08 : 0))
     )
     .opacity(state.isPreparingToRecord ? 0.65 : 1)
-    .accessibilityLabel(L10n.RecordingToolbar.startRecordingAs(state.outputMode.displayName))
+    .accessibilityLabel(
+      L10n.RecordingToolbar.startRecordingAs(state.outputMode.displayName(format: state.selectedFormat))
+    )
     .accessibilityHint(L10n.RecordingToolbar.startRecordingHint)
   }
 
@@ -112,6 +114,7 @@ private struct OutputModePopoverContent: View {
       ForEach(RecordingOutputMode.allCases, id: \.self) { mode in
         OutputModeRow(
           mode: mode,
+          videoFormat: state.selectedFormat,
           isSelected: state.outputMode == mode
         ) {
           state.outputMode = mode
@@ -129,6 +132,7 @@ private struct OutputModePopoverContent: View {
 
 private struct OutputModeRow: View {
   let mode: RecordingOutputMode
+  let videoFormat: VideoFormat
   let isSelected: Bool
   let action: () -> Void
 
@@ -142,7 +146,7 @@ private struct OutputModeRow: View {
           .foregroundColor(isSelected ? .accentColor : .secondary)
           .frame(width: 16)
 
-        Text(mode.displayName)
+        Text(mode.displayName(format: videoFormat))
           .font(.system(size: 12, weight: isSelected ? .semibold : .regular))
           .foregroundColor(.primary)
 

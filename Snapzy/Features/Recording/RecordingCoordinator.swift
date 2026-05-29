@@ -42,6 +42,7 @@ final class RecordingCoordinator: ObservableObject {
   private struct ToolbarConfiguration {
     let format: VideoFormat
     let quality: VideoQuality
+    let fps: Int
     let captureAudio: Bool
     let captureMicrophone: Bool
     let microphoneDeviceID: String
@@ -294,6 +295,7 @@ final class RecordingCoordinator: ObservableObject {
     return ToolbarConfiguration(
       format: toolbarWindow.selectedFormat,
       quality: toolbarWindow.selectedQuality,
+      fps: toolbarWindow.selectedFPS,
       captureAudio: toolbarWindow.captureAudio,
       captureMicrophone: toolbarWindow.captureMicrophone,
       microphoneDeviceID: toolbarWindow.microphoneDeviceID,
@@ -311,6 +313,7 @@ final class RecordingCoordinator: ObservableObject {
     if let configuration {
       toolbar.selectedFormat = configuration.format
       toolbar.selectedQuality = configuration.quality
+      toolbar.selectedFPS = configuration.fps
       toolbar.captureAudio = configuration.captureAudio
       toolbar.captureMicrophone = configuration.captureMicrophone
       toolbar.microphoneDeviceID = configuration.microphoneDeviceID
@@ -474,6 +477,7 @@ final class RecordingCoordinator: ObservableObject {
 
     let savedFormat = window.selectedFormat
     let savedQuality = window.selectedQuality
+    let savedFPS = window.selectedFPS
     let savedCaptureAudio = window.captureAudio
     let savedCaptureMicrophone = window.captureMicrophone
     let savedMicrophoneDeviceID = window.microphoneDeviceID
@@ -481,6 +485,7 @@ final class RecordingCoordinator: ObservableObject {
     DiagnosticLogger.shared.log(.info, .recording, "Recording restart requested", context: [
       "format": savedFormat.rawValue,
       "quality": savedQuality.rawValue,
+      "fps": "\(savedFPS)",
       "systemAudio": "\(savedCaptureAudio)",
       "microphone": "\(savedCaptureMicrophone)",
       "microphoneDevice": savedMicrophoneDeviceID,
@@ -497,9 +502,6 @@ final class RecordingCoordinator: ObservableObject {
 
       // Re-prepare and start recording with same settings
       do {
-        var fps = UserDefaults.standard.integer(forKey: PreferencesKeys.recordingFPS)
-        if fps == 0 { fps = 30 }
-
         guard let saveDirectory = self.resolveSaveDirectoryForOperation() else {
           DiagnosticLogger.shared.log(.warning, .recording, "Recording restart blocked: no save directory access")
           self.showSaveLocationPermissionAlert()
@@ -517,7 +519,7 @@ final class RecordingCoordinator: ObservableObject {
           windowTarget: self.selectedWindowTarget,
           format: savedFormat,
           quality: savedQuality,
-          fps: fps,
+          fps: savedFPS,
           captureSystemAudio: savedCaptureAudio,
           captureMicrophone: savedCaptureMicrophone,
           microphoneDeviceID: savedMicrophoneDeviceID,
@@ -576,13 +578,8 @@ final class RecordingCoordinator: ObservableObject {
       "rect": "\(Int(rect.width))x\(Int(rect.height))"
     ])
 
-    // Get FPS from preferences (default 30)
-    var fps = UserDefaults.standard.integer(forKey: PreferencesKeys.recordingFPS)
-    if fps == 0 { fps = 30 }
-
-    // Get quality from preferences (default high)
-    let qualityString = UserDefaults.standard.string(forKey: PreferencesKeys.recordingQuality) ?? "high"
-    let quality = VideoQuality(rawValue: qualityString) ?? .high
+    let fps = window.selectedFPS
+    let quality = window.selectedQuality
 
     let captureSystemAudio = window.captureAudio
     let showCursor = window.state.showCursor
@@ -608,6 +605,8 @@ final class RecordingCoordinator: ObservableObject {
 
     // Save selected format to preferences
     UserDefaults.standard.set(format.rawValue, forKey: PreferencesKeys.recordingFormat)
+    UserDefaults.standard.set(quality.rawValue, forKey: PreferencesKeys.recordingQuality)
+    UserDefaults.standard.set(fps, forKey: PreferencesKeys.recordingFPS)
 
     Task {
       do {
@@ -729,10 +728,8 @@ final class RecordingCoordinator: ObservableObject {
     DiagnosticLogger.shared.log(.info, .recording, "Retrying recording without microphone")
 
     let format = window.selectedFormat
-    var fps = UserDefaults.standard.integer(forKey: PreferencesKeys.recordingFPS)
-    if fps == 0 { fps = 30 }
-    let qualityString = UserDefaults.standard.string(forKey: PreferencesKeys.recordingQuality) ?? "high"
-    let quality = VideoQuality(rawValue: qualityString) ?? .high
+    let fps = window.selectedFPS
+    let quality = window.selectedQuality
     let captureSystemAudio = window.captureAudio
     let showCursor = window.state.showCursor
 

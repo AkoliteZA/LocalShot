@@ -71,6 +71,22 @@ private struct ToolbarOptionsPopoverContent: View {
               isSelected: state.selectedFormat == format
             ) {
               state.selectedFormat = format
+              UserDefaults.standard.set(format.rawValue, forKey: PreferencesKeys.recordingFormat)
+            }
+          }
+        }
+      }
+
+      // FPS Section
+      SettingsSection(title: "FPS", icon: "gauge.with.dots.needle.33percent") {
+        HStack(spacing: 6) {
+          ForEach([30, 60], id: \.self) { fps in
+            OptionPill(
+              title: "\(fps)",
+              isSelected: state.selectedFPS == fps
+            ) {
+              state.selectedFPS = fps
+              UserDefaults.standard.set(fps, forKey: PreferencesKeys.recordingFPS)
             }
           }
         }
@@ -85,6 +101,7 @@ private struct ToolbarOptionsPopoverContent: View {
               isSelected: state.selectedQuality == quality
             ) {
               state.selectedQuality = quality
+              UserDefaults.standard.set(quality.rawValue, forKey: PreferencesKeys.recordingQuality)
             }
           }
         }

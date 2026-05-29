@@ -21,8 +21,12 @@ enum RecordingOutputMode: String, CaseIterable {
   case gif
 
   var displayName: String {
+    displayName(format: .mp4)
+  }
+
+  func displayName(format: VideoFormat) -> String {
     switch self {
-    case .video: return L10n.RecordingToolbar.outputVideo
+    case .video: return format.displayName
     case .gif: return L10n.RecordingToolbar.outputGIF
     }
   }
@@ -52,6 +56,11 @@ enum RecordingToolbarPreferences {
       return .high
     }
     return quality
+  }
+
+  static func selectedFPS(defaults: UserDefaults = .standard) -> Int {
+    let fps = defaults.integer(forKey: PreferencesKeys.recordingFPS)
+    return fps == 60 ? 60 : 30
   }
 
   static func captureAudio(defaults: UserDefaults = .standard) -> Bool {
@@ -121,6 +130,7 @@ enum RecordingToolbarPlacement {
 final class RecordingToolbarState: ObservableObject {
   @Published var selectedFormat: VideoFormat
   @Published var selectedQuality: VideoQuality
+  @Published var selectedFPS: Int
   @Published var captureAudio: Bool
   @Published var captureMicrophone: Bool
   @Published var microphoneDeviceID: String
@@ -136,6 +146,7 @@ final class RecordingToolbarState: ObservableObject {
   init() {
     self.selectedFormat = RecordingToolbarPreferences.selectedFormat()
     self.selectedQuality = RecordingToolbarPreferences.selectedQuality()
+    self.selectedFPS = RecordingToolbarPreferences.selectedFPS()
     self.captureAudio = RecordingToolbarPreferences.captureAudio()
     self.captureMicrophone = RecordingToolbarPreferences.captureMicrophone()
     self.microphoneDeviceID = RecordingToolbarPreferences.microphoneDeviceID()
@@ -183,6 +194,10 @@ final class RecordingToolbarWindow: NSWindow {
   var selectedQuality: VideoQuality {
     get { state.selectedQuality }
     set { state.selectedQuality = newValue }
+  }
+  var selectedFPS: Int {
+    get { state.selectedFPS }
+    set { state.selectedFPS = newValue }
   }
   var captureAudio: Bool {
     get { state.captureAudio }

@@ -22,6 +22,7 @@ final class RecordingConfigurationTests: XCTestCase {
   func testRecordingToolbarPreferences_defaults() {
     XCTAssertEqual(RecordingToolbarPreferences.selectedFormat(defaults: defaults), .mp4)
     XCTAssertEqual(RecordingToolbarPreferences.selectedQuality(defaults: defaults), .high)
+    XCTAssertEqual(RecordingToolbarPreferences.selectedFPS(defaults: defaults), 30)
     XCTAssertTrue(RecordingToolbarPreferences.captureAudio(defaults: defaults))
     XCTAssertFalse(RecordingToolbarPreferences.captureMicrophone(defaults: defaults))
     XCTAssertEqual(
@@ -37,6 +38,7 @@ final class RecordingConfigurationTests: XCTestCase {
   func testRecordingToolbarPreferences_usePersistedRecordingOptions() {
     defaults.set(VideoFormat.mp4.rawValue, forKey: PreferencesKeys.recordingFormat)
     defaults.set(VideoQuality.low.rawValue, forKey: PreferencesKeys.recordingQuality)
+    defaults.set(60, forKey: PreferencesKeys.recordingFPS)
     defaults.set(false, forKey: PreferencesKeys.recordingCaptureAudio)
     defaults.set(true, forKey: PreferencesKeys.recordingCaptureMicrophone)
     defaults.set("external-mic-id", forKey: PreferencesKeys.recordingMicrophoneDeviceID)
@@ -47,6 +49,7 @@ final class RecordingConfigurationTests: XCTestCase {
 
     XCTAssertEqual(RecordingToolbarPreferences.selectedFormat(defaults: defaults), .mp4)
     XCTAssertEqual(RecordingToolbarPreferences.selectedQuality(defaults: defaults), .low)
+    XCTAssertEqual(RecordingToolbarPreferences.selectedFPS(defaults: defaults), 60)
     XCTAssertFalse(RecordingToolbarPreferences.captureAudio(defaults: defaults))
     XCTAssertTrue(RecordingToolbarPreferences.captureMicrophone(defaults: defaults))
     XCTAssertEqual(RecordingToolbarPreferences.microphoneDeviceID(defaults: defaults), "external-mic-id")
@@ -59,11 +62,20 @@ final class RecordingConfigurationTests: XCTestCase {
   func testRecordingToolbarPreferences_invalidRawValuesFallBackToSafeDefaults() {
     defaults.set("avi", forKey: PreferencesKeys.recordingFormat)
     defaults.set("ultra", forKey: PreferencesKeys.recordingQuality)
+    defaults.set(48, forKey: PreferencesKeys.recordingFPS)
     defaults.set("cinematic", forKey: PreferencesKeys.recordingOutputMode)
 
     XCTAssertEqual(RecordingToolbarPreferences.selectedFormat(defaults: defaults), .mp4)
     XCTAssertEqual(RecordingToolbarPreferences.selectedQuality(defaults: defaults), .high)
+    XCTAssertEqual(RecordingToolbarPreferences.selectedFPS(defaults: defaults), 30)
     XCTAssertEqual(RecordingToolbarPreferences.outputMode(defaults: defaults), .video)
+  }
+
+  func testRecordingOutputModeLabelsMatchLocalShotMockup() {
+    XCTAssertEqual(RecordingOutputMode.video.displayName, "MP4")
+    XCTAssertEqual(RecordingOutputMode.video.displayName(format: .mov), "MOV")
+    XCTAssertEqual(RecordingOutputMode.video.displayName(format: .mp4), "MP4")
+    XCTAssertEqual(RecordingOutputMode.gif.displayName, "GIF")
   }
 
   func testRecordingToolbarPlacement_usesOutsideGapWhenBelowSelectionFits() {
