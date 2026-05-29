@@ -35,12 +35,20 @@ MP4 is the default export. GIF export is kept as a secondary path. System audio 
 ## Privacy Verification Targets
 
 - The app should run with network disabled for local features.
+- The packaged app should not have network client/server or Apple Events automation entitlements in v1.
 - No upload, account, telemetry, crash-report submission, or auto-update controls should be visible in v1.
 - Captures, recordings, GIFs, thumbnails, history metadata, and preferences should remain on this Mac.
 
+Repeatable evidence:
+
+- `scripts/localshot-verify.sh --with-launch-smoke`
+- `build/evidence/localshot-verification-summary.txt`
+- `build/evidence/tcc-status.txt`
+- `build/evidence/localshot-launch-smoke.txt`
+
 ## Manual Runtime Verification Checklist
 
-Use the packaged app at `build/package/LocalShot.app`.
+Use the installed app at `/Applications/LocalShot.app` for permission-sensitive checks. The packaged app remains available at `build/package/LocalShot.app`.
 
 Before testing:
 

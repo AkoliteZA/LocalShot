@@ -14,10 +14,11 @@ MOCKUPS_DIR="$(cd "${ROOT_DIR}/.." && pwd)/mockups"
 
 SKIP_TESTS=0
 SKIP_PACKAGE=0
+RUN_LAUNCH_SMOKE=0
 
 usage() {
   cat <<'USAGE'
-Usage: scripts/localshot-verify.sh [--skip-tests] [--skip-package]
+Usage: scripts/localshot-verify.sh [--skip-tests] [--skip-package] [--with-launch-smoke]
 
 Runs repeatable LocalShot v1 verification and writes evidence under build/evidence.
 USAGE
@@ -30,6 +31,9 @@ while [[ $# -gt 0 ]]; do
       ;;
     --skip-package)
       SKIP_PACKAGE=1
+      ;;
+    --with-launch-smoke)
+      RUN_LAUNCH_SMOKE=1
       ;;
     -h|--help)
       usage
@@ -108,6 +112,40 @@ fail_if_output() {
   fi
 }
 
+run_launch_smoke() {
+  local output="${EVIDENCE_DIR}/localshot-launch-smoke.txt"
+  record "RUN launch smoke"
+  : > "${output}"
+
+  if pgrep -x LocalShot > "${EVIDENCE_DIR}/localshot-launch-preexisting-pids.txt" 2>/dev/null; then
+    record "FAIL launch smoke: LocalShot is already running; stop it before isolated launch verification"
+    cat "${EVIDENCE_DIR}/localshot-launch-preexisting-pids.txt" >> "${output}"
+    exit 1
+  fi
+
+  {
+    echo "Launch smoke started: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    echo "App: ${PACKAGE_APP}"
+    open -n "${PACKAGE_APP}"
+    sleep 3
+    echo "Process IDs:"
+    pgrep -x LocalShot
+    echo "TCC rows:"
+    sqlite3 "${HOME}/Library/Application Support/com.apple.TCC/TCC.db" \
+      "select service, client, auth_value, auth_reason, auth_version, datetime(last_modified,'unixepoch') from access where client = '${BUNDLE_ID}' order by service;" \
+      2>/dev/null || echo "TCC database unavailable to verifier"
+  } > "${output}" 2>&1 || {
+    local status=$?
+    pkill -x LocalShot 2>/dev/null || true
+    record "FAIL launch smoke: ${output} (exit ${status})"
+    tail -80 "${output}" >&2 || true
+    exit "${status}"
+  }
+
+  pkill -x LocalShot 2>/dev/null || true
+  record "PASS launch smoke: ${output}"
+}
+
 record "LocalShot verification started: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 record "Repo: ${ROOT_DIR}"
 record "Commit: $(git -C "${ROOT_DIR}" rev-parse HEAD)"
@@ -182,6 +220,12 @@ fail_if_hits \
     2>/dev/null || echo "TCC database unavailable to verifier"
 } > "${EVIDENCE_DIR}/tcc-status.txt"
 record "PASS TCC status snapshot: ${EVIDENCE_DIR}/tcc-status.txt"
+
+if [[ "${RUN_LAUNCH_SMOKE}" -eq 1 ]]; then
+  run_launch_smoke
+else
+  record "SKIP launch smoke"
+fi
 
 fail_if_hits \
   "source CleanShot/update/rebrand guardrails" \

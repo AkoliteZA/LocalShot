@@ -24,6 +24,16 @@ Use the local helper:
 
 The helper builds the existing Xcode scheme with local DerivedData and source package folders. It signs ad-hoc for local use when possible and does not notarize.
 
+## Verify
+
+Run the repeatable v1 verifier:
+
+```sh
+./scripts/localshot-verify.sh --with-launch-smoke
+```
+
+The verifier builds/tests/packages the app, checks bundle metadata and guardrails, records current TCC permission rows for `com.personal.localshot`, verifies the package has no network or Apple Events automation entitlement, and can launch-smoke the packaged app. Live capture and recording checks still require macOS Screen Recording and Microphone permission grants.
+
 ## Local URLs
 
 LocalShot registers a private URL scheme for local automation:
