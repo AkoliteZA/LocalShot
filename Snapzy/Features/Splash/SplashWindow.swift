@@ -133,7 +133,7 @@ final class SplashWindowController: NSObject, NSWindowDelegate {
       return
     }
 
-    // Skip splash entirely when user opted out and no onboarding/sponsor is pending
+    // Skip splash entirely when user opted out and no onboarding is pending.
     if isStandardStartup,
        !forceOnboarding,
        OnboardingFlowView.hasCompletedOnboarding,

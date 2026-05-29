@@ -333,6 +333,12 @@ fail_if_hits \
     --glob '*.plist' \
     --glob '*.json'
 
+fail_if_hits \
+  "package public-support guardrails" \
+  "${EVIDENCE_DIR}/package-public-support-guardrail-hits.txt" \
+  bash -c 'find "$1/Contents" -type f -maxdepth 4 -print0 | xargs -0 strings 2>/dev/null | rg -n "github\\.com/sponsors|ko-fi\\.com|paypalme|GitHub Sponsors|Support LocalShot|Sponsor the Author|Sponsor ongoing"' \
+    _ "${PACKAGE_APP}"
+
 fail_if_output \
   "package local-first filename guardrails" \
   "${EVIDENCE_DIR}/package-filename-guardrail-hits.txt" \

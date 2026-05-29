@@ -2,7 +2,7 @@
 //  SplashOnboardingRootView.swift
 //  Snapzy
 //
-//  Unified coordinator managing splash intro, sponsor prompt, and onboarding.
+//  Unified coordinator managing splash intro and onboarding.
 //
 
 import SwiftUI
@@ -10,7 +10,6 @@ import SwiftUI
 enum SplashScreen: Equatable {
   case splash
   case language
-  case sponsor
   case permissions
   case configAccess
   case shortcuts
@@ -25,7 +24,6 @@ private enum NavigationDirection {
 
 struct SplashOnboardingRootView: View {
   let needsOnboarding: Bool
-  let showSponsorPrompt: Bool
   let onDismiss: () -> Void
 
   private let onboardingSteps: [SplashScreen]
@@ -48,7 +46,7 @@ struct SplashOnboardingRootView: View {
     onDismiss: @escaping () -> Void
   ) {
     self.needsOnboarding = needsOnboarding
-    self.showSponsorPrompt = showSponsorPrompt
+    _ = showSponsorPrompt
     self.onboardingSteps = onboardingSteps ?? Self.defaultOnboardingStepsForLocalShotV1
     self.onDismiss = onDismiss
     _currentScreen = State(initialValue: initialScreen)
@@ -81,14 +79,10 @@ struct SplashOnboardingRootView: View {
           )
           .transition(stepTransition)
 
-        case .sponsor:
-          SponsorView(onContinue: handleSponsorContinue)
-            .transition(.opacity)
-
         case .permissions:
           PermissionsView(
             screenCaptureManager: screenCaptureManager,
-            onBack: { navigateBackward(to: showSponsorPrompt ? .sponsor : .language) },
+            onBack: { navigateBackward(to: .language) },
             onNext: { navigateForward(to: .configAccess) }
           )
           .transition(stepTransition)
@@ -172,29 +166,13 @@ struct SplashOnboardingRootView: View {
 
     if needsOnboarding {
       navigateForward(to: .language)
-    } else if showSponsorPrompt {
-      navigateForward(to: .sponsor)
     } else {
       dismiss()
     }
   }
 
   private func handleLanguageContinue() {
-    if showSponsorPrompt {
-      navigateForward(to: .sponsor)
-    } else {
-      navigateForward(to: .permissions)
-    }
-  }
-
-  private func handleSponsorContinue() {
-    UserDefaults.standard.set(true, forKey: PreferencesKeys.sponsorPromptSeen)
-
-    if needsOnboarding {
-      navigateForward(to: .permissions)
-    } else {
-      dismiss()
-    }
+    navigateForward(to: .permissions)
   }
 
   private func handleConfigAccessContinue() {

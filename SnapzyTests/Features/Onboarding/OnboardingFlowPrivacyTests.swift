@@ -16,4 +16,8 @@ final class OnboardingFlowPrivacyTests: XCTestCase {
     XCTAssertEqual(steps, [.language, .permissions, .configAccess, .shortcuts, .completion])
     XCTAssertFalse(steps.contains(.diagnostics))
   }
+
+  func testLocalShotV1DisablesPublicSupportPrompts() throws {
+    XCTAssertFalse(LocalShotV1Policy.sponsorPromptsEnabled)
+  }
 }

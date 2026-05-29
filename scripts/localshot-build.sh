@@ -93,6 +93,14 @@ strip_v1_disabled_package_surfaces() {
       "preferences-shortcuts.cloud-upload-description"
       "preferences-shortcuts.cloud-uploads-description"
       "shortcut-overlay.cloud-upload"
+      "onboarding.sponsor.title"
+      "onboarding.sponsor.description"
+      "onboarding.sponsor.optional-note"
+      "sponsor.recurring-support"
+      "sponsor.one-time-tip"
+      "sponsor.direct-support"
+      "preferences-about.support-title"
+      "preferences-about.support-description"
     )
 
     while IFS= read -r strings_file; do

@@ -1200,24 +1200,6 @@ enum L10n {
     )
   }
 
-  enum Sponsor {
-    static let recurringSupport = string(
-      "sponsor.recurring-support",
-      defaultValue: "Recurring support",
-      comment: "Subtitle for GitHub Sponsors option"
-    )
-    static let oneTimeTip = string(
-      "sponsor.one-time-tip",
-      defaultValue: "One-time tip",
-      comment: "Subtitle for Ko-fi option"
-    )
-    static let directSupport = string(
-      "sponsor.direct-support",
-      defaultValue: "Direct support",
-      comment: "Subtitle for PayPal option"
-    )
-  }
-
   enum Onboarding {
     static let welcomeSubtitle = string(
       "onboarding.welcome.subtitle",
@@ -1516,22 +1498,6 @@ enum L10n {
       "onboarding.skip.skip-setup",
       defaultValue: "Skip Setup",
       comment: "Button title to confirm skipping onboarding setup"
-    )
-
-    static let sponsorTitle = string(
-      "onboarding.sponsor.title",
-      defaultValue: "Sponsor the Author",
-      comment: "Onboarding sponsor step title"
-    )
-    static let sponsorDescription = string(
-      "onboarding.sponsor.description",
-      defaultValue: "LocalShot is now open-source. If it saves you time, consider supporting ongoing development.",
-      comment: "Onboarding sponsor step description"
-    )
-    static let sponsorOptionalNote = string(
-      "onboarding.sponsor.optional-note",
-      defaultValue: "Support is optional. LocalShot remains fully usable without sponsoring.",
-      comment: "Note under sponsor options"
     )
 
     static let completionTitle = string(
@@ -2957,16 +2923,6 @@ enum L10n {
       "preferences-about.report-bug",
       defaultValue: "Report a Bug",
       comment: "Tooltip for issue reporting link"
-    )
-    static let supportTitle = string(
-      "preferences-about.support-title",
-      defaultValue: "Support LocalShot",
-      comment: "About screen sponsor card title"
-    )
-    static let supportDescription = string(
-      "preferences-about.support-description",
-      defaultValue: "LocalShot is open-source. Sponsor ongoing development if it helps your workflow.",
-      comment: "About screen sponsor card description"
     )
   }
 
