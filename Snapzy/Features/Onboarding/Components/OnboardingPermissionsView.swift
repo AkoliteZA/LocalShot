@@ -16,6 +16,7 @@ struct PermissionsView: View {
   var onBack: (() -> Void)? = nil
   let onNext: () -> Void
 
+  @State private var microphoneAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .audio)
   @State private var microphoneGranted = false
   @State private var accessibilityGranted = false
   @State private var exportFolderGranted = false
@@ -86,7 +87,7 @@ struct PermissionsView: View {
           icon: "mic.fill",
           title: microphoneTitle,
           description: optionalForVoiceRecordingTitle,
-          status: microphoneGranted ? .granted : .needsAction(buttonTitle: grantAccessTitle),
+          status: microphoneGranted ? .granted : .needsAction(buttonTitle: microphoneActionTitle),
           isRequired: false,
           onGrant: {
             requestMicrophonePermission()
@@ -156,7 +157,8 @@ struct PermissionsView: View {
 
   private func checkMicrophonePermission() {
     let status = AVCaptureDevice.authorizationStatus(for: .audio)
-    microphoneGranted = (status == .authorized)
+    microphoneAuthorizationStatus = status
+    microphoneGranted = MicrophonePermissionRecovery.isGranted(status)
   }
 
   private func checkAccessibilityPermission() {
@@ -209,10 +211,17 @@ struct PermissionsView: View {
   }
 
   private func requestMicrophonePermission() {
-    AVCaptureDevice.requestAccess(for: .audio) { granted in
-      DispatchQueue.main.async {
-        microphoneGranted = granted
+    switch MicrophonePermissionRecovery.action(for: AVCaptureDevice.authorizationStatus(for: .audio)) {
+    case .requestSystemPrompt:
+      AVCaptureDevice.requestAccess(for: .audio) { granted in
+        DispatchQueue.main.async {
+          microphoneAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .audio)
+          microphoneGranted = granted
+        }
       }
+    case .openSystemSettings:
+      openSystemSettings(microphoneURL)
+      checkMicrophonePermission()
     }
   }
 
@@ -344,6 +353,22 @@ struct PermissionsView: View {
       "onboarding.permissions.grant-access",
       defaultValue: "Grant Access",
       comment: "Button title to grant permission or folder access"
+    )
+  }
+
+  private var microphoneActionTitle: String {
+    MicrophonePermissionRecovery.actionTitle(
+      for: microphoneAuthorizationStatus,
+      grantAccessTitle: grantAccessTitle,
+      openSettingsTitle: commonOpenSettingsTitle
+    )
+  }
+
+  private var commonOpenSettingsTitle: String {
+    onboardingLocalization.string(
+      "common.open-settings",
+      defaultValue: "Open Settings",
+      comment: "Button title to open System Settings"
     )
   }
 

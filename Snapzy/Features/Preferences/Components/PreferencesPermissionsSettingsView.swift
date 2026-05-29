@@ -250,7 +250,7 @@ struct PermissionsSettingsView: View {
   private func checkMicrophonePermission() {
     let status = AVCaptureDevice.authorizationStatus(for: .audio)
     microphoneAuthorizationStatus = status
-    microphoneGranted = (status == .authorized)
+    microphoneGranted = MicrophonePermissionRecovery.isGranted(status)
   }
 
   private func checkAccessibilityPermission() {
@@ -272,22 +272,16 @@ struct PermissionsSettingsView: View {
   }
 
   private func requestMicrophonePermission() {
-    switch AVCaptureDevice.authorizationStatus(for: .audio) {
-    case .authorized:
-      microphoneAuthorizationStatus = .authorized
-      microphoneGranted = true
-      openSystemSettings(microphoneURL)
-    case .notDetermined:
+    let status = AVCaptureDevice.authorizationStatus(for: .audio)
+    switch MicrophonePermissionRecovery.action(for: status) {
+    case .requestSystemPrompt:
       AVCaptureDevice.requestAccess(for: .audio) { granted in
         DispatchQueue.main.async {
           microphoneAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .audio)
           microphoneGranted = granted
         }
       }
-    case .denied, .restricted:
-      openSystemSettings(microphoneURL)
-      checkMicrophonePermission()
-    @unknown default:
+    case .openSystemSettings:
       openSystemSettings(microphoneURL)
       checkMicrophonePermission()
     }
@@ -348,14 +342,11 @@ struct PermissionsSettingsView: View {
   }
 
   private var microphoneActionTitle: String {
-    switch microphoneAuthorizationStatus {
-    case .authorized, .denied, .restricted:
-      return L10n.Common.openSettings
-    case .notDetermined:
-      return L10n.Onboarding.grantAccess
-    @unknown default:
-      return L10n.Common.openSettings
-    }
+    MicrophonePermissionRecovery.actionTitle(
+      for: microphoneAuthorizationStatus,
+      grantAccessTitle: L10n.Onboarding.grantAccess,
+      openSettingsTitle: L10n.Common.openSettings
+    )
   }
 
   private var accessibilityActionTitle: String {
