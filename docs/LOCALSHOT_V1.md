@@ -16,7 +16,19 @@ LocalShot v1 is a private local-first macOS screenshot and recording utility bas
 
 ## Scrolling Capture Limitations
 
-Scrolling capture uses the existing local stitcher and live preview. Unsupported or partial cases should be expected for custom canvas renderers, DRM/protected content, virtualized lists, apps that block scroll events, and documents where scrolling cannot be observed reliably.
+Scrolling capture uses the existing local stitcher and live preview. Unsupported
+or partial cases should be expected for custom canvas renderers, DRM/protected
+content, virtualized lists, apps that block scroll events, documents where
+scrolling cannot be observed reliably, and views whose scroll delta changes
+substantially from frame to frame.
+
+Repeatable stitcher coverage is tracked in
+`build/evidence/scrolling-capture-accuracy-benchmark.txt`. The current v1
+benchmark passes steady scroll deltas, small steady deltas, and sticky
+header/footer cases. The synthetic variable-delta case is a known partial: it
+can stop appending new sections once frame alignment confidence falls below the
+safe threshold. Treat that as an unsupported/fragile case rather than silently
+returning a misleading full-page result.
 
 Recommended manual coverage:
 
