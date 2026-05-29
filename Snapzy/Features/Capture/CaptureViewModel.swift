@@ -354,6 +354,14 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
   }
 
   func captureFullscreen() {
+    guard ScreenCapturePermissionGate.runIfAllowed(
+      hasPermission: hasPermission,
+      requestPermission: { self.requestPermission() },
+      operation: {}
+    ) else {
+      return
+    }
+
     Task {
       let targetDisplayID = ScreenUtility.activeDisplayID()
 
@@ -1202,6 +1210,14 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
       return
     }
 
+    guard ScreenCapturePermissionGate.runIfAllowed(
+      hasPermission: hasPermission,
+      requestPermission: { self.requestPermission() },
+      operation: {}
+    ) else {
+      return
+    }
+
     guard
       let resolvedSaveDirectory = fileAccessManager.ensureExportDirectoryForOperation(
         promptMessage: L10n.Recording.chooseSaveLocationMessage)
@@ -1421,6 +1437,14 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
     // Prevent multiple area captures
     if isAreaSelectionActive {
       DiagnosticLogger.shared.log(.debug, .ocr, "captureOCR blocked: area selection active")
+      return
+    }
+
+    guard ScreenCapturePermissionGate.runIfAllowed(
+      hasPermission: hasPermission,
+      requestPermission: { self.requestPermission() },
+      operation: {}
+    ) else {
       return
     }
 
@@ -1672,6 +1696,14 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
     // Prevent multiple area captures
     if isAreaSelectionActive {
       DiagnosticLogger.shared.log(.debug, .capture, "captureObjectCutout blocked: area selection active")
+      return
+    }
+
+    guard ScreenCapturePermissionGate.runIfAllowed(
+      hasPermission: hasPermission,
+      requestPermission: { self.requestPermission() },
+      operation: {}
+    ) else {
       return
     }
 
