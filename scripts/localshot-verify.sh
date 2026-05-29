@@ -5,6 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT="${ROOT_DIR}/Snapzy.xcodeproj"
 SCHEME="Snapzy"
 CONFIGURATION="${CONFIGURATION:-Debug}"
+BUNDLE_ID="com.personal.localshot"
 DERIVED_DATA="${ROOT_DIR}/build/DerivedData"
 SOURCE_PACKAGES="${ROOT_DIR}/build/SourcePackages"
 PACKAGE_APP="${ROOT_DIR}/build/package/LocalShot.app"
@@ -165,6 +166,22 @@ run_capture \
   codesign -d --entitlements :- "${PACKAGE_APP}" 2>/dev/null
 } > "${EVIDENCE_DIR}/package-metadata.txt"
 record "PASS package metadata: ${EVIDENCE_DIR}/package-metadata.txt"
+
+fail_if_hits \
+  "package network entitlement guardrails" \
+  "${EVIDENCE_DIR}/package-network-entitlement-hits.txt" \
+  bash -c 'codesign -d --entitlements :- "$1" 2>/dev/null | rg -n "com\\.apple\\.security\\.network\\.(client|server)|com\\.apple\\.security\\.automation\\.apple-events"' \
+    _ "${PACKAGE_APP}"
+
+{
+  echo "Bundle ID: ${BUNDLE_ID}"
+  echo "Generated: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+  echo "TCC rows:"
+  sqlite3 "${HOME}/Library/Application Support/com.apple.TCC/TCC.db" \
+    "select service, client, auth_value, auth_reason, auth_version, datetime(last_modified,'unixepoch') from access where client = '${BUNDLE_ID}' order by service;" \
+    2>/dev/null || echo "TCC database unavailable to verifier"
+} > "${EVIDENCE_DIR}/tcc-status.txt"
+record "PASS TCC status snapshot: ${EVIDENCE_DIR}/tcc-status.txt"
 
 fail_if_hits \
   "source CleanShot/update/rebrand guardrails" \
