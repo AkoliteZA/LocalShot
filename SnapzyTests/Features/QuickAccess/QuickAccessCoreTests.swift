@@ -277,6 +277,95 @@ final class QuickAccessCoreTests: XCTestCase {
     XCTAssertEqual(store.orderedActions(includeDisabled: false), [.copy])
   }
 
+  func testQuickAccessActionConfigurationStore_migratesLegacyDefaultActionsToMockupOCR() {
+    let defaults = makeIsolatedDefaults()
+    defaults.set(
+      [
+        QuickAccessActionKind.copy.rawValue,
+        QuickAccessActionKind.saveOrOpen.rawValue,
+        QuickAccessActionKind.dismiss.rawValue,
+        QuickAccessActionKind.delete.rawValue,
+        QuickAccessActionKind.edit.rawValue,
+        QuickAccessActionKind.pinToScreen.rawValue,
+      ],
+      forKey: PreferencesKeys.quickAccessActionOrder
+    )
+    defaults.set(
+      [
+        QuickAccessActionKind.copy.rawValue,
+        QuickAccessActionKind.saveOrOpen.rawValue,
+        QuickAccessActionKind.dismiss.rawValue,
+        QuickAccessActionKind.delete.rawValue,
+        QuickAccessActionKind.edit.rawValue,
+        QuickAccessActionKind.pinToScreen.rawValue,
+      ],
+      forKey: PreferencesKeys.quickAccessEnabledActions
+    )
+    defaults.set(
+      [
+        QuickAccessActionSlot.centerTop.rawValue: QuickAccessActionKind.copy.rawValue,
+        QuickAccessActionSlot.centerBottom.rawValue: QuickAccessActionKind.saveOrOpen.rawValue,
+        QuickAccessActionSlot.topTrailing.rawValue: QuickAccessActionKind.dismiss.rawValue,
+        QuickAccessActionSlot.topLeading.rawValue: QuickAccessActionKind.delete.rawValue,
+        QuickAccessActionSlot.bottomLeading.rawValue: QuickAccessActionKind.edit.rawValue,
+        QuickAccessActionSlot.bottomTrailing.rawValue: QuickAccessActionKind.pinToScreen.rawValue,
+      ],
+      forKey: PreferencesKeys.quickAccessActionSlotAssignments
+    )
+
+    let store = makeActionConfigurationStore(defaults: defaults)
+
+    XCTAssertEqual(store.actionOrder, QuickAccessActionKind.defaultOrder)
+    XCTAssertEqual(store.orderedActions(includeDisabled: false), QuickAccessActionKind.defaultOrder)
+    XCTAssertEqual(store.slotAssignments, QuickAccessActionSlot.defaultAssignments)
+    XCTAssertEqual(store.action(in: .topTrailing), .ocr)
+  }
+
+  func testQuickAccessActionConfigurationStore_migratesLegacyDefaultsAfterMissingOCRWasAppended() {
+    let defaults = makeIsolatedDefaults()
+    defaults.set(
+      [
+        QuickAccessActionKind.copy.rawValue,
+        QuickAccessActionKind.saveOrOpen.rawValue,
+        QuickAccessActionKind.dismiss.rawValue,
+        QuickAccessActionKind.delete.rawValue,
+        QuickAccessActionKind.edit.rawValue,
+        QuickAccessActionKind.pinToScreen.rawValue,
+        QuickAccessActionKind.ocr.rawValue,
+      ],
+      forKey: PreferencesKeys.quickAccessActionOrder
+    )
+    defaults.set(
+      [
+        QuickAccessActionKind.copy.rawValue,
+        QuickAccessActionKind.saveOrOpen.rawValue,
+        QuickAccessActionKind.dismiss.rawValue,
+        QuickAccessActionKind.delete.rawValue,
+        QuickAccessActionKind.edit.rawValue,
+        QuickAccessActionKind.pinToScreen.rawValue,
+      ],
+      forKey: PreferencesKeys.quickAccessEnabledActions
+    )
+    defaults.set(
+      [
+        QuickAccessActionSlot.centerTop.rawValue: QuickAccessActionKind.copy.rawValue,
+        QuickAccessActionSlot.centerBottom.rawValue: QuickAccessActionKind.saveOrOpen.rawValue,
+        QuickAccessActionSlot.topTrailing.rawValue: QuickAccessActionKind.dismiss.rawValue,
+        QuickAccessActionSlot.topLeading.rawValue: QuickAccessActionKind.delete.rawValue,
+        QuickAccessActionSlot.bottomLeading.rawValue: QuickAccessActionKind.edit.rawValue,
+        QuickAccessActionSlot.bottomTrailing.rawValue: QuickAccessActionKind.pinToScreen.rawValue,
+      ],
+      forKey: PreferencesKeys.quickAccessActionSlotAssignments
+    )
+
+    let store = makeActionConfigurationStore(defaults: defaults)
+
+    XCTAssertEqual(store.actionOrder, QuickAccessActionKind.defaultOrder)
+    XCTAssertEqual(store.orderedActions(includeDisabled: false), QuickAccessActionKind.defaultOrder)
+    XCTAssertEqual(store.slotAssignments, QuickAccessActionSlot.defaultAssignments)
+    XCTAssertEqual(store.action(in: .topTrailing), .ocr)
+  }
+
   func testQuickAccessActionConfigurationStore_filtersCloudUploadForLocalShotV1() {
     XCTAssertFalse(LocalShotV1Policy.cloudUploadsEnabled)
 

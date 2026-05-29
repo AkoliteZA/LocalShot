@@ -20,12 +20,28 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
 
   init(defaults: UserDefaults = .standard) {
     self.defaults = defaults
-    actionOrder = Self.normalizedOrder(from: defaults.stringArray(forKey: PreferencesKeys.quickAccessActionOrder))
+    let rawOrder = defaults.stringArray(forKey: PreferencesKeys.quickAccessActionOrder)
+    let rawEnabledActions = defaults.stringArray(forKey: PreferencesKeys.quickAccessEnabledActions)
+    let rawSlotAssignments = defaults.dictionary(forKey: PreferencesKeys.quickAccessActionSlotAssignments) as? [String: String]
+
+    if Self.isLegacyDefaultConfigurationBeforeOCR(
+      rawOrder: rawOrder,
+      rawEnabledActions: rawEnabledActions,
+      rawSlotAssignments: rawSlotAssignments
+    ) {
+      actionOrder = QuickAccessActionKind.defaultOrder
+      enabledActions = QuickAccessActionKind.defaultEnabledActions
+      slotAssignments = QuickAccessActionSlot.defaultAssignments
+      save()
+      return
+    }
+
+    actionOrder = Self.normalizedOrder(from: rawOrder)
     enabledActions = Self.normalizedEnabledActions(
-      from: defaults.stringArray(forKey: PreferencesKeys.quickAccessEnabledActions)
+      from: rawEnabledActions
     )
     slotAssignments = Self.normalizedSlotAssignments(
-      from: defaults.dictionary(forKey: PreferencesKeys.quickAccessActionSlotAssignments) as? [String: String]
+      from: rawSlotAssignments
     )
   }
 
@@ -184,6 +200,49 @@ final class QuickAccessActionConfigurationStore: ObservableObject {
     }
 
     return assignments
+  }
+
+  private static let legacyDefaultOrderBeforeOCR: [QuickAccessActionKind] = [
+    .copy,
+    .saveOrOpen,
+    .dismiss,
+    .delete,
+    .edit,
+    .pinToScreen,
+  ]
+
+  private static let legacyDefaultSlotAssignmentsBeforeOCR: [QuickAccessActionSlot: QuickAccessActionKind] = [
+    .centerTop: .copy,
+    .centerBottom: .saveOrOpen,
+    .topTrailing: .dismiss,
+    .topLeading: .delete,
+    .bottomLeading: .edit,
+    .bottomTrailing: .pinToScreen,
+  ]
+
+  private static func isLegacyDefaultConfigurationBeforeOCR(
+    rawOrder: [String]?,
+    rawEnabledActions: [String]?,
+    rawSlotAssignments: [String: String]?
+  ) -> Bool {
+    guard let rawOrder,
+          legacyDefaultRawOrdersBeforeOCR.contains(rawOrder),
+          rawEnabledActions == legacyDefaultOrderBeforeOCR.map(\.rawValue),
+          let rawSlotAssignments,
+          rawSlotAssignments.count == QuickAccessActionSlot.allCases.count else {
+      return false
+    }
+
+    return QuickAccessActionSlot.allCases.allSatisfy { slot in
+      rawSlotAssignments[slot.rawValue] == legacyDefaultSlotAssignmentsBeforeOCR[slot]?.rawValue
+    }
+  }
+
+  private static var legacyDefaultRawOrdersBeforeOCR: [[String]] {
+    [
+      legacyDefaultOrderBeforeOCR.map(\.rawValue),
+      (legacyDefaultOrderBeforeOCR + [.ocr]).map(\.rawValue),
+    ]
   }
 
   private func rawSlotAssignments(
