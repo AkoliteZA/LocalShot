@@ -13,12 +13,6 @@
       ]
     },
     {
-      "file": "Shared/Errors.xcstrings",
-      "prefixes": [
-        "crash-report."
-      ]
-    },
-    {
       "file": "Shared/Permissions.xcstrings",
       "prefixes": [
         "file-access.",
@@ -70,8 +64,7 @@
       "file": "Features/Onboarding.xcstrings",
       "prefixes": [
         "onboarding.",
-        "splash.",
-        "sponsor."
+        "splash."
       ]
     },
     {

@@ -101,6 +101,17 @@ strip_v1_disabled_package_surfaces() {
       "sponsor.direct-support"
       "preferences-about.support-title"
       "preferences-about.support-description"
+      "crash-report.accessory-hint"
+      "crash-report.alert-message"
+      "crash-report.alert-message-no-log-bundle"
+      "crash-report.alert-title"
+      "crash-report.dismiss"
+      "crash-report.submit"
+      "preferences-about.report-bug"
+      "preferences-about.report-problem"
+      "preferences-general.open-report-page-button"
+      "preferences-general.report-issue-description"
+      "preferences-general.report-issue-title"
     )
 
     while IFS= read -r strings_file; do

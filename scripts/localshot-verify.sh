@@ -339,6 +339,12 @@ fail_if_hits \
   bash -c 'find "$1/Contents" -type f -maxdepth 4 -print0 | xargs -0 strings 2>/dev/null | rg -n "github\\.com/sponsors|ko-fi\\.com|paypalme|GitHub Sponsors|Support LocalShot|Sponsor the Author|Sponsor ongoing"' \
     _ "${PACKAGE_APP}"
 
+fail_if_hits \
+  "package crash-report guardrails" \
+  "${EVIDENCE_DIR}/package-crash-report-guardrail-hits.txt" \
+  bash -c 'find "$1/Contents" -type f -maxdepth 4 -print0 | xargs -0 strings 2>/dev/null | rg -n "CrashReport(Service|AccessoryView)|ProblemReportLogArchive|LocalShotProblemReports|crash-report\\.|Report a Bug|Report a Problem|Open Report Page|diagnostic log bundle|Drag log bundle|report page|upload field|reportProblem"' \
+    _ "${PACKAGE_APP}"
+
 fail_if_output \
   "package local-first filename guardrails" \
   "${EVIDENCE_DIR}/package-filename-guardrail-hits.txt" \

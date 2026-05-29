@@ -71,15 +71,12 @@ final class AppCoordinator {
     CaptureHistoryRetentionService.shared.start()
     DiagnosticLogger.shared.log(.debug, .lifecycle, "Background schedulers started")
 
-    AppStatusBarController.shared.setup(
-      viewModel: environment.screenCaptureViewModel,
-      didCrash: didCrash && LocalShotV1Policy.problemReportsEnabled
-    )
+    AppStatusBarController.shared.setup(viewModel: environment.screenCaptureViewModel)
     DiagnosticLogger.shared.log(
       .debug,
       .ui,
       "Status bar controller configured",
-      context: ["crashPrompt": (didCrash && DiagnosticLogger.shared.isEnabled) ? "true" : "false"]
+      context: ["crashPrompt": "false"]
     )
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {

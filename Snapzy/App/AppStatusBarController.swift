@@ -21,7 +21,6 @@ final class AppStatusBarController: ObservableObject {
   private let recorder = ScreenRecordingManager.shared
   private lazy var idleStatusImage = makeIdleStatusImage()
   private var menu: NSMenu?
-  private var didDetectCrash = false
 
   // Dependencies injected after setup
   private var viewModel: ScreenCaptureViewModel?
@@ -39,9 +38,8 @@ final class AppStatusBarController: ObservableObject {
   // MARK: - Public API
 
   /// Setup the status bar item with required dependencies
-  func setup(viewModel: ScreenCaptureViewModel, didCrash: Bool = false) {
+  func setup(viewModel: ScreenCaptureViewModel) {
     self.viewModel = viewModel
-    self.didDetectCrash = didCrash
 
     setupStatusItem()
     buildMenu()
@@ -53,7 +51,7 @@ final class AppStatusBarController: ObservableObject {
       .info,
       .ui,
       "Status bar item initialized",
-      context: ["previousCrashPrompt": didCrash ? "true" : "false"]
+      context: ["previousCrashPrompt": "false"]
     )
   }
 
@@ -570,12 +568,6 @@ final class AppStatusBarController: ObservableObject {
 
   @objc private func checkForUpdatesAction() {
     logMenuAction("checkForUpdatesDisabledForV1")
-  }
-
-  @objc private func reportProblemAction() {
-    logMenuAction("reportProblem")
-    CrashReportService.presentAlert()
-    didDetectCrash = false
   }
 
   @objc private func openPreferencesAction() {

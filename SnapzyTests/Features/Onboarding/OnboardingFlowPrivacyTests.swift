@@ -20,4 +20,8 @@ final class OnboardingFlowPrivacyTests: XCTestCase {
   func testLocalShotV1DisablesPublicSupportPrompts() throws {
     XCTAssertFalse(LocalShotV1Policy.sponsorPromptsEnabled)
   }
+
+  func testLocalShotV1DisablesProblemReports() throws {
+    XCTAssertFalse(LocalShotV1Policy.problemReportsEnabled)
+  }
 }
