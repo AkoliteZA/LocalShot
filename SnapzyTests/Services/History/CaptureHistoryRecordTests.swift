@@ -60,6 +60,27 @@ final class CaptureHistoryRecordTests: XCTestCase {
     XCTAssertEqual(HistoryItemOpenDestination.destination(for: .gif), .openFileExternally)
   }
 
+  func testHistoryDetailActionsMatchLocalShotMockupForScreenshots() {
+    let titles = HistoryRecordDetailAction.actions(for: .screenshot).map(\.title)
+
+    XCTAssertEqual(titles, [
+      "Open",
+      "Copy",
+      "Annotate",
+      "Pin",
+      "Reveal in Finder",
+      "Delete",
+    ])
+  }
+
+  func testHistoryDetailActionsAvoidScreenshotOnlyToolsForMedia() {
+    let videoTitles = HistoryRecordDetailAction.actions(for: .video).map(\.title)
+    let gifTitles = HistoryRecordDetailAction.actions(for: .gif).map(\.title)
+
+    XCTAssertEqual(videoTitles, ["Open", "Copy", "Reveal in Finder", "Delete"])
+    XCTAssertEqual(gifTitles, ["Open", "Copy", "Reveal in Finder", "Delete"])
+  }
+
   private func makeRecord(
     filePath: String = "/tmp/capture.png",
     duration: TimeInterval? = 12,

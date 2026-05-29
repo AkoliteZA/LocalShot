@@ -254,14 +254,11 @@ struct HistoryFloatingContentView: View {
     ZStack(alignment: .bottom) {
       VStack(spacing: 18) {
         expandedHeader
-        expandedPrivacyStrip
 
         if expandedRecords.isEmpty {
           expandedEmptyState
-        } else if isExpandedGridReady {
-          expandedGrid
         } else {
-          expandedGridPlaceholder
+          expandedBrowser
         }
       }
 
@@ -386,32 +383,134 @@ struct HistoryFloatingContentView: View {
     }
   }
 
-  private var expandedPrivacyStrip: some View {
-    HStack(spacing: 8) {
-      ForEach(HistoryPrivacyChecklist.items) { item in
-        Label {
-          Text(item.title)
-            .font(.system(size: 10.5, weight: .semibold))
-            .lineLimit(1)
-            .minimumScaleFactor(0.86)
-        } icon: {
-          Image(systemName: item.systemImage)
-            .font(.system(size: 10.5, weight: .bold))
-            .symbolRenderingMode(.hierarchical)
+  private var expandedBrowser: some View {
+    HStack(alignment: .top, spacing: 14) {
+      Group {
+        if isExpandedGridReady {
+          expandedGrid
+        } else {
+          expandedGridPlaceholder
         }
-        .foregroundColor(.primary.opacity(0.78))
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .background(privacyChipFill, in: Capsule())
-        .overlay(
-          Capsule()
-            .stroke(privacyChipBorder, lineWidth: 1)
-        )
-        .help(item.title)
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+      expandedDetailColumn
+        .frame(width: 236)
+    }
+  }
+
+  private var expandedDetailColumn: some View {
+    VStack(spacing: 12) {
+      if let detailRecord = expandedDetailRecord {
+        expandedDetailPanel(for: detailRecord)
       }
 
-      Spacer(minLength: 0)
+      expandedPrivacyPanel
     }
+  }
+
+  private var expandedDetailRecord: CaptureHistoryRecord? {
+    if let firstSelected = expandedSelectedRecords.first {
+      return firstSelected
+    }
+
+    if let selectedId, let record = expandedRecords.first(where: { $0.id == selectedId }) {
+      return record
+    }
+
+    return expandedRecords.first
+  }
+
+  private func expandedDetailPanel(for record: CaptureHistoryRecord) -> some View {
+    VStack(alignment: .leading, spacing: 12) {
+      HistoryDetailThumbnailView(record: record)
+        .frame(height: 118)
+
+      VStack(alignment: .leading, spacing: 5) {
+        Text(record.fileName)
+          .font(.system(size: 13, weight: .semibold))
+          .lineLimit(2)
+          .truncationMode(.middle)
+
+        Text(detailMetadata(for: record))
+          .font(.system(size: 10.5, weight: .medium))
+          .foregroundColor(.secondary)
+          .lineLimit(2)
+
+        Text(record.formattedDate)
+          .font(.system(size: 10, weight: .medium))
+          .foregroundColor(.secondary.opacity(0.86))
+          .lineLimit(1)
+      }
+
+      Divider()
+        .opacity(0.42)
+
+      VStack(spacing: 2) {
+        ForEach(HistoryRecordDetailAction.actions(for: record.captureType)) { action in
+          detailActionButton(action, record: record)
+        }
+      }
+    }
+    .padding(12)
+    .background(chromeSurfaceFill, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    .overlay(
+      RoundedRectangle(cornerRadius: 18, style: .continuous)
+        .stroke(chromeSurfaceBorder, lineWidth: 1)
+    )
+    .shadow(color: chromeSurfaceShadow, radius: 12, x: 0, y: 5)
+  }
+
+  private var expandedPrivacyPanel: some View {
+    VStack(alignment: .leading, spacing: 10) {
+      Text("Privacy")
+        .font(.system(size: 13, weight: .semibold))
+
+      VStack(alignment: .leading, spacing: 8) {
+        ForEach(HistoryPrivacyChecklist.items) { item in
+          Label {
+            Text(item.title)
+              .font(.system(size: 10.5, weight: .semibold))
+              .lineLimit(1)
+              .minimumScaleFactor(0.86)
+          } icon: {
+            Image(systemName: item.systemImage)
+              .font(.system(size: 10.5, weight: .bold))
+              .foregroundColor(Color.accentColor)
+              .symbolRenderingMode(.hierarchical)
+          }
+          .foregroundColor(.primary.opacity(0.78))
+          .help(item.title)
+        }
+      }
+    }
+    .padding(12)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(privacyPanelFill, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    .overlay(
+      RoundedRectangle(cornerRadius: 18, style: .continuous)
+        .stroke(privacyChipBorder, lineWidth: 1)
+    )
+    .shadow(color: chromeSurfaceShadow, radius: 10, x: 0, y: 4)
+  }
+
+  private func detailActionButton(
+    _ action: HistoryRecordDetailAction,
+    record: CaptureHistoryRecord
+  ) -> some View {
+    Button(role: action.isDestructive ? .destructive : nil) {
+      performDetailAction(action, record: record)
+    } label: {
+      Label(action.title, systemImage: action.systemImage)
+        .font(.system(size: 11.5, weight: .semibold))
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 7)
+        .contentShape(Rectangle())
+    }
+    .buttonStyle(.plain)
+    .foregroundColor(action.isDestructive ? .red : .primary.opacity(0.84))
+    .disabled(!record.fileExists && action != .delete)
   }
 
   private var expandedSelectionBar: some View {
@@ -598,16 +697,10 @@ struct HistoryFloatingContentView: View {
     colorScheme == .dark ? Color.white.opacity(0.16) : Color.white.opacity(0.7)
   }
 
-  private var privacyChipFill: AnyShapeStyle {
-    let accent = Color.accentColor.opacity(colorScheme == .dark ? 0.14 : 0.16)
-    let surface = colorScheme == .dark ? Color.white.opacity(0.055) : Color.white.opacity(0.62)
-    return AnyShapeStyle(
-      LinearGradient(
-        colors: [accent, surface],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-      )
-    )
+  private var privacyPanelFill: AnyShapeStyle {
+    colorScheme == .dark
+      ? AnyShapeStyle(Color.accentColor.opacity(0.12))
+      : AnyShapeStyle(Color.accentColor.opacity(0.1))
   }
 
   private var privacyChipBorder: Color {
@@ -738,6 +831,74 @@ struct HistoryFloatingContentView: View {
     }
     .buttonStyle(.plain)
     .foregroundColor(isDestructive ? .red : .primary.opacity(0.82))
+  }
+
+  private func detailMetadata(for record: CaptureHistoryRecord) -> String {
+    var components = [captureTypeTitle(for: record.captureType)]
+
+    if let duration = record.formattedDuration, record.captureType != .screenshot {
+      components.append(duration)
+    } else if let width = record.width, let height = record.height {
+      components.append("\(width)x\(height)")
+    }
+
+    components.append(record.formattedFileSize)
+    return components.joined(separator: " - ")
+  }
+
+  private func captureTypeTitle(for type: CaptureHistoryType) -> String {
+    switch type {
+    case .screenshot:
+      return "Screenshot"
+    case .video:
+      return "Recording"
+    case .gif:
+      return "GIF"
+    }
+  }
+
+  private func performDetailAction(
+    _ action: HistoryRecordDetailAction,
+    record: CaptureHistoryRecord
+  ) {
+    switch action {
+    case .open:
+      openRecordExternally(record)
+    case .copy:
+      HistoryWindowController.shared.copyToClipboard([record])
+    case .annotate:
+      HistoryWindowController.shared.openItem(record)
+    case .pin:
+      pinRecord(record)
+    case .revealInFinder:
+      revealRecordInFinder(record)
+    case .delete:
+      let deletedCount = HistoryWindowController.shared.deleteRecords([record], asksConfirmation: true)
+      if deletedCount > 0 {
+        expandedSelectedIds.remove(record.id)
+      }
+    }
+  }
+
+  private func openRecordExternally(_ record: CaptureHistoryRecord) {
+    guard record.fileExists else { return }
+    let access = SandboxFileAccessManager.shared.beginAccessingURL(record.fileURL)
+    defer { access.stop() }
+    NSWorkspace.shared.open(record.fileURL)
+  }
+
+  private func revealRecordInFinder(_ record: CaptureHistoryRecord) {
+    NSWorkspace.shared.activateFileViewerSelecting([record.fileURL])
+  }
+
+  private func pinRecord(_ record: CaptureHistoryRecord) {
+    guard record.captureType == .screenshot, record.fileExists else { return }
+
+    Task { @MainActor in
+      guard let item = await QuickAccessManager.shared.restoreHistoryItem(record),
+            !item.isPinned else { return }
+      QuickAccessManager.shared.togglePin(id: item.id)
+    }
   }
 
   private func filteredRecords(

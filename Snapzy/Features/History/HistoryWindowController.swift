@@ -65,6 +65,64 @@ enum HistoryItemOpenDestination: Equatable {
   }
 }
 
+enum HistoryRecordDetailAction: String, CaseIterable, Identifiable, Equatable {
+  case open
+  case copy
+  case annotate
+  case pin
+  case revealInFinder
+  case delete
+
+  var id: String { rawValue }
+
+  var title: String {
+    switch self {
+    case .open:
+      return "Open"
+    case .copy:
+      return "Copy"
+    case .annotate:
+      return "Annotate"
+    case .pin:
+      return "Pin"
+    case .revealInFinder:
+      return "Reveal in Finder"
+    case .delete:
+      return "Delete"
+    }
+  }
+
+  var systemImage: String {
+    switch self {
+    case .open:
+      return "arrow.up.forward.square"
+    case .copy:
+      return "doc.on.doc"
+    case .annotate:
+      return "pencil"
+    case .pin:
+      return "pin"
+    case .revealInFinder:
+      return "folder"
+    case .delete:
+      return "trash"
+    }
+  }
+
+  var isDestructive: Bool {
+    self == .delete
+  }
+
+  static func actions(for captureType: CaptureHistoryType) -> [HistoryRecordDetailAction] {
+    switch captureType {
+    case .screenshot:
+      return [.open, .copy, .annotate, .pin, .revealInFinder, .delete]
+    case .video, .gif:
+      return [.open, .copy, .revealInFinder, .delete]
+    }
+  }
+}
+
 /// Manages the capture history browser window
 @MainActor
 final class HistoryWindowController {
