@@ -19,7 +19,12 @@ enum HistoryPrivacyChecklist {
     .init(id: "cloud-upload-disabled", title: "Cloud upload disabled", systemImage: "icloud.slash"),
     .init(id: "no-accounts", title: "No accounts", systemImage: "person.crop.circle.badge.xmark"),
     .init(id: "no-telemetry", title: "No telemetry", systemImage: "chart.bar.xaxis"),
-    .init(id: "no-auto-update-checks", title: "No auto-update checks", systemImage: "arrow.triangle.2.circlepath"),
+    .init(id: "no-auto-update-checks", title: "No auto-update checks in v1", systemImage: "arrow.triangle.2.circlepath"),
+    .init(
+      id: "storage-path",
+      title: "Storage: ~/Library/Application Support/LocalShot",
+      systemImage: "externaldrive"
+    ),
   ]
 }
 

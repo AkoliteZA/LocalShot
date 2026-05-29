@@ -81,6 +81,17 @@ final class CaptureHistoryRecordTests: XCTestCase {
     XCTAssertEqual(gifTitles, ["Open", "Copy", "Reveal in Finder", "Delete"])
   }
 
+  func testHistoryPrivacyChecklistMatchesLocalFirstMockup() {
+    XCTAssertEqual(HistoryPrivacyChecklist.items.map(\.title), [
+      "Local-only",
+      "Cloud upload disabled",
+      "No accounts",
+      "No telemetry",
+      "No auto-update checks in v1",
+      "Storage: ~/Library/Application Support/LocalShot",
+    ])
+  }
+
   private func makeRecord(
     filePath: String = "/tmp/capture.png",
     duration: TimeInterval? = 12,
