@@ -51,10 +51,7 @@ struct ShortcutsView: View {
           ShortcutItem(keys: "⇧⌘5", action: recordScreenTitle),
         ])
 
-        ShortcutGroup(title: toolsSectionTitle, shortcuts: [
-          ShortcutItem(keys: "⇧⌘A", action: openAnnotateTitle),
-          ShortcutItem(keys: "⇧⌘E", action: openVideoEditorTitle),
-        ])
+        ShortcutGroup(title: toolsSectionTitle, shortcuts: toolShortcuts)
       }
       .frame(maxWidth: 380)
       .padding(.top, 20)
@@ -311,6 +308,14 @@ struct ShortcutsView: View {
       defaultValue: "Open Video Editor",
       comment: "Action label for opening the video editor"
     )
+  }
+
+  private var toolShortcuts: [ShortcutItem] {
+    [
+      ShortcutItem(keys: "⇧⌘A", action: openAnnotateTitle),
+    ] + (LocalShotV1Policy.complexVideoEditorEntryPointsEnabled
+      ? [ShortcutItem(keys: "⇧⌘E", action: openVideoEditorTitle)]
+      : [])
   }
 
   private var resolveShortcutOverlapTitle: String {

@@ -393,6 +393,10 @@ struct QuickAccessCardView: View {
     _ action: QuickAccessActionKind,
     on _: QuickAccessActionSurface
   ) -> Bool {
+    guard action.isAvailableInLocalShotV1(for: item.itemType) else {
+      return false
+    }
+
     switch action {
     case .copy, .dismiss, .edit:
       return true
@@ -442,7 +446,7 @@ struct QuickAccessCardView: View {
 
   private func handleDoubleClick() {
     if item.isVideo {
-      openVideoEditor()
+      openVideo()
     } else {
       openAnnotation()
     }
@@ -453,8 +457,21 @@ struct QuickAccessCardView: View {
   }
 
   private func openVideoEditor() {
+    guard LocalShotV1Policy.complexVideoEditorEntryPointsEnabled else {
+      saveOrOpenItem()
+      return
+    }
+
     Task { @MainActor in
       VideoEditorManager.shared.openEditor(for: item)
+    }
+  }
+
+  private func openVideo() {
+    if LocalShotV1Policy.complexVideoEditorEntryPointsEnabled {
+      openVideoEditor()
+    } else {
+      saveOrOpenItem()
     }
   }
 

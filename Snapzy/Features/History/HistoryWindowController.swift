@@ -50,6 +50,21 @@ final class HistoryWindow: NSWindow {
   }
 }
 
+enum HistoryItemOpenDestination: Equatable {
+  case annotate
+  case videoEditor
+  case openFileExternally
+
+  static func destination(for captureType: CaptureHistoryType) -> HistoryItemOpenDestination {
+    switch captureType {
+    case .screenshot:
+      return .annotate
+    case .video, .gif:
+      return LocalShotV1Policy.complexVideoEditorEntryPointsEnabled ? .videoEditor : .openFileExternally
+    }
+  }
+}
+
 /// Manages the capture history browser window
 @MainActor
 final class HistoryWindowController {
@@ -122,13 +137,19 @@ final class HistoryWindowController {
 
     HistoryFloatingManager.shared.hide()
 
+    let destination = HistoryItemOpenDestination.destination(for: record.captureType)
+    if destination == .openFileExternally {
+      openFileExternally(record)
+      return
+    }
+
     Task { @MainActor in
       guard let item = await QuickAccessManager.shared.restoreHistoryItem(record) else {
         return
       }
 
-      switch record.captureType {
-      case .screenshot:
+      switch destination {
+      case .annotate:
         DiagnosticLogger.shared.log(
           .info,
           .history,
@@ -136,7 +157,7 @@ final class HistoryWindowController {
           context: ["fileName": record.fileName, "itemId": item.id.uuidString]
         )
         AnnotateManager.shared.openAnnotation(for: item)
-      case .video, .gif:
+      case .videoEditor:
         DiagnosticLogger.shared.log(
           .info,
           .history,
@@ -148,8 +169,26 @@ final class HistoryWindowController {
           ]
         )
         VideoEditorManager.shared.openEditor(for: item)
+      case .openFileExternally:
+        break
       }
     }
+  }
+
+  private func openFileExternally(_ record: CaptureHistoryRecord) {
+    let access = SandboxFileAccessManager.shared.beginAccessingURL(record.fileURL)
+    defer { access.stop() }
+
+    DiagnosticLogger.shared.log(
+      .info,
+      .history,
+      "History opening media externally",
+      context: [
+        "fileName": record.fileName,
+        "type": record.captureType.rawValue,
+      ]
+    )
+    NSWorkspace.shared.open(record.fileURL)
   }
 
   @discardableResult

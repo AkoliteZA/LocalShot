@@ -31,6 +31,15 @@ enum ShortcutOverlayContentBuilder {
   static func buildSections() -> [ShortcutOverlaySection] {
     let keyboard = KeyboardShortcutManager.shared
     let annotate = AnnotateShortcutManager.shared
+    let toolItems = [
+      globalItem(kind: .annotate, icon: "pencil.and.scribble", manager: keyboard),
+    ] + (GlobalShortcutKind.videoEditor.isAvailableInLocalShotV1
+      ? [globalItem(kind: .videoEditor, icon: "film", manager: keyboard)]
+      : []) + [
+        globalItem(kind: .shortcutList, icon: "list.bullet.rectangle", manager: keyboard),
+      ] + (LocalShotV1Policy.cloudUploadsEnabled
+        ? [globalItem(kind: .cloudUploads, icon: "icloud.and.arrow.up", manager: keyboard)]
+        : [])
 
     return [
       ShortcutOverlaySection(
@@ -46,13 +55,7 @@ enum ShortcutOverlayContentBuilder {
       ShortcutOverlaySection(
         id: "tools",
         title: L10n.ShortcutOverlay.toolsSection,
-        items: [
-          globalItem(kind: .annotate, icon: "pencil.and.scribble", manager: keyboard),
-          globalItem(kind: .videoEditor, icon: "film", manager: keyboard),
-          globalItem(kind: .shortcutList, icon: "list.bullet.rectangle", manager: keyboard),
-        ] + (LocalShotV1Policy.cloudUploadsEnabled
-          ? [globalItem(kind: .cloudUploads, icon: "icloud.and.arrow.up", manager: keyboard)]
-          : [])
+        items: toolItems
       ),
       ShortcutOverlaySection(
         id: "annotate-actions",

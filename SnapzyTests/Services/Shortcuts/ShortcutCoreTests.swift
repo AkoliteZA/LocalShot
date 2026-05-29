@@ -91,6 +91,17 @@ final class ShortcutCoreTests: XCTestCase {
     XCTAssertFalse(items.contains { $0.icon.contains("icloud") })
   }
 
+  @MainActor
+  func testShortcutOverlayContent_omitsComplexVideoEditorForLocalShotV1() {
+    XCTAssertFalse(LocalShotV1Policy.complexVideoEditorEntryPointsEnabled)
+
+    let items = ShortcutOverlayContentBuilder.buildSections().flatMap(\.items)
+    let itemIds = Set(items.map(\.id))
+
+    XCTAssertFalse(itemIds.contains("global-\(GlobalShortcutKind.videoEditor.rawValue)"))
+    XCTAssertFalse(GlobalShortcutKind.videoEditor.isAvailableInLocalShotV1)
+  }
+
   func testAnnotateActionShortcutKind_allCasesOmitCloudUploadForLocalShotV1() {
     XCTAssertFalse(LocalShotV1Policy.cloudUploadsEnabled)
     XCTAssertFalse(AnnotateActionShortcutKind.allCases.contains(.cloudUpload))

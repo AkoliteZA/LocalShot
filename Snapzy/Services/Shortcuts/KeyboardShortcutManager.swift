@@ -430,6 +430,17 @@ enum GlobalShortcutKind: String, CaseIterable, Codable {
 }
 
 extension GlobalShortcutKind {
+  var isAvailableInLocalShotV1: Bool {
+    switch self {
+    case .videoEditor:
+      return LocalShotV1Policy.complexVideoEditorEntryPointsEnabled
+    case .cloudUploads:
+      return LocalShotV1Policy.cloudUploadsEnabled
+    case .fullscreen, .area, .areaAnnotate, .scrollingCapture, .recording, .annotate, .shortcutList, .ocr, .objectCutout, .history:
+      return true
+    }
+  }
+
   var displayName: String {
     switch self {
     case .fullscreen:
@@ -1016,6 +1027,7 @@ final class KeyboardShortcutManager {
       actionName = "annotate"
       action = .openAnnotate
     case videoEditorHotkeyID.id:
+      guard GlobalShortcutKind.videoEditor.isAvailableInLocalShotV1 else { return }
       actionName = "video-editor"
       action = .openVideoEditor
     case cloudUploadsHotkeyID.id:
@@ -1101,12 +1113,14 @@ final class KeyboardShortcutManager {
       hotkeyID: annotateHotkeyID,
       ref: &annotateHotkeyRef
     )
-    registerShortcutIfNeeded(
-      kind: .videoEditor,
-      config: shortcut(for: .videoEditor),
-      hotkeyID: videoEditorHotkeyID,
-      ref: &videoEditorHotkeyRef
-    )
+    if GlobalShortcutKind.videoEditor.isAvailableInLocalShotV1 {
+      registerShortcutIfNeeded(
+        kind: .videoEditor,
+        config: shortcut(for: .videoEditor),
+        hotkeyID: videoEditorHotkeyID,
+        ref: &videoEditorHotkeyRef
+      )
+    }
     registerShortcutIfNeeded(
       kind: .ocr,
       config: shortcut(for: .ocr),

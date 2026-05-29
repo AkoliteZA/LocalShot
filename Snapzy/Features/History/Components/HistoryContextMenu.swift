@@ -20,7 +20,7 @@ struct HistoryContextMenu: View {
       HistoryWindowController.shared.copyToClipboard([record])
     }
 
-    Button("Edit") {
+    Button(primaryActionTitle) {
       HistoryWindowController.shared.openItem(record)
     }
 
@@ -49,6 +49,10 @@ struct HistoryContextMenu: View {
     case nil:
       return L10n.PreferencesHistory.uploadToCloud
     }
+  }
+
+  private var primaryActionTitle: String {
+    record.captureType == .screenshot ? "Annotate" : "Open"
   }
 
   private var uploadMenuIcon: String {

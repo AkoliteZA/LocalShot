@@ -52,6 +52,14 @@ final class CaptureHistoryRecordTests: XCTestCase {
     XCTAssertNil(makeRecord(thumbnailPath: nil).thumbnailURL)
   }
 
+  func testHistoryOpenDestinationRoutesVideoAndGIFOutsideComplexEditorForLocalShotV1() {
+    XCTAssertFalse(LocalShotV1Policy.complexVideoEditorEntryPointsEnabled)
+
+    XCTAssertEqual(HistoryItemOpenDestination.destination(for: .screenshot), .annotate)
+    XCTAssertEqual(HistoryItemOpenDestination.destination(for: .video), .openFileExternally)
+    XCTAssertEqual(HistoryItemOpenDestination.destination(for: .gif), .openFileExternally)
+  }
+
   private func makeRecord(
     filePath: String = "/tmp/capture.png",
     duration: TimeInterval? = 12,

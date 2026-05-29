@@ -93,7 +93,18 @@ enum QuickAccessActionKind: String, CaseIterable, Codable, Hashable, Identifiabl
   static let defaultEnabledActions = Set(defaultOrder)
 
   var isAvailableInLocalShotV1: Bool {
-    self != .uploadToCloud || LocalShotV1Policy.cloudUploadsEnabled
+    isAvailableInLocalShotV1(for: nil)
+  }
+
+  func isAvailableInLocalShotV1(for itemType: QuickAccessItemType?) -> Bool {
+    switch self {
+    case .uploadToCloud:
+      return LocalShotV1Policy.cloudUploadsEnabled
+    case .edit where itemType == .video:
+      return LocalShotV1Policy.complexVideoEditorEntryPointsEnabled
+    case .copy, .saveOrOpen, .dismiss, .delete, .edit, .pinToScreen:
+      return true
+    }
   }
 
   var displayStyle: QuickAccessActionDisplayStyle {

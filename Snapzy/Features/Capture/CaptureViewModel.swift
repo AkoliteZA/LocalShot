@@ -323,6 +323,7 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
     case .openAnnotate:
       AnnotateManager.shared.openEmptyAnnotation()
     case .openVideoEditor:
+      guard LocalShotV1Policy.complexVideoEditorEntryPointsEnabled else { return }
       VideoEditorManager.shared.openEmptyEditor()
     case .openCloudUploads:
       guard LocalShotV1Policy.cloudUploadsEnabled else { return }

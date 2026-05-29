@@ -291,6 +291,13 @@ final class QuickAccessCoreTests: XCTestCase {
     XCTAssertEqual(store.action(in: .bottomLeading), .edit)
   }
 
+  func testQuickAccessEditActionUnavailableForVideoWhenComplexEditorDisabled() {
+    XCTAssertFalse(LocalShotV1Policy.complexVideoEditorEntryPointsEnabled)
+
+    XCTAssertTrue(QuickAccessActionKind.edit.isAvailableInLocalShotV1(for: .screenshot))
+    XCTAssertFalse(QuickAccessActionKind.edit.isAvailableInLocalShotV1(for: .video))
+  }
+
   func testQuickAccessActionConfigurationStore_preservesExplicitPinToScreenDisable() {
     let defaults = makeIsolatedDefaults()
     defaults.set(

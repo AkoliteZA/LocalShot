@@ -543,6 +543,7 @@ final class AppStatusBarController: ObservableObject {
 
   @objc private func editVideoAction() {
     logMenuAction("editVideo")
+    guard LocalShotV1Policy.complexVideoEditorEntryPointsEnabled else { return }
     VideoEditorManager.shared.openEmptyEditor()
   }
 
