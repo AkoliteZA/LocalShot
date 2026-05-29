@@ -34,12 +34,28 @@ enum AppIdentityIssue: Equatable, Hashable {
   }
 }
 
+enum AppIdentityWarning: Equatable, Hashable {
+  case adHocSignature
+
+  var description: String {
+    switch self {
+    case .adHocSignature:
+      return L10n.AppIdentity.adHocSignature
+    }
+  }
+}
+
 struct AppIdentityHealth: Equatable {
   let bundleURL: URL
   let issues: [AppIdentityIssue]
+  let warnings: [AppIdentityWarning]
 
   var isHealthy: Bool {
     issues.isEmpty
+  }
+
+  var needsAttention: Bool {
+    !issues.isEmpty || !warnings.isEmpty
   }
 
   var summary: String {
@@ -49,6 +65,14 @@ struct AppIdentityHealth: Equatable {
 
     return issues.map(\.description).joined(separator: " ")
   }
+
+  var warningSummary: String {
+    warnings.map(\.description).joined(separator: " ")
+  }
+
+  var attentionMessages: [String] {
+    issues.map(\.description) + warnings.map(\.description)
+  }
 }
 
 @MainActor
@@ -57,7 +81,8 @@ final class AppIdentityManager: ObservableObject {
 
   @Published private(set) var health = AppIdentityHealth(
     bundleURL: Bundle.main.bundleURL,
-    issues: []
+    issues: [],
+    warnings: []
   )
 
   private init() {
@@ -71,6 +96,7 @@ final class AppIdentityManager: ObservableObject {
   private static func evaluate() -> AppIdentityHealth {
     let bundleURL = Bundle.main.bundleURL.standardizedFileURL
     var issues: [AppIdentityIssue] = []
+    var warnings: [AppIdentityWarning] = []
     let quarantined = isQuarantined(bundleURL)
 
     if Bundle.main.bundleIdentifier != AppBundleIdentity.expected {
@@ -85,6 +111,10 @@ final class AppIdentityManager: ObservableObject {
       issues.append(.quarantined)
     }
 
+    if isAdHocSigned(bundleURL) {
+      warnings.append(.adHocSignature)
+    }
+
     // Skip strict signature validation in debug builds — Xcode uses ad-hoc
     // signing which always fails kSecCSStrictValidate, blocking the entire
     // permission flow during development.
@@ -94,7 +124,7 @@ final class AppIdentityManager: ObservableObject {
     }
     #endif
 
-    return AppIdentityHealth(bundleURL: bundleURL, issues: issues)
+    return AppIdentityHealth(bundleURL: bundleURL, issues: issues, warnings: warnings)
   }
 
   private static func isQuarantined(_ bundleURL: URL) -> Bool {
@@ -112,5 +142,30 @@ final class AppIdentityManager: ObservableObject {
     let flags = SecCSFlags(rawValue: kSecCSCheckAllArchitectures | kSecCSCheckNestedCode | kSecCSStrictValidate)
     let verifyStatus = SecStaticCodeCheckValidity(staticCode, flags, nil)
     return verifyStatus == errSecSuccess
+  }
+
+  private static func isAdHocSigned(_ bundleURL: URL) -> Bool {
+    var staticCode: SecStaticCode?
+    let createStatus = SecStaticCodeCreateWithPath(bundleURL as CFURL, SecCSFlags(), &staticCode)
+    guard createStatus == errSecSuccess, let staticCode else {
+      return false
+    }
+
+    var signingInformation: CFDictionary?
+    let copyStatus = SecCodeCopySigningInformation(
+      staticCode,
+      SecCSFlags(rawValue: kSecCSSigningInformation),
+      &signingInformation
+    )
+    guard
+      copyStatus == errSecSuccess,
+      let information = signingInformation as? [String: Any]
+    else {
+      return false
+    }
+
+    let certificateKey = kSecCodeInfoCertificates as String
+    let certificates = information[certificateKey] as? [SecCertificate]
+    return certificates?.isEmpty ?? true
   }
 }

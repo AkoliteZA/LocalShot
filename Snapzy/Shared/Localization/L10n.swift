@@ -1981,7 +1981,7 @@ enum L10n {
     )
     static let localBuildPermissionNoteDescription = string(
       "preferences-permissions.local-build-note-description",
-      defaultValue: "If permissions keep prompting after a rebuild, macOS may be seeing a new ad-hoc-signed LocalShot binary. Grant the currently installed app, then quit and reopen LocalShot. A stable local signing identity prevents repeated grants.",
+      defaultValue: "Save Folder access is granted from LocalShot's folder picker, not System Settings. Microphone appears in System Settings only after LocalShot asks once. If prompts return after rebuilds, macOS may be seeing a new ad-hoc-signed app; a stable local signing identity prevents repeated grants.",
       comment: "Description for note explaining repeated permission prompts after reinstalling ad-hoc-signed local builds"
     )
   }
@@ -6717,6 +6717,12 @@ enum L10n {
       "app-identity.quarantined",
       defaultValue: "This app still has the macOS quarantine flag. Reinstall with the installer script or remove quarantine before granting permissions.",
       comment: "Identity issue message when app is quarantined"
+    )
+
+    static let adHocSignature = string(
+      "app-identity.ad-hoc-signature",
+      defaultValue: "This local build is ad-hoc signed. macOS privacy grants may be invalidated after rebuilds; use a stable local code-signing identity for repeatable Screen Recording, Microphone, and folder access.",
+      comment: "Non-blocking identity warning shown for ad-hoc-signed local development builds"
     )
 
     static let healthy = string(

@@ -109,14 +109,14 @@ struct PermissionsView: View {
       .frame(maxWidth: 420)
       .padding(.top, 24)
 
-      if !identityManager.health.isHealthy {
+      if identityManager.health.needsAttention {
         VStack(alignment: .leading, spacing: 8) {
           Text(buildIdentityNeedsAttentionTitle)
             .font(.system(size: 13, weight: .semibold))
             .foregroundColor(.orange)
 
-          ForEach(identityManager.health.issues, id: \.self) { issue in
-            Text("• \(localizedIdentityIssue(issue))")
+          ForEach(identityManager.health.attentionMessages, id: \.self) { message in
+            Text("• \(message)")
               .font(.caption)
               .foregroundColor(VSDesignSystem.Colors.tertiary)
           }
@@ -242,37 +242,6 @@ struct PermissionsView: View {
   private func openSystemSettings(_ urlString: String) {
     if let url = URL(string: urlString) {
       NSWorkspace.shared.open(url)
-    }
-  }
-
-  private func localizedIdentityIssue(_ issue: AppIdentityIssue) -> String {
-    switch issue {
-    case .unexpectedBundleIdentifier(let bundleIdentifier):
-      return onboardingLocalization.format(
-        "app-identity.unexpected-bundle-id",
-        defaultValue: "Expected bundle ID %@, found %@.",
-        comment: "Identity issue message. First %@ is expected bundle identifier. Second %@ is current bundle identifier.",
-        arguments: [AppBundleIdentity.expected, bundleIdentifier ?? "missing"]
-      )
-    case .invalidBundleSignature:
-      return onboardingLocalization.string(
-        "app-identity.invalid-signature",
-        defaultValue: "This app bundle does not pass macOS code-signature validation.",
-        comment: "Identity issue message when bundle signature validation fails"
-      )
-    case .outsideApplications(let bundleURL):
-      return onboardingLocalization.format(
-        "app-identity.outside-applications",
-        defaultValue: "Install LocalShot in /Applications before granting permissions. Current path: %@",
-        comment: "Identity issue message. %@ is the current app bundle path.",
-        arguments: [bundleURL.path]
-      )
-    case .quarantined:
-      return onboardingLocalization.string(
-        "app-identity.quarantined",
-        defaultValue: "This app still has the macOS quarantine flag. Reinstall with the installer script or remove quarantine before granting permissions.",
-        comment: "Identity issue message when app is quarantined"
-      )
     }
   }
 

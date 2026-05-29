@@ -31,6 +31,12 @@ The helper uses:
   trusted local code-signing certificate and run builds with
   `LOCALSHOT_CODE_SIGN_IDENTITY="Certificate Common Name"`. If the certificate
   is in a non-default keychain, also set `LOCALSHOT_CODE_SIGN_KEYCHAIN`.
+- You can create a stable local identity in Keychain Access with
+  **Certificate Assistant > Create a Certificate...**, using an Identity Type
+  of **Self Signed Root** and Certificate Type **Code Signing**. After it
+  appears in `./scripts/localshot-build.sh signing-info`, rebuild/install with
+  `LOCALSHOT_CODE_SIGN_IDENTITY` set to the certificate name, then reset and
+  re-grant macOS permissions once for that signed app.
 - For permission-sensitive testing, quit DerivedData test copies and run the
   installed `/Applications/LocalShot.app`. Save Folder access is granted from
   LocalShot's folder picker, not System Settings. Microphone appears in

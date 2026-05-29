@@ -82,7 +82,8 @@ final class PreferencesCoreTests: XCTestCase {
       PermissionsRecoveryNotePolicy.shouldShow(
         screenRecordingGranted: true,
         saveFolderGranted: true,
-        microphoneGranted: true
+        microphoneGranted: true,
+        buildIdentityNeedsAttention: false
       )
     )
 
@@ -90,7 +91,8 @@ final class PreferencesCoreTests: XCTestCase {
       PermissionsRecoveryNotePolicy.shouldShow(
         screenRecordingGranted: false,
         saveFolderGranted: true,
-        microphoneGranted: true
+        microphoneGranted: true,
+        buildIdentityNeedsAttention: false
       )
     )
 
@@ -98,7 +100,8 @@ final class PreferencesCoreTests: XCTestCase {
       PermissionsRecoveryNotePolicy.shouldShow(
         screenRecordingGranted: true,
         saveFolderGranted: false,
-        microphoneGranted: true
+        microphoneGranted: true,
+        buildIdentityNeedsAttention: false
       )
     )
 
@@ -106,9 +109,30 @@ final class PreferencesCoreTests: XCTestCase {
       PermissionsRecoveryNotePolicy.shouldShow(
         screenRecordingGranted: true,
         saveFolderGranted: true,
-        microphoneGranted: false
+        microphoneGranted: false,
+        buildIdentityNeedsAttention: false
       )
     )
+
+    XCTAssertTrue(
+      PermissionsRecoveryNotePolicy.shouldShow(
+        screenRecordingGranted: true,
+        saveFolderGranted: true,
+        microphoneGranted: true,
+        buildIdentityNeedsAttention: true
+      )
+    )
+  }
+
+  func testAppIdentityWarningsDoNotMakeIdentityUnhealthy() {
+    let health = AppIdentityHealth(
+      bundleURL: URL(fileURLWithPath: "/Applications/LocalShot.app"),
+      issues: [],
+      warnings: [.adHocSignature]
+    )
+
+    XCTAssertTrue(health.isHealthy)
+    XCTAssertEqual(health.warningSummary, AppIdentityWarning.adHocSignature.description)
   }
 
   private func makeDefaults(

@@ -14,9 +14,10 @@ enum PermissionsRecoveryNotePolicy {
   static func shouldShow(
     screenRecordingGranted: Bool,
     saveFolderGranted: Bool,
-    microphoneGranted: Bool
+    microphoneGranted: Bool,
+    buildIdentityNeedsAttention: Bool
   ) -> Bool {
-    !screenRecordingGranted || !saveFolderGranted || !microphoneGranted
+    !screenRecordingGranted || !saveFolderGranted || !microphoneGranted || buildIdentityNeedsAttention
   }
 }
 
@@ -110,15 +111,15 @@ struct PermissionsSettingsView: View {
           }
         )
 
-        if !identityManager.health.isHealthy {
+        if identityManager.health.needsAttention {
           VStack(alignment: .leading, spacing: 6) {
             Text(L10n.Onboarding.buildIdentityNeedsAttention)
               .font(.caption)
               .fontWeight(.semibold)
               .foregroundColor(.orange)
 
-            ForEach(identityManager.health.issues, id: \.self) { issue in
-              Text("• \(issue.description)")
+            ForEach(identityManager.health.attentionMessages, id: \.self) { message in
+              Text("• \(message)")
                 .font(.caption)
                 .foregroundColor(.secondary)
             }
@@ -184,7 +185,8 @@ struct PermissionsSettingsView: View {
     PermissionsRecoveryNotePolicy.shouldShow(
       screenRecordingGranted: screenCaptureManager.permissionStatus == .granted,
       saveFolderGranted: saveFolderGranted,
-      microphoneGranted: microphoneGranted
+      microphoneGranted: microphoneGranted,
+      buildIdentityNeedsAttention: identityManager.health.needsAttention
     )
   }
 
