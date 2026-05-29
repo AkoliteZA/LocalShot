@@ -208,7 +208,28 @@ final class QuickAccessCoreTests: XCTestCase {
     XCTAssertEqual(store.actionOrder, QuickAccessActionKind.defaultOrder)
     XCTAssertEqual(store.orderedActions(includeDisabled: false), QuickAccessActionKind.defaultOrder)
     XCTAssertEqual(store.slotAssignments, QuickAccessActionSlot.defaultAssignments)
+    XCTAssertEqual(QuickAccessActionSlot.defaultAssignments[.topTrailing], .ocr)
     XCTAssertTrue(store.isEnabled(.pinToScreen))
+  }
+
+  func testQuickAccessActionKind_defaultsExposeMockupOCRAction() {
+    XCTAssertTrue(QuickAccessActionKind.defaultOrder.contains(.ocr))
+    XCTAssertTrue(QuickAccessActionKind.defaultEnabledActions.contains(.ocr))
+    XCTAssertEqual(QuickAccessActionKind.ocr.systemImage, "text.viewfinder")
+    XCTAssertEqual(QuickAccessActionKind.ocr.displayStyle, .corner)
+    XCTAssertTrue(QuickAccessActionKind.ocr.isAvailableInLocalShotV1(for: .screenshot))
+    XCTAssertFalse(QuickAccessActionKind.ocr.isAvailableInLocalShotV1(for: .video))
+    XCTAssertEqual(
+      QuickAccessActionSlot.defaultAssignments,
+      [
+        .centerTop: .copy,
+        .centerBottom: .saveOrOpen,
+        .topTrailing: .ocr,
+        .topLeading: .delete,
+        .bottomLeading: .edit,
+        .bottomTrailing: .pinToScreen,
+      ]
+    )
   }
 
   func testQuickAccessActionKind_contextMenuOrderKeepsCloseAndDeleteAtEnd() {
@@ -218,12 +239,13 @@ final class QuickAccessCoreTests: XCTestCase {
       .dismiss,
       .delete,
       .edit,
+      .ocr,
       .pinToScreen,
     ]
 
     XCTAssertEqual(
       QuickAccessActionKind.contextMenuOrder(from: configuredOrder),
-      [.copy, .saveOrOpen, .edit, .pinToScreen, .dismiss, .delete]
+      [.copy, .saveOrOpen, .edit, .ocr, .pinToScreen, .dismiss, .delete]
     )
   }
 
@@ -250,7 +272,7 @@ final class QuickAccessCoreTests: XCTestCase {
 
     XCTAssertEqual(
       store.actionOrder,
-      [.delete, .copy, .saveOrOpen, .dismiss, .edit, .pinToScreen]
+      [.delete, .copy, .saveOrOpen, .edit, .ocr, .pinToScreen, .dismiss]
     )
     XCTAssertEqual(store.orderedActions(includeDisabled: false), [.copy])
   }
@@ -327,7 +349,7 @@ final class QuickAccessCoreTests: XCTestCase {
     XCTAssertFalse(store.isEnabled(.pinToScreen))
     XCTAssertEqual(
       store.actionOrder,
-      [.saveOrOpen, .dismiss, .copy, .delete, .edit, .pinToScreen]
+      [.saveOrOpen, .edit, .copy, .ocr, .pinToScreen, .dismiss, .delete]
     )
     XCTAssertEqual(store.slotAssignments, QuickAccessActionSlot.defaultAssignments)
 
@@ -374,6 +396,74 @@ final class QuickAccessCoreTests: XCTestCase {
     XCTAssertNil(store.action(in: .topLeading))
     XCTAssertEqual(store.action(in: .bottomLeading), .edit)
     XCTAssertEqual(store.action(in: .bottomTrailing), .pinToScreen)
+  }
+
+  func testQuickAccessOCRAction_copiesRecognizedScreenshotContent() async throws {
+    let item = QuickAccessItem(
+      url: URL(fileURLWithPath: "/tmp/localshot-ocr-demo.png"),
+      thumbnail: makeRasterImage()
+    )
+    var copiedText: String?
+    let dependencies = QuickAccessOCRAction.Dependencies(
+      imageLoader: { _ in item.thumbnail },
+      textRecognizer: { _ in "Window Title" },
+      qrDetector: { _ in
+        QRCodeDetectionResult(
+          detections: [
+            QRCodeDetection(
+              payload: "https://localshot.test",
+              boundingBox: CGRect(x: 0.1, y: 0.1, width: 0.2, height: 0.2),
+              classification: .plainText
+            )
+          ],
+          unsupportedPayloadCount: 0
+        )
+      },
+      pasteboardWriter: { copiedText = $0 }
+    )
+
+    let result = try await QuickAccessOCRAction.copyRecognizedContent(
+      from: item,
+      dependencies: dependencies
+    )
+
+    XCTAssertEqual(result, "Window Title\n\nQR Codes:\nhttps://localshot.test")
+    XCTAssertEqual(copiedText, result)
+  }
+
+  func testQuickAccessOCRAction_rejectsVideosBeforeRecognition() async {
+    let item = QuickAccessItem(
+      url: URL(fileURLWithPath: "/tmp/localshot-ocr-demo.mov"),
+      thumbnail: makeRasterImage(),
+      duration: 2
+    )
+    let dependencies = QuickAccessOCRAction.Dependencies(
+      imageLoader: { _ in
+        XCTFail("Video OCR should not attempt image loading")
+        return nil
+      },
+      textRecognizer: { _ in
+        XCTFail("Video OCR should not attempt text recognition")
+        return nil
+      },
+      qrDetector: { _ in
+        XCTFail("Video OCR should not attempt QR detection")
+        return .empty
+      },
+      pasteboardWriter: { _ in XCTFail("Video OCR should not write to the pasteboard") }
+    )
+
+    do {
+      _ = try await QuickAccessOCRAction.copyRecognizedContent(
+        from: item,
+        dependencies: dependencies
+      )
+      XCTFail("Expected video OCR to be rejected")
+    } catch QuickAccessOCRActionError.unsupportedItem {
+      // Expected.
+    } catch {
+      XCTFail("Unexpected error: \(error)")
+    }
   }
 
   func testQuickAccessCountdownTimer_pauseResumePreservesRemainingTime() async throws {
@@ -438,6 +528,15 @@ final class QuickAccessCoreTests: XCTestCase {
     let store = QuickAccessActionConfigurationStore(defaults: defaults)
     Self.retainedActionStores.append(store)
     return store
+  }
+
+  private func makeRasterImage(size: CGSize = CGSize(width: 32, height: 20)) -> NSImage {
+    let image = NSImage(size: size)
+    image.lockFocus()
+    NSColor.white.setFill()
+    NSRect(origin: .zero, size: size).fill()
+    image.unlockFocus()
+    return image
   }
 
   private func makePinWindow() -> QuickAccessPinWindow {

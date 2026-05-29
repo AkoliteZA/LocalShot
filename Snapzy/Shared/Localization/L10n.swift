@@ -2169,6 +2169,11 @@ enum L10n {
       defaultValue: "Edit",
       comment: "Quick access configurable action title"
     )
+    static let ocrAction = string(
+      "preferences-quick-access.action-ocr",
+      defaultValue: "OCR",
+      comment: "Quick access configurable action title"
+    )
     static let pinToScreenAction = string(
       "preferences-quick-access.action-pin-to-screen",
       defaultValue: "Pin to Screen",
@@ -6202,6 +6207,16 @@ enum L10n {
       "quick-access.edit-video",
       defaultValue: "Edit Video",
       comment: "Quick Access tooltip for opening the video editor"
+    )
+    static let ocrUnsupportedItem = string(
+      "quick-access.ocr-unsupported-item",
+      defaultValue: "OCR is only available for screenshots",
+      comment: "Quick Access error shown when OCR is requested for a non-image item"
+    )
+    static let ocrImageUnavailable = string(
+      "quick-access.ocr-image-unavailable",
+      defaultValue: "Unable to read screenshot for OCR",
+      comment: "Quick Access error shown when the screenshot file cannot be loaded for OCR"
     )
     static let lockPinnedWindow = string(
       "quick-access.pin-window.lock",

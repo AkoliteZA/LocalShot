@@ -42,7 +42,7 @@ enum QuickAccessActionSlot: String, CaseIterable, Codable, Hashable, Identifiabl
   static let defaultAssignments: [QuickAccessActionSlot: QuickAccessActionKind] = [
     .centerTop: .copy,
     .centerBottom: .saveOrOpen,
-    .topTrailing: .dismiss,
+    .topTrailing: .ocr,
     .topLeading: .delete,
     .bottomLeading: .edit,
     .bottomTrailing: .pinToScreen,
@@ -76,6 +76,7 @@ enum QuickAccessActionKind: String, CaseIterable, Codable, Hashable, Identifiabl
   case dismiss
   case delete
   case edit
+  case ocr
   case uploadToCloud
   case pinToScreen
 
@@ -84,10 +85,11 @@ enum QuickAccessActionKind: String, CaseIterable, Codable, Hashable, Identifiabl
   static let defaultOrder: [QuickAccessActionKind] = [
     .copy,
     .saveOrOpen,
+    .edit,
+    .ocr,
+    .pinToScreen,
     .dismiss,
     .delete,
-    .edit,
-    .pinToScreen,
   ]
 
   static let defaultEnabledActions = Set(defaultOrder)
@@ -102,6 +104,8 @@ enum QuickAccessActionKind: String, CaseIterable, Codable, Hashable, Identifiabl
       return LocalShotV1Policy.cloudUploadsEnabled
     case .edit where itemType == .video:
       return LocalShotV1Policy.complexVideoEditorEntryPointsEnabled
+    case .ocr:
+      return itemType != .video
     case .copy, .saveOrOpen, .dismiss, .delete, .edit, .pinToScreen:
       return true
     }
@@ -111,7 +115,7 @@ enum QuickAccessActionKind: String, CaseIterable, Codable, Hashable, Identifiabl
     switch self {
     case .copy, .saveOrOpen:
       return .primary
-    case .dismiss, .delete, .edit, .uploadToCloud, .pinToScreen:
+    case .dismiss, .delete, .edit, .ocr, .uploadToCloud, .pinToScreen:
       return .corner
     }
   }
@@ -128,6 +132,8 @@ enum QuickAccessActionKind: String, CaseIterable, Codable, Hashable, Identifiabl
       return L10n.Common.deleteAction
     case .edit:
       return L10n.PreferencesQuickAccess.editAction
+    case .ocr:
+      return L10n.PreferencesQuickAccess.ocrAction
     case .uploadToCloud:
       return L10n.AnnotateUI.uploadToCloud
     case .pinToScreen:
@@ -148,7 +154,7 @@ enum QuickAccessActionKind: String, CaseIterable, Codable, Hashable, Identifiabl
     switch self {
     case .dismiss, .delete:
       return true
-    case .copy, .saveOrOpen, .edit, .uploadToCloud, .pinToScreen:
+    case .copy, .saveOrOpen, .edit, .ocr, .uploadToCloud, .pinToScreen:
       return false
     }
   }
@@ -171,6 +177,8 @@ enum QuickAccessActionKind: String, CaseIterable, Codable, Hashable, Identifiabl
       return "trash"
     case .edit:
       return "pencil"
+    case .ocr:
+      return "text.viewfinder"
     case .uploadToCloud:
       return "icloud.and.arrow.up"
     case .pinToScreen:

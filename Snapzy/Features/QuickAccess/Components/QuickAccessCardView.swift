@@ -369,6 +369,8 @@ struct QuickAccessCardView: View {
       return deleteActionTitle
     case .edit:
       return editActionTitle
+    case .ocr:
+      return L10n.PreferencesQuickAccess.ocrAction
     case .uploadToCloud:
       return cloudActionTitle
     case .pinToScreen:
@@ -398,7 +400,7 @@ struct QuickAccessCardView: View {
     }
 
     switch action {
-    case .copy, .dismiss, .edit:
+    case .copy, .dismiss, .edit, .ocr:
       return true
     case .pinToScreen:
       return true
@@ -417,7 +419,7 @@ struct QuickAccessCardView: View {
       return !item.isVideo
     case .uploadToCloud:
       return shouldShowCloudButton && !alreadyUploadedToCloud && !isCloudUploading
-    case .copy, .saveOrOpen, .dismiss, .delete, .edit:
+    case .copy, .saveOrOpen, .dismiss, .delete, .edit, .ocr:
       return true
     }
   }
@@ -436,6 +438,8 @@ struct QuickAccessCardView: View {
       deleteItem()
     case .edit:
       handleDoubleClick()
+    case .ocr:
+      performOCR()
     case .uploadToCloud:
       uploadToCloud()
     case .pinToScreen:
@@ -498,6 +502,45 @@ struct QuickAccessCardView: View {
   private func deleteItem() {
     isDismissing = true
     manager.deleteItem(id: item.id)
+  }
+
+  private func performOCR() {
+    guard !item.isVideo else { return }
+
+    manager.updateProcessingState(id: item.id, state: .processing(progress: nil))
+    Task { @MainActor in
+      do {
+        let clipboardText = try await QuickAccessOCRAction.copyRecognizedContent(from: item)
+        manager.updateProcessingState(id: item.id, state: .complete)
+        QuickAccessSound.complete.play(reduceMotion: reduceMotion)
+        DiagnosticLogger.shared.log(
+          .info,
+          .ocr,
+          "Quick access OCR copied content to clipboard",
+          context: [
+            "fileName": item.url.lastPathComponent,
+            "chars": "\(clipboardText.count)",
+          ]
+        )
+      } catch {
+        manager.updateProcessingState(id: item.id, state: .failed)
+        QuickAccessSound.failed.play(reduceMotion: reduceMotion)
+        AppToastManager.shared.show(
+          message: error.localizedDescription,
+          style: .warning,
+          position: .bottomCenter
+        )
+        DiagnosticLogger.shared.logError(
+          .ocr,
+          error,
+          "Quick access OCR failed",
+          context: ["fileName": item.url.lastPathComponent]
+        )
+      }
+
+      try? await Task.sleep(nanoseconds: 900_000_000)
+      manager.updateProcessingState(id: item.id, state: .idle)
+    }
   }
 
   // MARK: - Subviews
