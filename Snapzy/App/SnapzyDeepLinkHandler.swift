@@ -191,8 +191,10 @@ enum SnapzyDeepLinkAction: Equatable {
       return .history
     case "shortcuts", "keyboard-shortcuts":
       return .shortcuts
-    case "permissions", "privacy":
+    case "permissions":
       return .permissions
+    case "privacy":
+      return .about
     case "advanced", "configuration", "config", "toml":
       return .advanced
     case "about":

@@ -27,9 +27,8 @@ final class AppStatusBarController: ObservableObject {
   private var viewModel: ScreenCaptureViewModel?
   // Track if we elevated activation policy for Settings window
   private var didElevateForSettings = false
-  private weak var trackedPreferencesWindow: NSWindow?
+  private var trackedPreferencesWindow: NSWindow?
   private var trackedPreferencesExcludedWindowID: CGWindowID?
-  private var pendingPreferencesWindowTrackingWorkItem: DispatchWorkItem?
 
   // Processing indicator (OCR, etc.)
   private var processingSpinner: NSProgressIndicator?
@@ -296,17 +295,6 @@ final class AppStatusBarController: ObservableObject {
     captureAreaItem.isEnabled = viewModel.hasPermission
     menu?.addItem(captureAreaItem)
 
-    let captureAreaAnnotateItem = NSMenuItem(
-      title: "Capture Area and Annotate",
-      action: #selector(captureAreaAnnotateAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(captureAreaAnnotateItem, for: .areaAnnotate, using: shortcutManager)
-    captureAreaAnnotateItem.target = self
-    captureAreaAnnotateItem.image = NSImage(systemSymbolName: "pencil.and.scribble", accessibilityDescription: nil)
-    captureAreaAnnotateItem.isEnabled = viewModel.hasPermission
-    menu?.addItem(captureAreaAnnotateItem)
-
     let applicationCaptureShortcut = CaptureOverlayShortcutSettings.applicationCaptureShortcut
     let applicationCaptureItem = NSMenuItem(
       title: "Capture Window",
@@ -357,32 +345,6 @@ final class AppStatusBarController: ObservableObject {
     scrollingCaptureItem.isEnabled = viewModel.hasPermission && !ScrollingCaptureCoordinator.shared.isActive
     menu?.addItem(scrollingCaptureItem)
 
-    let captureOCRItem = NSMenuItem(
-      title: L10n.Actions.captureTextOCR,
-      action: #selector(captureOCRAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(captureOCRItem, for: .ocr, using: shortcutManager)
-    captureOCRItem.target = self
-    captureOCRItem.image = NSImage(systemSymbolName: "text.viewfinder", accessibilityDescription: nil)
-    captureOCRItem.isEnabled = viewModel.hasPermission
-    menu?.addItem(captureOCRItem)
-
-    let captureObjectCutoutItem = NSMenuItem(
-      title: GlobalShortcutKind.objectCutout.displayName,
-      action: #selector(captureObjectCutoutAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(captureObjectCutoutItem, for: .objectCutout, using: shortcutManager)
-    captureObjectCutoutItem.target = self
-    captureObjectCutoutItem.image = NSImage(systemSymbolName: "person.crop.rectangle", accessibilityDescription: nil)
-    if #available(macOS 14.0, *) {
-      captureObjectCutoutItem.isEnabled = viewModel.hasPermission
-    } else {
-      captureObjectCutoutItem.isEnabled = false
-    }
-    menu?.addItem(captureObjectCutoutItem)
-
     menu?.addItem(NSMenuItem.separator())
 
     addSectionHeader("Recording")
@@ -429,33 +391,7 @@ final class AppStatusBarController: ObservableObject {
 
     menu?.addItem(NSMenuItem.separator())
 
-    addSectionHeader("Tools")
-
-    // Tools
-    let annotateItem = NSMenuItem(
-      title: L10n.Actions.openAnnotate,
-      action: #selector(openAnnotateAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(annotateItem, for: .annotate, using: shortcutManager)
-    annotateItem.target = self
-    annotateItem.image = NSImage(
-      systemSymbolName: "pencil.and.outline", accessibilityDescription: nil)
-    annotateItem.isEnabled = true
-    menu?.addItem(annotateItem)
-
-    if LocalShotV1Policy.complexVideoEditorEntryPointsEnabled {
-      let editVideoItem = NSMenuItem(
-        title: L10n.Menu.editVideo,
-        action: #selector(editVideoAction),
-        keyEquivalent: ""
-      )
-      applyConfiguredShortcut(editVideoItem, for: .videoEditor, using: shortcutManager)
-      editVideoItem.target = self
-      editVideoItem.image = NSImage(systemSymbolName: "film", accessibilityDescription: nil)
-      editVideoItem.isEnabled = true
-      menu?.addItem(editVideoItem)
-    }
+    addSectionHeader("Utility")
 
     let historyItem = NSMenuItem(
       title: L10n.Actions.openHistory,
@@ -468,21 +404,9 @@ final class AppStatusBarController: ObservableObject {
     historyItem.isEnabled = true
     menu?.addItem(historyItem)
 
-    let shortcutListItem = NSMenuItem(
-      title: L10n.Menu.keyboardShortcuts,
-      action: #selector(showShortcutListAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(shortcutListItem, for: .shortcutList, using: shortcutManager)
-    shortcutListItem.target = self
-    shortcutListItem.image = NSImage(systemSymbolName: "list.bullet.rectangle", accessibilityDescription: nil)
-    shortcutListItem.isEnabled = true
-    menu?.addItem(shortcutListItem)
-
-    menu?.addItem(NSMenuItem.separator())
-
     // Permission (if not granted)
     if !viewModel.hasPermission {
+      menu?.addItem(NSMenuItem.separator())
       let permissionItem = NSMenuItem(
         title: L10n.Menu.grantPermission,
         action: #selector(grantPermissionAction),
@@ -498,7 +422,7 @@ final class AppStatusBarController: ObservableObject {
 
     // Preferences
     let prefsItem = NSMenuItem(
-      title: L10n.Menu.preferences,
+      title: "Settings",
       action: #selector(openPreferencesAction),
       keyEquivalent: ","
     )
@@ -664,9 +588,16 @@ final class AppStatusBarController: ObservableObject {
   }
 
   private func presentPreferencesWindow() {
-    let existingWindowNumbers = Set(NSApp.windows.map(\.windowNumber))
+    if let trackedPreferencesWindow, trackedPreferencesWindow.isVisible {
+      NSApp.setActivationPolicy(.regular)
+      didElevateForSettings = true
+      NSApp.activate(ignoringOtherApps: true)
+      trackedPreferencesWindow.makeKeyAndOrderFront(nil)
+      syncTrackedPreferencesWindowExclusion()
+      return
+    }
 
-    // Elevate to regular app so Snapzy appears in top-left menu bar
+    // Elevate to regular app so LocalShot can present a standard Settings window.
     if !didElevateForSettings {
       NSApp.setActivationPolicy(.regular)
       didElevateForSettings = true
@@ -681,29 +612,24 @@ final class AppStatusBarController: ObservableObject {
       )
     }
 
+    let contentView = PreferencesView()
+      .preferredColorScheme(ThemeManager.shared.systemAppearance)
+    let window = NSWindow(
+      contentRect: NSRect(x: 0, y: 0, width: 980, height: 720),
+      styleMask: [.titled, .closable, .miniaturizable, .resizable],
+      backing: .buffered,
+      defer: false
+    )
+    window.title = "\(LocalShotBrand.appName) Settings"
+    window.contentViewController = NSHostingController(rootView: contentView)
+    window.isReleasedWhenClosed = false
+    window.setFrameAutosaveName("\(LocalShotBrand.appName)SettingsWindow")
+    window.center()
+
+    trackedPreferencesWindow = window
     NSApp.activate(ignoringOtherApps: true)
-
-    // Trigger Settings scene - equivalent to SettingsLink behavior
-    if #available(macOS 14.0, *) {
-      if let keyEvent = NSEvent.keyEvent(
-        with: .keyDown,
-        location: .zero,
-        modifierFlags: .command,
-        timestamp: 0,
-        windowNumber: 0,
-        context: nil,
-        characters: ",",
-        charactersIgnoringModifiers: ",",
-        isARepeat: false,
-        keyCode: 43
-      ) {
-        NSApp.mainMenu?.performKeyEquivalent(with: keyEvent)
-      }
-    } else {
-      NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-    }
-
-    schedulePreferencesWindowTracking(excludingWindowNumbers: existingWindowNumbers)
+    window.makeKeyAndOrderFront(nil)
+    syncTrackedPreferencesWindowExclusion()
   }
 
   @objc private func windowDidClose(_ notification: Notification) {
@@ -814,62 +740,6 @@ final class AppStatusBarController: ObservableObject {
     item.title = "\(base) \(childDisplay)"
     item.keyEquivalent = parentKeyEquivalent
     item.keyEquivalentModifierMask = parentConfig.menuModifierFlags
-  }
-
-  private func schedulePreferencesWindowTracking(excludingWindowNumbers existingWindowNumbers: Set<Int>) {
-    pendingPreferencesWindowTrackingWorkItem?.cancel()
-    DiagnosticLogger.shared.log(
-      .debug,
-      .preferences,
-      "Preferences window tracking scheduled",
-      context: ["existingWindows": "\(existingWindowNumbers.count)"]
-    )
-
-    let workItem = DispatchWorkItem { [weak self] in
-      self?.trackPreferencesWindow(excludingWindowNumbers: existingWindowNumbers, remainingAttempts: 12)
-    }
-    pendingPreferencesWindowTrackingWorkItem = workItem
-    DispatchQueue.main.async(execute: workItem)
-  }
-
-  private func trackPreferencesWindow(excludingWindowNumbers existingWindowNumbers: Set<Int>, remainingAttempts: Int) {
-    pendingPreferencesWindowTrackingWorkItem = nil
-
-    if let trackedPreferencesWindow, trackedPreferencesWindow.isVisible {
-      syncTrackedPreferencesWindowExclusion()
-      return
-    }
-
-    if let candidate = NSApp.windows.first(where: {
-      $0.isVisible &&
-      $0.level == .normal &&
-      $0.className != "NSStatusBarWindow" &&
-      !existingWindowNumbers.contains($0.windowNumber)
-    }) {
-      trackedPreferencesWindow = candidate
-      DiagnosticLogger.shared.log(
-        .debug,
-        .preferences,
-        "Preferences window tracked",
-        context: ["windowNumber": "\(candidate.windowNumber)"]
-      )
-      syncTrackedPreferencesWindowExclusion()
-      return
-    }
-
-    guard remainingAttempts > 1 else {
-      DiagnosticLogger.shared.log(.warning, .preferences, "Preferences window tracking timed out")
-      return
-    }
-
-    let workItem = DispatchWorkItem { [weak self] in
-      self?.trackPreferencesWindow(
-        excludingWindowNumbers: existingWindowNumbers,
-        remainingAttempts: remainingAttempts - 1
-      )
-    }
-    pendingPreferencesWindowTrackingWorkItem = workItem
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: workItem)
   }
 
   private func syncTrackedPreferencesWindowExclusion() {

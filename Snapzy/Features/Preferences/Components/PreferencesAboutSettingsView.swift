@@ -45,10 +45,11 @@ struct AboutSettingsView: View {
         privacyRow("person.crop.circle.badge.xmark", "No accounts")
         privacyRow("chart.bar.xaxis", "No telemetry")
         privacyRow("arrow.triangle.2.circlepath.circle", "No auto-update checks in v1")
+        privacyRow("externaldrive", "Storage: ~/Library/Application Support/LocalShot")
       }
 
       Section("Acknowledgements") {
-        Text(verbatim: "LocalShot is based on LocalShot, Copyright (c) 2026, Trong Duong Duc, used under the BSD 3-Clause License.")
+        Text(verbatim: "BSD 3-Clause attribution is preserved in the project license and documentation.")
           .font(.callout)
           .foregroundColor(.secondary)
         Text(verbatim: "All captures, recordings, OCR text, thumbnails, and history remain on this Mac by default.")

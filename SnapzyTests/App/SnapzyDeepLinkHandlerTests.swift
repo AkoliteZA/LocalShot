@@ -70,6 +70,7 @@ final class SnapzyDeepLinkHandlerTests: XCTestCase {
       ("history", .history),
       ("shortcuts", .shortcuts),
       ("permissions", .permissions),
+      ("privacy", .about),
       ("advanced", .advanced),
       ("about", .about),
     ]
