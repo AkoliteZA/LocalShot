@@ -245,7 +245,7 @@ final class AppStatusBarController: ObservableObject {
     }
     let shortcutManager = KeyboardShortcutManager.shared
 
-    let headerItem = NSMenuItem(title: "\(LocalShotBrand.appName)    Local only", action: nil, keyEquivalent: "")
+    let headerItem = NSMenuItem(title: MenuBarCaptureMenuModel.headerDisplayTitle, action: nil, keyEquivalent: "")
     headerItem.image = NSApp.applicationIconImage
     headerItem.isEnabled = false
     menu?.addItem(headerItem)
@@ -279,129 +279,21 @@ final class AppStatusBarController: ObservableObject {
       menu?.addItem(NSMenuItem.separator())
     }
 
-    addSectionHeader("Capture")
-
-    // Capture Actions
-    let captureAreaItem = NSMenuItem(
-      title: "Capture Area",
-      action: #selector(captureAreaAction),
-      keyEquivalent: ""
+    let menuSections = MenuBarCaptureMenuModel.sections(
+      hasScreenCapturePermission: viewModel.hasPermission,
+      hasPreviousCaptureArea: viewModel.hasPreviousCaptureArea,
+      isRecordingActive: recorder.isActive,
+      isScrollingCaptureActive: ScrollingCaptureCoordinator.shared.isActive
     )
-    applyConfiguredShortcut(captureAreaItem, for: .area, using: shortcutManager)
-    captureAreaItem.target = self
-    captureAreaItem.image = NSImage(systemSymbolName: "crop", accessibilityDescription: nil)
-    captureAreaItem.isEnabled = viewModel.hasPermission
-    menu?.addItem(captureAreaItem)
-
-    let applicationCaptureShortcut = CaptureOverlayShortcutSettings.applicationCaptureShortcut
-    let applicationCaptureItem = NSMenuItem(
-      title: "Capture Window",
-      action: #selector(captureApplicationAction),
-      keyEquivalent: ""
-    )
-    configureOverlayMenuItem(
-      applicationCaptureItem,
-      base: "Capture Window",
-      shortcut: applicationCaptureShortcut,
-      parentKind: .area,
-      using: shortcutManager
-    )
-    applicationCaptureItem.target = self
-    applicationCaptureItem.image = NSImage(systemSymbolName: "macwindow", accessibilityDescription: nil)
-    applicationCaptureItem.isEnabled = viewModel.hasPermission
-    menu?.addItem(applicationCaptureItem)
-
-    let captureFullscreenItem = NSMenuItem(
-      title: "Capture Full Screen",
-      action: #selector(captureFullscreenAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(captureFullscreenItem, for: .fullscreen, using: shortcutManager)
-    captureFullscreenItem.target = self
-    captureFullscreenItem.image = NSImage(
-      systemSymbolName: "rectangle.dashed", accessibilityDescription: nil)
-    captureFullscreenItem.isEnabled = viewModel.hasPermission
-    menu?.addItem(captureFullscreenItem)
-
-    let previousAreaItem = NSMenuItem(
-      title: "Capture Previous Area",
-      action: #selector(capturePreviousAreaAction),
-      keyEquivalent: ""
-    )
-    previousAreaItem.target = self
-    previousAreaItem.image = NSImage(systemSymbolName: "rectangle.stack", accessibilityDescription: nil)
-    previousAreaItem.isEnabled = viewModel.hasPermission && viewModel.hasPreviousCaptureArea
-    menu?.addItem(previousAreaItem)
-
-    let scrollingCaptureItem = NSMenuItem(
-      title: "Scrolling Capture",
-      action: #selector(captureScrollingAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(scrollingCaptureItem, for: .scrollingCapture, using: shortcutManager)
-    scrollingCaptureItem.target = self
-    scrollingCaptureItem.image = NSImage(systemSymbolName: "arrow.up.and.down", accessibilityDescription: nil)
-    scrollingCaptureItem.isEnabled = viewModel.hasPermission && !ScrollingCaptureCoordinator.shared.isActive
-    menu?.addItem(scrollingCaptureItem)
-
-    menu?.addItem(NSMenuItem.separator())
-
-    addSectionHeader("Recording")
-
-    // Recording
-    let recordItem = NSMenuItem(
-      title: "Record Area",
-      action: #selector(recordScreenAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(recordItem, for: .recording, using: shortcutManager)
-    recordItem.target = self
-    recordItem.image = NSImage(systemSymbolName: "record.circle", accessibilityDescription: nil)
-    recordItem.isEnabled = viewModel.hasPermission && !recorder.isActive
-    menu?.addItem(recordItem)
-
-    let applicationRecordingShortcut = CaptureOverlayShortcutSettings.recordingApplicationCaptureShortcut
-    let recordFullscreenItem = NSMenuItem(
-      title: "Record Full Screen",
-      action: #selector(recordFullscreenAction),
-      keyEquivalent: ""
-    )
-    configureOverlayMenuItem(
-      recordFullscreenItem,
-      base: "Record Full Screen",
-      shortcut: applicationRecordingShortcut,
-      parentKind: .recording,
-      using: shortcutManager
-    )
-    recordFullscreenItem.target = self
-    recordFullscreenItem.image = NSImage(systemSymbolName: "display", accessibilityDescription: nil)
-    recordFullscreenItem.isEnabled = viewModel.hasPermission && !recorder.isActive
-    menu?.addItem(recordFullscreenItem)
-
-    let gifRecordingItem = NSMenuItem(
-      title: "GIF Recording",
-      action: #selector(recordGIFAction),
-      keyEquivalent: ""
-    )
-    gifRecordingItem.target = self
-    gifRecordingItem.image = NSImage(systemSymbolName: "photo.stack", accessibilityDescription: nil)
-    gifRecordingItem.isEnabled = viewModel.hasPermission && !recorder.isActive
-    menu?.addItem(gifRecordingItem)
-
-    menu?.addItem(NSMenuItem.separator())
-
-    addSectionHeader("Utility")
-
-    let historyItem = NSMenuItem(
-      title: L10n.Actions.openHistory,
-      action: #selector(openHistoryAction),
-      keyEquivalent: ""
-    )
-    applyConfiguredShortcut(historyItem, for: .history, using: shortcutManager)
-    historyItem.target = self
-    historyItem.image = NSImage(systemSymbolName: "clock.arrow.circlepath", accessibilityDescription: nil)
-    historyItem.isEnabled = true
-    menu?.addItem(historyItem)
+    for (index, section) in menuSections.enumerated() {
+      if index > 0 {
+        menu?.addItem(NSMenuItem.separator())
+      }
+      addSectionHeader(section.title)
+      for item in section.items {
+        addConfiguredMenuItem(item, using: shortcutManager)
+      }
+    }
 
     // Permission (if not granted)
     if !viewModel.hasPermission {
@@ -418,18 +310,6 @@ final class AppStatusBarController: ObservableObject {
       menu?.addItem(permissionItem)
       menu?.addItem(NSMenuItem.separator())
     }
-
-    // Preferences
-    let prefsItem = NSMenuItem(
-      title: "Settings",
-      action: #selector(openPreferencesAction),
-      keyEquivalent: ","
-    )
-    prefsItem.keyEquivalentModifierMask = .command
-    prefsItem.target = self
-    prefsItem.image = NSImage(systemSymbolName: "gear", accessibilityDescription: nil)
-    prefsItem.isEnabled = true
-    menu?.addItem(prefsItem)
 
     menu?.addItem(NSMenuItem.separator())
 
@@ -461,6 +341,89 @@ final class AppStatusBarController: ObservableObject {
     let item = NSMenuItem(title: title.uppercased(), action: nil, keyEquivalent: "")
     item.isEnabled = false
     menu?.addItem(item)
+  }
+
+  private func addConfiguredMenuItem(
+    _ item: MenuBarCaptureMenuItem,
+    using shortcutManager: KeyboardShortcutManager
+  ) {
+    let menuItem = NSMenuItem(
+      title: item.title,
+      action: selector(for: item.id),
+      keyEquivalent: ""
+    )
+
+    configureShortcut(for: menuItem, itemID: item.id, using: shortcutManager)
+    menuItem.target = self
+    menuItem.image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)
+    menuItem.isEnabled = item.isEnabled
+    menu?.addItem(menuItem)
+  }
+
+  private func configureShortcut(
+    for menuItem: NSMenuItem,
+    itemID: MenuBarCaptureMenuItemID,
+    using shortcutManager: KeyboardShortcutManager
+  ) {
+    switch itemID {
+    case .captureArea:
+      applyConfiguredShortcut(menuItem, for: .area, using: shortcutManager)
+    case .captureWindow:
+      configureOverlayMenuItem(
+        menuItem,
+        base: "Capture Window",
+        shortcut: CaptureOverlayShortcutSettings.applicationCaptureShortcut,
+        parentKind: .area,
+        using: shortcutManager
+      )
+    case .captureFullScreen:
+      applyConfiguredShortcut(menuItem, for: .fullscreen, using: shortcutManager)
+    case .scrollingCapture:
+      applyConfiguredShortcut(menuItem, for: .scrollingCapture, using: shortcutManager)
+    case .recordArea:
+      applyConfiguredShortcut(menuItem, for: .recording, using: shortcutManager)
+    case .recordFullScreen:
+      configureOverlayMenuItem(
+        menuItem,
+        base: "Record Full Screen",
+        shortcut: CaptureOverlayShortcutSettings.recordingApplicationCaptureShortcut,
+        parentKind: .recording,
+        using: shortcutManager
+      )
+    case .history:
+      applyConfiguredShortcut(menuItem, for: .history, using: shortcutManager)
+    case .settings:
+      menuItem.keyEquivalent = ","
+      menuItem.keyEquivalentModifierMask = .command
+    case .capturePreviousArea, .gifRecording:
+      menuItem.keyEquivalent = ""
+      menuItem.keyEquivalentModifierMask = []
+    }
+  }
+
+  private func selector(for itemID: MenuBarCaptureMenuItemID) -> Selector {
+    switch itemID {
+    case .captureArea:
+      return #selector(captureAreaAction)
+    case .captureWindow:
+      return #selector(captureApplicationAction)
+    case .captureFullScreen:
+      return #selector(captureFullscreenAction)
+    case .capturePreviousArea:
+      return #selector(capturePreviousAreaAction)
+    case .scrollingCapture:
+      return #selector(captureScrollingAction)
+    case .recordArea:
+      return #selector(recordScreenAction)
+    case .recordFullScreen:
+      return #selector(recordFullscreenAction)
+    case .gifRecording:
+      return #selector(recordGIFAction)
+    case .history:
+      return #selector(openHistoryAction)
+    case .settings:
+      return #selector(openPreferencesAction)
+    }
   }
 
   // MARK: - Menu Actions
