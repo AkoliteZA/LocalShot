@@ -64,17 +64,17 @@ final class SandboxFileAccessManagerTests: XCTestCase {
     try FileManager.default.createDirectory(at: childDirectory, withIntermediateDirectories: true)
     defer { try? FileManager.default.removeItem(at: parentDirectory) }
 
-    let bookmarkData = try parentDirectory.bookmarkData(
-      options: .withSecurityScope,
-      includingResourceValuesForKeys: nil,
-      relativeTo: nil
-    )
+    let bookmarkData = Data([0x4c, 0x53])
     defaults.set(childDirectory.path, forKey: PreferencesKeys.exportLocation)
     defaults.set(bookmarkData, forKey: PreferencesKeys.exportLocationBookmark)
 
     let manager = SandboxFileAccessManager(
       defaults: defaults,
-      defaultExportDirectoryProvider: { childDirectory }
+      defaultExportDirectoryProvider: { childDirectory },
+      securityScopedBookmarkURLResolver: { data in
+        XCTAssertEqual(data, bookmarkData)
+        return ResolvedSecurityScopedBookmark(url: parentDirectory, isStale: false)
+      }
     )
 
     XCTAssertEqual(manager.resolvedExportDirectoryURL(), childDirectory.standardizedFileURL)

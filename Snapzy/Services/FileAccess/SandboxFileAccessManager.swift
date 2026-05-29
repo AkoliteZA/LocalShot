@@ -11,6 +11,11 @@ import os.log
 
 private let logger = Logger(subsystem: "LocalShot", category: "SandboxFileAccess")
 
+struct ResolvedSecurityScopedBookmark {
+  let url: URL
+  let isStale: Bool
+}
+
 @MainActor
 final class SandboxFileAccessManager {
   static let shared = SandboxFileAccessManager()
@@ -19,6 +24,7 @@ final class SandboxFileAccessManager {
   private let fileManager: FileManager
   private let defaultExportDirectoryProvider: () -> URL
   private let securityScopedBookmarkDataProvider: (URL) throws -> Data
+  private let securityScopedBookmarkURLResolver: (Data) throws -> ResolvedSecurityScopedBookmark
   private let securityScopeAccessProvider: (URL) -> Bool
   private let securityScopeStopProvider: (URL) -> Void
   private let appOwnedDirectoryProvider: () -> [URL]
@@ -35,6 +41,16 @@ final class SandboxFileAccessManager {
         includingResourceValuesForKeys: nil,
         relativeTo: nil
       )
+    },
+    securityScopedBookmarkURLResolver: @escaping (Data) throws -> ResolvedSecurityScopedBookmark = { bookmarkData in
+      var isStale = false
+      let url = try URL(
+        resolvingBookmarkData: bookmarkData,
+        options: [.withSecurityScope],
+        relativeTo: nil,
+        bookmarkDataIsStale: &isStale
+      )
+      return ResolvedSecurityScopedBookmark(url: url, isStale: isStale)
     },
     securityScopeAccessProvider: @escaping (URL) -> Bool = {
       $0.startAccessingSecurityScopedResource()
@@ -61,6 +77,7 @@ final class SandboxFileAccessManager {
     self.fileManager = fileManager
     self.defaultExportDirectoryProvider = defaultExportDirectoryProvider
     self.securityScopedBookmarkDataProvider = securityScopedBookmarkDataProvider
+    self.securityScopedBookmarkURLResolver = securityScopedBookmarkURLResolver
     self.securityScopeAccessProvider = securityScopeAccessProvider
     self.securityScopeStopProvider = securityScopeStopProvider
     self.appOwnedDirectoryProvider = appOwnedDirectoryProvider
@@ -297,16 +314,11 @@ final class SandboxFileAccessManager {
       return nil
     }
 
-    var isStale = false
     do {
-      let url = try URL(
-        resolvingBookmarkData: bookmarkData,
-        options: [.withSecurityScope],
-        relativeTo: nil,
-        bookmarkDataIsStale: &isStale
-      ).standardizedFileURL
+      let resolvedBookmark = try securityScopedBookmarkURLResolver(bookmarkData)
+      let url = resolvedBookmark.url.standardizedFileURL
 
-      if isStale {
+      if resolvedBookmark.isStale {
         _ = setExportDirectory(url)
         DiagnosticLogger.shared.log(
           .warning,
