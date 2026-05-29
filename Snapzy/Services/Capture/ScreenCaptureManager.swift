@@ -140,6 +140,7 @@ final class ScreenCaptureManager: ObservableObject {
   private var standardShareableContentCache: ShareableContentCacheEntry?
   private var desktopInclusiveShareableContentCache: ShareableContentCacheEntry?
   private var screenParametersObserver: NSObjectProtocol?
+  private var screenCapturePermissionRequestAttemptedThisSession = false
 
   private var preferredScreenshotOutputScaleFactor: CGFloat {
     max(NSScreen.screens.map(\.backingScaleFactor).max() ?? 2.0, 2.0)
@@ -183,9 +184,21 @@ final class ScreenCaptureManager: ObservableObject {
 
     // Fast path: already granted by the system.
     if CGPreflightScreenCaptureAccess() {
+      screenCapturePermissionRequestAttemptedThisSession = false
       updatePermissionStatus(systemGranted: true)
       return hasPermission
     }
+
+    guard !screenCapturePermissionRequestAttemptedThisSession else {
+      DiagnosticLogger.shared.log(
+        .debug,
+        .capture,
+        "Screen capture permission request skipped; already attempted this session"
+      )
+      updatePermissionStatus(systemGranted: false)
+      return false
+    }
+    screenCapturePermissionRequestAttemptedThisSession = true
 
     // Primary: ScreenCaptureKit triggers the native permission dialog (macOS 13-14)
     // and auto-adds the app to the Screen Recording list.
@@ -463,8 +476,30 @@ final class ScreenCaptureManager: ObservableObject {
     targetDisplayIDs: Set<CGDirectDisplayID>? = nil
   ) async -> MultiDisplayScreenshotResult {
     let fallbackDisplayID = targetDisplayIDs?.first ?? CGMainDisplayID()
+    DiagnosticLogger.shared.log(
+      .info,
+      .capture,
+      "Multi-display fullscreen capture requested",
+      context: [
+        "targetDisplayIDs": targetDisplayIDs.map { $0.map(String.init).sorted().joined(separator: ",") } ?? "all",
+        "format": format.fileExtension,
+        "showCursor": "\(showCursor)",
+        "excludeDesktopIcons": "\(excludeDesktopIcons)",
+        "excludeDesktopWidgets": "\(excludeDesktopWidgets)",
+        "excludeOwnApplication": "\(excludeOwnApplication)",
+      ]
+    )
 
     if let unavailableError = await ensureCaptureAvailability() {
+      DiagnosticLogger.shared.log(
+        .warning,
+        .capture,
+        "Multi-display fullscreen capture unavailable",
+        context: [
+          "displayID": "\(fallbackDisplayID)",
+          "error": unavailableError.localizedDescription,
+        ]
+      )
       return MultiDisplayScreenshotResult(
         savedURLs: [],
         failures: [fallbackDisplayID: unavailableError],
@@ -492,6 +527,15 @@ final class ScreenCaptureManager: ObservableObject {
         targets = makeFastDisplayCaptureTargets(targetDisplayIDs: targetDisplayIDs)
       } else {
         let includeDesktopWindows = excludeDesktopIcons || excludeDesktopWidgets
+        DiagnosticLogger.shared.log(
+          .debug,
+          .capture,
+          "Loading shareable content for fullscreen capture",
+          context: [
+            "includeDesktopWindows": "\(includeDesktopWindows)",
+            "usesPrefetch": "\(prefetchedContentTask != nil)",
+          ]
+        )
         let loadedContent = try await loadShareableContent(
           prefetchedContentTask: prefetchedContentTask,
           includeDesktopWindows: includeDesktopWindows
@@ -502,8 +546,29 @@ final class ScreenCaptureManager: ObservableObject {
           targetDisplayIDs: targetDisplayIDs
         )
       }
+      DiagnosticLogger.shared.log(
+        .debug,
+        .capture,
+        "Fullscreen capture targets resolved",
+        context: [
+          "path": canUseFastPath ? "coregraphics" : "screencapturekit",
+          "targetCount": "\(targets.count)",
+          "nsscreenDisplayIDs": NSScreen.screens.compactMap(\.displayID).map(String.init).joined(separator: ","),
+          "shareableDisplayIDs": content?.displays.map { String($0.displayID) }.joined(separator: ",") ?? "not-loaded",
+        ]
+      )
 
       guard !targets.isEmpty else {
+        DiagnosticLogger.shared.log(
+          .warning,
+          .capture,
+          "Fullscreen capture failed: no matching target display",
+          context: [
+            "requestedDisplayIDs": targetDisplayIDs.map { $0.map(String.init).sorted().joined(separator: ",") } ?? "all",
+            "nsscreenDisplayIDs": NSScreen.screens.compactMap(\.displayID).map(String.init).joined(separator: ","),
+            "shareableDisplayIDs": content?.displays.map { String($0.displayID) }.joined(separator: ",") ?? "not-loaded",
+          ]
+        )
         return MultiDisplayScreenshotResult(
           savedURLs: [],
           failures: [fallbackDisplayID: .noDisplayFound],
@@ -513,6 +578,15 @@ final class ScreenCaptureManager: ObservableObject {
       }
 
       let acquisitionStartedAt = Date()
+      DiagnosticLogger.shared.log(
+        .debug,
+        .capture,
+        "Fullscreen display payload acquisition started",
+        context: [
+          "path": canUseFastPath ? "coregraphics" : "screencapturekit",
+          "targetCount": "\(targets.count)",
+        ]
+      )
       let payloads = await captureDisplayPayloads(
         targets: targets,
         content: content,
@@ -523,6 +597,15 @@ final class ScreenCaptureManager: ObservableObject {
         excludeOwnApplication: excludeOwnApplication
       )
       let acquisitionDurationMs = Int(Date().timeIntervalSince(acquisitionStartedAt) * 1000)
+      DiagnosticLogger.shared.log(
+        .debug,
+        .capture,
+        "Fullscreen display payload acquisition completed",
+        context: [
+          "resultCount": "\(payloads.count)",
+          "duration_ms": "\(acquisitionDurationMs)",
+        ]
+      )
 
       let savedPayloads = payloads.compactMap { result -> DisplayCapturePayload? in
         if case .success(let payload) = result { return payload }

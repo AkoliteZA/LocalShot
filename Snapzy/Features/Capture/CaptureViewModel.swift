@@ -406,6 +406,16 @@ final class ScreenCaptureViewModel: ObservableObject, KeyboardShortcutDelegate {
         prefetchedContentTask: prefetchedContentTask,
         targetDisplayIDs: [targetDisplayID]
       )
+      DiagnosticLogger.shared.log(
+        result.savedURLs.isEmpty ? .warning : .info,
+        .capture,
+        "Fullscreen capture flow completed",
+        context: [
+          "savedCount": "\(result.savedURLs.count)",
+          "failureCount": "\(result.failures.count)",
+          "failureMessages": result.failures.map { "\($0.key):\($0.value.localizedDescription)" }.joined(separator: "|"),
+        ]
+      )
 
       isCapturing = false
       lastCaptureResult = result.primaryCaptureResult

@@ -186,10 +186,14 @@ run_launch_smoke() {
     sleep 3
     echo "Process IDs:"
     pgrep -x LocalShot
-    echo "TCC rows:"
+    echo "User TCC rows:"
     sqlite3 "${HOME}/Library/Application Support/com.apple.TCC/TCC.db" \
       "select service, client, auth_value, auth_reason, auth_version, datetime(last_modified,'unixepoch') from access where client = '${BUNDLE_ID}' order by service;" \
       2>/dev/null || echo "TCC database unavailable to verifier"
+    echo "System TCC rows:"
+    sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" \
+      "select service, client, auth_value, auth_reason, auth_version, datetime(last_modified,'unixepoch') from access where client = '${BUNDLE_ID}' order by service;" \
+      2>/dev/null || echo "System TCC database unavailable to verifier"
   } > "${output}" 2>&1 || {
     local status=$?
     pkill -x LocalShot 2>/dev/null || true
@@ -276,10 +280,14 @@ fail_if_hits \
 {
   echo "Bundle ID: ${BUNDLE_ID}"
   echo "Generated: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
-  echo "TCC rows:"
+  echo "User TCC rows:"
   sqlite3 "${HOME}/Library/Application Support/com.apple.TCC/TCC.db" \
     "select service, client, auth_value, auth_reason, auth_version, datetime(last_modified,'unixepoch') from access where client = '${BUNDLE_ID}' order by service;" \
     2>/dev/null || echo "TCC database unavailable to verifier"
+  echo "System TCC rows:"
+  sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" \
+    "select service, client, auth_value, auth_reason, auth_version, datetime(last_modified,'unixepoch') from access where client = '${BUNDLE_ID}' order by service;" \
+    2>/dev/null || echo "System TCC database unavailable to verifier"
 } > "${EVIDENCE_DIR}/tcc-status.txt"
 record "PASS TCC status snapshot: ${EVIDENCE_DIR}/tcc-status.txt"
 

@@ -50,6 +50,10 @@ struct PermissionsSettingsView: View {
           }
         )
 
+        if screenCaptureManager.permissionStatus != .granted {
+          permissionRecoveryNote
+        }
+
         permissionRow(
           icon: "folder.fill",
           name: L10n.Onboarding.saveFolder,
@@ -144,6 +148,26 @@ struct PermissionsSettingsView: View {
       guard hasAppeared else { return }
       checkAllPermissions()
     }
+  }
+
+  private var permissionRecoveryNote: some View {
+    HStack(alignment: .top, spacing: 10) {
+      Image(systemName: "info.circle.fill")
+        .foregroundColor(.teal)
+        .padding(.top, 1)
+
+      VStack(alignment: .leading, spacing: 3) {
+        Text(L10n.PreferencesPermissions.localBuildPermissionNoteTitle)
+          .font(.caption)
+          .fontWeight(.semibold)
+          .foregroundColor(.primary)
+        Text(L10n.PreferencesPermissions.localBuildPermissionNoteDescription)
+          .font(.caption)
+          .foregroundColor(.secondary)
+          .fixedSize(horizontal: false, vertical: true)
+      }
+    }
+    .padding(.vertical, 6)
   }
 
   // MARK: - Permission Row Component

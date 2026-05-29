@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HistorySettingsView: View {
   @ObservedObject private var manager = HistoryFloatingManager.shared
+  @AppStorage(PreferencesKeys.historyEnabled) private var historyEnabled = true
   @AppStorage(PreferencesKeys.historyRetentionDays) private var historyRetentionDays = 30
   @AppStorage(PreferencesKeys.historyMaxCount) private var historyMaxCount = 500
   @AppStorage(PreferencesKeys.historyBackgroundStyle) private var historyBackgroundStyle: HistoryBackgroundStyle = .defaultStyle
@@ -17,6 +18,17 @@ struct HistorySettingsView: View {
 
   var body: some View {
     Form {
+      Section(L10n.PreferencesHistory.localHistorySection) {
+        SettingRow(
+          icon: "clock.arrow.circlepath",
+          title: L10n.PreferencesHistory.localHistoryTitle,
+          description: L10n.PreferencesHistory.localHistoryDescription
+        ) {
+          Toggle("", isOn: $historyEnabled)
+            .labelsHidden()
+        }
+      }
+
       Section(L10n.PreferencesHistory.floatingPanelSection) {
         SettingRow(
           icon: "rectangle.stack.badge.person.crop",

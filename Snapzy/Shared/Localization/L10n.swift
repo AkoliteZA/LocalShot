@@ -2028,6 +2028,16 @@ enum L10n {
       defaultValue: "LocalShot requires certain permissions to capture your screen and audio.",
       comment: "Introductory text for the permissions preferences tab"
     )
+    static let localBuildPermissionNoteTitle = string(
+      "preferences-permissions.local-build-note-title",
+      defaultValue: "Local Build Permission Note",
+      comment: "Title for note explaining macOS permission behavior for rebuilt local app binaries"
+    )
+    static let localBuildPermissionNoteDescription = string(
+      "preferences-permissions.local-build-note-description",
+      defaultValue: "If Screen Recording keeps prompting after a rebuild, macOS may be seeing a new ad-hoc-signed LocalShot binary. Grant the currently installed app, then quit and reopen LocalShot. A stable local signing identity prevents repeated grants.",
+      comment: "Description for note explaining repeated Screen Recording prompts after reinstalling ad-hoc-signed local builds"
+    )
   }
 
   enum PreferencesQuickAccess {
@@ -6809,6 +6819,21 @@ enum L10n {
   }
 
   enum PreferencesHistory {
+    static let localHistorySection = string(
+      "preferences-history.local-history-section",
+      defaultValue: "Local History",
+      comment: "History settings section title for enabling local capture history"
+    )
+    static let localHistoryTitle = string(
+      "preferences-history.local-history-title",
+      defaultValue: "Store Capture History",
+      comment: "History settings toggle title for storing local capture history"
+    )
+    static let localHistoryDescription = string(
+      "preferences-history.local-history-description",
+      defaultValue: "Keep screenshots, recordings, thumbnails, and metadata locally on this Mac",
+      comment: "History settings description for local-only capture history storage"
+    )
     static let floatingPanelSection = string(
       "preferences-history.floating-panel-section",
       defaultValue: "Floating Panel",

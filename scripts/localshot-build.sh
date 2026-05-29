@@ -11,6 +11,32 @@ PRODUCT_APP="${DERIVED_DATA}/Build/Products/${CONFIGURATION}/LocalShot.app"
 PACKAGE_DIR="${ROOT_DIR}/build/package"
 PACKAGE_APP="${PACKAGE_DIR}/LocalShot.app"
 BUNDLE_ID="com.personal.localshot"
+CODE_SIGN_IDENTITY_VALUE="${LOCALSHOT_CODE_SIGN_IDENTITY:--}"
+CODE_SIGN_KEYCHAIN_VALUE="${LOCALSHOT_CODE_SIGN_KEYCHAIN:-}"
+
+codesign_args() {
+  printf '%s\0' \
+    --force \
+    --sign "${CODE_SIGN_IDENTITY_VALUE}" \
+    --entitlements "${ROOT_DIR}/Snapzy/Snapzy.entitlements" \
+    --timestamp=none
+
+  if [[ -n "${CODE_SIGN_KEYCHAIN_VALUE}" ]]; then
+    printf '%s\0' --keychain "${CODE_SIGN_KEYCHAIN_VALUE}"
+  fi
+}
+
+xcodebuild_signing_args=(
+  CODE_SIGN_STYLE=Manual
+  "CODE_SIGN_IDENTITY=${CODE_SIGN_IDENTITY_VALUE}"
+  CODE_SIGNING_ALLOWED=YES
+  CODE_SIGNING_REQUIRED=NO
+  DEVELOPMENT_TEAM=
+)
+
+if [[ -n "${CODE_SIGN_KEYCHAIN_VALUE}" ]]; then
+  xcodebuild_signing_args+=("OTHER_CODE_SIGN_FLAGS=--keychain ${CODE_SIGN_KEYCHAIN_VALUE}")
+fi
 
 build_app() {
   xcodebuild \
@@ -20,11 +46,7 @@ build_app() {
     -derivedDataPath "${DERIVED_DATA}" \
     -clonedSourcePackagesDirPath "${SOURCE_PACKAGES}" \
     -skipPackagePluginValidation \
-    CODE_SIGN_STYLE=Manual \
-    CODE_SIGN_IDENTITY=- \
-    CODE_SIGNING_ALLOWED=YES \
-    CODE_SIGNING_REQUIRED=NO \
-    DEVELOPMENT_TEAM= \
+    "${xcodebuild_signing_args[@]}" \
     build
 }
 
@@ -80,12 +102,12 @@ strip_v1_disabled_package_surfaces() {
     done < <(find "${resources_dir}" -name "*.strings" -type f)
   fi
 
-  /usr/bin/codesign \
-    --force \
-    --sign - \
-    --entitlements "${ROOT_DIR}/Snapzy/Snapzy.entitlements" \
-    --timestamp=none \
-    "${PACKAGE_APP}" >/dev/null
+  local args=()
+  while IFS= read -r -d '' arg; do
+    args+=("${arg}")
+  done < <(codesign_args)
+
+  /usr/bin/codesign "${args[@]}" "${PACKAGE_APP}" >/dev/null
 }
 
 install_app() {
@@ -100,6 +122,31 @@ reset_permissions() {
   tccutil reset ScreenCapture "${BUNDLE_ID}" || true
   tccutil reset Microphone "${BUNDLE_ID}" || true
   tccutil reset Accessibility "${BUNDLE_ID}" || true
+}
+
+signing_info() {
+  echo "Configured signing identity: ${CODE_SIGN_IDENTITY_VALUE}"
+  if [[ -n "${CODE_SIGN_KEYCHAIN_VALUE}" ]]; then
+    echo "Configured signing keychain: ${CODE_SIGN_KEYCHAIN_VALUE}"
+  fi
+  echo
+  echo "Available code-signing identities:"
+  security find-identity -v -p codesigning
+  echo
+  if [[ "${CODE_SIGN_IDENTITY_VALUE}" == "-" ]]; then
+    cat <<'INFO'
+Using ad-hoc signing. This is valid for local builds, but macOS privacy
+permissions such as Screen Recording may need to be granted again after a
+rebuilt app is reinstalled because the code identity changes.
+
+To use a stable local identity, create or install a trusted code-signing
+certificate, then run:
+
+  LOCALSHOT_CODE_SIGN_IDENTITY="Certificate Common Name" scripts/localshot-build.sh install
+
+Optionally set LOCALSHOT_CODE_SIGN_KEYCHAIN to the keychain containing it.
+INFO
+  fi
 }
 
 case "${1:-build}" in
@@ -118,8 +165,11 @@ case "${1:-build}" in
   reset-permissions)
     reset_permissions
     ;;
+  signing-info)
+    signing_info
+    ;;
   *)
-    echo "Usage: $0 {clean|build|package|install|reset-permissions}" >&2
+    echo "Usage: $0 {clean|build|package|install|reset-permissions|signing-info}" >&2
     exit 64
     ;;
 esac
