@@ -40,4 +40,16 @@ final class LocalShotV1PrivacyStartupServiceTests: XCTestCase {
     XCTAssertFalse(defaults.bool(forKey: PreferencesKeys.cloudConfigured))
     XCTAssertFalse(defaults.bool(forKey: PreferencesKeys.cloudPasswordEnabled))
   }
+
+  func testClearCloudDefaultsDisablesDiagnosticsForLocalShotV1() {
+    let defaults = UserDefaultsFactory.make()
+    defaults.set(true, forKey: PreferencesKeys.diagnosticsEnabled)
+
+    LocalShotV1PrivacyStartupService.clearCloudDefaults(defaults: defaults)
+
+    XCTAssertEqual(
+      defaults.object(forKey: PreferencesKeys.diagnosticsEnabled) as? Bool,
+      LocalShotV1Policy.diagnosticsEnabledByDefault
+    )
+  }
 }

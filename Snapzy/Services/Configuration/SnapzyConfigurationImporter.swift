@@ -104,8 +104,16 @@ enum SnapzyConfigurationImporter {
     if let exportLocation = reader.string("general", "export_location") {
       mutations.append { defaults.set(expandedPath(exportLocation), forKey: PreferencesKeys.exportLocation) }
     }
-    collectBool(&reader, "diagnostics", "enabled", mutations: &mutations) {
-      defaults.set($0, forKey: PreferencesKeys.diagnosticsEnabled)
+    if let diagnosticsEnabled = reader.bool("diagnostics", "enabled") {
+      if diagnosticsEnabled != LocalShotV1Policy.diagnosticsEnabledByDefault {
+        reader.warning("diagnostics.enabled is disabled for LocalShot v1; keeping diagnostic logging off.")
+      }
+      mutations.append {
+        defaults.set(
+          LocalShotV1Policy.diagnosticsEnabledByDefault,
+          forKey: PreferencesKeys.diagnosticsEnabled
+        )
+      }
     }
     collectInt(&reader, "diagnostics", "retention_days", range: LogCleanupScheduler.retentionDaysRange, mutations: &mutations) {
       defaults.set($0, forKey: PreferencesKeys.diagnosticsRetentionDays)

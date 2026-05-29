@@ -103,6 +103,38 @@ final class SnapzyConfigurationImporterTests: XCTestCase {
     )
   }
 
+  func testImportDoesNotEnableDiagnosticsForLocalShotV1() {
+    let defaults = UserDefaultsFactory.make()
+    defaults.set(false, forKey: PreferencesKeys.diagnosticsEnabled)
+    let source = """
+    schema_version = 1
+
+    [diagnostics]
+    enabled = true
+    """
+
+    let result = SnapzyConfigurationImporter.importTOML(source, defaults: defaults)
+
+    XCTAssertFalse(result.hasErrors)
+    XCTAssertEqual(defaults.object(forKey: PreferencesKeys.diagnosticsEnabled) as? Bool, false)
+  }
+
+  func testImportDisablesExistingDiagnosticsForLocalShotV1() {
+    let defaults = UserDefaultsFactory.make()
+    defaults.set(true, forKey: PreferencesKeys.diagnosticsEnabled)
+    let source = """
+    schema_version = 1
+
+    [diagnostics]
+    enabled = true
+    """
+
+    let result = SnapzyConfigurationImporter.importTOML(source, defaults: defaults)
+
+    XCTAssertFalse(result.hasErrors)
+    XCTAssertEqual(defaults.object(forKey: PreferencesKeys.diagnosticsEnabled) as? Bool, false)
+  }
+
   func testImportWithoutAnnotateShortcutSectionDoesNotResetActionEnablement() {
     let defaults = UserDefaultsFactory.make()
     let manager = AnnotateShortcutManager.shared
