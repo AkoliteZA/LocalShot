@@ -119,9 +119,16 @@ install_app() {
 }
 
 reset_permissions() {
-  tccutil reset ScreenCapture "${BUNDLE_ID}" || true
-  tccutil reset Microphone "${BUNDLE_ID}" || true
-  tccutil reset Accessibility "${BUNDLE_ID}" || true
+  if ! tccutil reset All "${BUNDLE_ID}"; then
+    tccutil reset ScreenCapture "${BUNDLE_ID}" || true
+    tccutil reset Microphone "${BUNDLE_ID}" || true
+    tccutil reset Accessibility "${BUNDLE_ID}" || true
+  fi
+
+  # Security-scoped bookmarks are app state, not TCC rows. Clear the export
+  # bookmark as part of the dev reset so the next launch asks for the folder
+  # with the currently installed app identity.
+  defaults delete "${BUNDLE_ID}" "exportLocation.bookmark" >/dev/null 2>&1 || true
 }
 
 signing_info() {

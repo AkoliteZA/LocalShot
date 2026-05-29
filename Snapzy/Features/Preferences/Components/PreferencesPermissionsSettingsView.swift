@@ -10,6 +10,16 @@ import ApplicationServices
 import AVFoundation
 import SwiftUI
 
+enum PermissionsRecoveryNotePolicy {
+  static func shouldShow(
+    screenRecordingGranted: Bool,
+    saveFolderGranted: Bool,
+    microphoneGranted: Bool
+  ) -> Bool {
+    !screenRecordingGranted || !saveFolderGranted || !microphoneGranted
+  }
+}
+
 struct PermissionsSettingsView: View {
   @ObservedObject private var screenCaptureManager = ScreenCaptureManager.shared
   @ObservedObject private var identityManager = AppIdentityManager.shared
@@ -50,7 +60,7 @@ struct PermissionsSettingsView: View {
           }
         )
 
-        if screenCaptureManager.permissionStatus != .granted {
+        if shouldShowPermissionRecoveryNote {
           permissionRecoveryNote
         }
 
@@ -168,6 +178,14 @@ struct PermissionsSettingsView: View {
       }
     }
     .padding(.vertical, 6)
+  }
+
+  private var shouldShowPermissionRecoveryNote: Bool {
+    PermissionsRecoveryNotePolicy.shouldShow(
+      screenRecordingGranted: screenCaptureManager.permissionStatus == .granted,
+      saveFolderGranted: saveFolderGranted,
+      microphoneGranted: microphoneGranted
+    )
   }
 
   // MARK: - Permission Row Component

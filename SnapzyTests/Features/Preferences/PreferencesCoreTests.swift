@@ -73,6 +73,40 @@ final class PreferencesCoreTests: XCTestCase {
     XCTAssertEqual(tabs.count, 9)
   }
 
+  func testPermissionsRecoveryNoteShowsWhenAnyPermissionNeedsRecovery() {
+    XCTAssertFalse(
+      PermissionsRecoveryNotePolicy.shouldShow(
+        screenRecordingGranted: true,
+        saveFolderGranted: true,
+        microphoneGranted: true
+      )
+    )
+
+    XCTAssertTrue(
+      PermissionsRecoveryNotePolicy.shouldShow(
+        screenRecordingGranted: false,
+        saveFolderGranted: true,
+        microphoneGranted: true
+      )
+    )
+
+    XCTAssertTrue(
+      PermissionsRecoveryNotePolicy.shouldShow(
+        screenRecordingGranted: true,
+        saveFolderGranted: false,
+        microphoneGranted: true
+      )
+    )
+
+    XCTAssertTrue(
+      PermissionsRecoveryNotePolicy.shouldShow(
+        screenRecordingGranted: true,
+        saveFolderGranted: true,
+        microphoneGranted: false
+      )
+    )
+  }
+
   private func makeDefaults(
     file: StaticString = #filePath,
     line: UInt = #line

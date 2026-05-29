@@ -2035,8 +2035,8 @@ enum L10n {
     )
     static let localBuildPermissionNoteDescription = string(
       "preferences-permissions.local-build-note-description",
-      defaultValue: "If Screen Recording keeps prompting after a rebuild, macOS may be seeing a new ad-hoc-signed LocalShot binary. Grant the currently installed app, then quit and reopen LocalShot. A stable local signing identity prevents repeated grants.",
-      comment: "Description for note explaining repeated Screen Recording prompts after reinstalling ad-hoc-signed local builds"
+      defaultValue: "If permissions keep prompting after a rebuild, macOS may be seeing a new ad-hoc-signed LocalShot binary. Grant the currently installed app, then quit and reopen LocalShot. A stable local signing identity prevents repeated grants.",
+      comment: "Description for note explaining repeated permission prompts after reinstalling ad-hoc-signed local builds"
     )
   }
 

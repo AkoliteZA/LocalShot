@@ -277,16 +277,28 @@ fail_if_hits \
   bash -c 'codesign -d --entitlements :- "$1" 2>/dev/null | rg -n "com\\.apple\\.security\\.network\\.(client|server)|com\\.apple\\.security\\.automation\\.apple-events"' \
     _ "${PACKAGE_APP}"
 
+run_capture \
+  "package save-folder bookmark entitlement" \
+  "${EVIDENCE_DIR}/package-bookmark-entitlement.txt" \
+  bash -c 'tmp="$(mktemp)"; trap '\''rm -f "$tmp"'\'' EXIT; codesign -d --entitlements :- "$1" 2>/dev/null > "$tmp"; /usr/libexec/PlistBuddy -c "Print :com.apple.security.files.bookmarks.app-scope" "$tmp" | grep -qx true' \
+    _ "${PACKAGE_APP}"
+
 {
   echo "Bundle ID: ${BUNDLE_ID}"
   echo "Generated: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+  echo "Package designated requirement:"
+  codesign -d -r- "${PACKAGE_APP}" 2>&1 || true
+  if [[ -d "${INSTALLED_APP}" ]]; then
+    echo "Installed designated requirement:"
+    codesign -d -r- "${INSTALLED_APP}" 2>&1 || true
+  fi
   echo "User TCC rows:"
   sqlite3 "${HOME}/Library/Application Support/com.apple.TCC/TCC.db" \
-    "select service, client, auth_value, auth_reason, auth_version, datetime(last_modified,'unixepoch') from access where client = '${BUNDLE_ID}' order by service;" \
+    "select service, client, auth_value, auth_reason, auth_version, datetime(last_modified,'unixepoch'), hex(csreq) from access where client = '${BUNDLE_ID}' order by service;" \
     2>/dev/null || echo "TCC database unavailable to verifier"
   echo "System TCC rows:"
   sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" \
-    "select service, client, auth_value, auth_reason, auth_version, datetime(last_modified,'unixepoch') from access where client = '${BUNDLE_ID}' order by service;" \
+    "select service, client, auth_value, auth_reason, auth_version, datetime(last_modified,'unixepoch'), hex(csreq) from access where client = '${BUNDLE_ID}' order by service;" \
     2>/dev/null || echo "System TCC database unavailable to verifier"
 } > "${EVIDENCE_DIR}/tcc-status.txt"
 record "PASS TCC status snapshot: ${EVIDENCE_DIR}/tcc-status.txt"
