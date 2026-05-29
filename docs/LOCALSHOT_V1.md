@@ -41,8 +41,9 @@ MP4 is the default export. GIF export is kept as a secondary path. System audio 
 
 Repeatable evidence:
 
-- `scripts/localshot-verify.sh --with-launch-smoke`
+- `scripts/localshot-verify.sh --install-app --with-launch-smoke`
 - `build/evidence/localshot-verification-summary.txt`
+- `build/evidence/localshot-install.txt`
 - `build/evidence/tcc-status.txt`
 - `build/evidence/localshot-launch-smoke.txt`
 

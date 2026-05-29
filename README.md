@@ -29,10 +29,10 @@ The helper builds the existing Xcode scheme with local DerivedData and source pa
 Run the repeatable v1 verifier:
 
 ```sh
-./scripts/localshot-verify.sh --with-launch-smoke
+./scripts/localshot-verify.sh --install-app --with-launch-smoke
 ```
 
-The verifier builds/tests/packages the app, checks bundle metadata and guardrails, records current TCC permission rows for `com.personal.localshot`, verifies the package has no network or Apple Events automation entitlement, and can launch-smoke the packaged app. Live capture and recording checks still require macOS Screen Recording and Microphone permission grants.
+The verifier builds/tests/packages the app, checks bundle metadata and guardrails, records current TCC permission rows for `com.personal.localshot`, verifies the package has no network or Apple Events automation entitlement, installs to `/Applications/LocalShot.app` when requested, and can launch-smoke either the package or installed app. Live capture and recording checks still require macOS Screen Recording and Microphone permission grants.
 
 ## Local URLs
 

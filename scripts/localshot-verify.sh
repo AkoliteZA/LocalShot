@@ -9,16 +9,19 @@ BUNDLE_ID="com.personal.localshot"
 DERIVED_DATA="${ROOT_DIR}/build/DerivedData"
 SOURCE_PACKAGES="${ROOT_DIR}/build/SourcePackages"
 PACKAGE_APP="${ROOT_DIR}/build/package/LocalShot.app"
+INSTALLED_APP="/Applications/LocalShot.app"
 EVIDENCE_DIR="${ROOT_DIR}/build/evidence"
 MOCKUPS_DIR="$(cd "${ROOT_DIR}/.." && pwd)/mockups"
 
 SKIP_TESTS=0
 SKIP_PACKAGE=0
 RUN_LAUNCH_SMOKE=0
+INSTALL_APP=0
+LAUNCH_APP_PATH=""
 
 usage() {
   cat <<'USAGE'
-Usage: scripts/localshot-verify.sh [--skip-tests] [--skip-package] [--with-launch-smoke]
+Usage: scripts/localshot-verify.sh [--skip-tests] [--skip-package] [--with-launch-smoke] [--install-app] [--launch-app PATH]
 
 Runs repeatable LocalShot v1 verification and writes evidence under build/evidence.
 USAGE
@@ -34,6 +37,17 @@ while [[ $# -gt 0 ]]; do
       ;;
     --with-launch-smoke)
       RUN_LAUNCH_SMOKE=1
+      ;;
+    --install-app)
+      INSTALL_APP=1
+      ;;
+    --launch-app)
+      shift
+      if [[ $# -eq 0 ]]; then
+        usage >&2
+        exit 64
+      fi
+      LAUNCH_APP_PATH="$1"
       ;;
     -h|--help)
       usage
@@ -112,10 +126,52 @@ fail_if_output() {
   fi
 }
 
+selected_launch_app() {
+  if [[ -n "${LAUNCH_APP_PATH}" ]]; then
+    printf '%s\n' "${LAUNCH_APP_PATH}"
+  elif [[ "${INSTALL_APP}" -eq 1 ]]; then
+    printf '%s\n' "${INSTALLED_APP}"
+  else
+    printf '%s\n' "${PACKAGE_APP}"
+  fi
+}
+
+install_packaged_app() {
+  local output="${EVIDENCE_DIR}/localshot-install.txt"
+  record "RUN install app"
+  if {
+    echo "Install started: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    echo "Source: ${PACKAGE_APP}"
+    echo "Destination: ${INSTALLED_APP}"
+    rm -rf "${INSTALLED_APP}"
+    ditto "${PACKAGE_APP}" "${INSTALLED_APP}"
+    xattr -cr "${INSTALLED_APP}" >/dev/null 2>&1 || true
+    codesign --verify --deep --strict --verbose=2 "${INSTALLED_APP}"
+    /usr/libexec/PlistBuddy -c 'Print :CFBundleDisplayName' "${INSTALLED_APP}/Contents/Info.plist"
+    /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "${INSTALLED_APP}/Contents/Info.plist"
+    echo "Install finished: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+  } > "${output}" 2>&1; then
+    record "PASS install app: ${output}"
+  else
+    local status=$?
+    record "FAIL install app: ${output} (exit ${status})"
+    tail -80 "${output}" >&2 || true
+    exit "${status}"
+  fi
+}
+
 run_launch_smoke() {
   local output="${EVIDENCE_DIR}/localshot-launch-smoke.txt"
+  local app
+  app="$(selected_launch_app)"
   record "RUN launch smoke"
   : > "${output}"
+
+  if [[ ! -d "${app}" ]]; then
+    record "FAIL launch smoke: ${app} missing"
+    echo "Missing app: ${app}" > "${output}"
+    exit 1
+  fi
 
   if pgrep -x LocalShot > "${EVIDENCE_DIR}/localshot-launch-preexisting-pids.txt" 2>/dev/null; then
     record "FAIL launch smoke: LocalShot is already running; stop it before isolated launch verification"
@@ -125,8 +181,8 @@ run_launch_smoke() {
 
   {
     echo "Launch smoke started: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
-    echo "App: ${PACKAGE_APP}"
-    open -n "${PACKAGE_APP}"
+    echo "App: ${app}"
+    open -n "${app}"
     sleep 3
     echo "Process IDs:"
     pgrep -x LocalShot
@@ -189,6 +245,12 @@ fi
 if [[ ! -d "${PACKAGE_APP}" ]]; then
   record "FAIL package exists: ${PACKAGE_APP} missing"
   exit 1
+fi
+
+if [[ "${INSTALL_APP}" -eq 1 ]]; then
+  install_packaged_app
+else
+  record "SKIP install app"
 fi
 
 run_capture \
