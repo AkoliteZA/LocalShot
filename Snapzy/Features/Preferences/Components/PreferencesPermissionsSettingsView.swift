@@ -6,12 +6,14 @@
 //
 
 import AppKit
+import ApplicationServices
 import AVFoundation
 import SwiftUI
 
 struct PermissionsSettingsView: View {
   @ObservedObject private var screenCaptureManager = ScreenCaptureManager.shared
   @ObservedObject private var identityManager = AppIdentityManager.shared
+  @State private var microphoneAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .audio)
   @State private var microphoneGranted = false
   @State private var accessibilityGranted = false
   @State private var saveFolderGranted = false
@@ -27,8 +29,6 @@ struct PermissionsSettingsView: View {
     "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone"
   private let accessibilityURL =
     "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
-  private let filesAndFoldersURL =
-    "x-apple.systempreferences:com.apple.preference.security?Privacy_FilesAndFolders"
 
   var body: some View {
     Form {
@@ -45,7 +45,9 @@ struct PermissionsSettingsView: View {
           statusIcon: screenRecordingStatusIcon,
           statusColor: screenRecordingStatusColor,
           isRequired: true,
-          settingsURL: screenRecordingURL
+          action: {
+            openSystemSettings(screenRecordingURL)
+          }
         )
 
         permissionRow(
@@ -56,7 +58,10 @@ struct PermissionsSettingsView: View {
           statusIcon: saveFolderGranted ? "checkmark.circle.fill" : "xmark.circle.fill",
           statusColor: saveFolderGranted ? .green : .orange,
           isRequired: true,
-          settingsURL: filesAndFoldersURL
+          buttonTitle: saveFolderGranted ? L10n.FileAccess.chooseFolderPrompt : L10n.FileAccess.grantAccessPrompt,
+          action: {
+            requestSaveFolderPermission()
+          }
         )
 
         permissionRow(
@@ -67,7 +72,10 @@ struct PermissionsSettingsView: View {
           statusIcon: microphoneGranted ? "checkmark.circle.fill" : "xmark.circle.fill",
           statusColor: microphoneGranted ? .green : .orange,
           isRequired: false,
-          settingsURL: microphoneURL
+          buttonTitle: microphoneActionTitle,
+          action: {
+            requestMicrophonePermission()
+          }
         )
 
         permissionRow(
@@ -78,7 +86,14 @@ struct PermissionsSettingsView: View {
           statusIcon: accessibilityGranted ? "checkmark.circle.fill" : "xmark.circle.fill",
           statusColor: accessibilityGranted ? .green : .orange,
           isRequired: false,
-          settingsURL: accessibilityURL
+          buttonTitle: accessibilityActionTitle,
+          action: {
+            if accessibilityGranted {
+              openSystemSettings(accessibilityURL)
+            } else {
+              requestAccessibilityPermission()
+            }
+          }
         )
 
         if !identityManager.health.isHealthy {
@@ -142,7 +157,8 @@ struct PermissionsSettingsView: View {
     statusIcon: String,
     statusColor: Color,
     isRequired: Bool,
-    settingsURL: String
+    buttonTitle: String = L10n.Common.openSettings,
+    action: @escaping () -> Void
   ) -> some View {
     HStack(spacing: 12) {
       Image(systemName: icon)
@@ -176,8 +192,8 @@ struct PermissionsSettingsView: View {
         tint: statusColor
       )
 
-      Button(L10n.Common.openSettings) {
-        openSystemSettings(settingsURL)
+      Button(buttonTitle) {
+        action()
       }
       .buttonStyle(.bordered)
       .controlSize(.small)
@@ -209,6 +225,7 @@ struct PermissionsSettingsView: View {
 
   private func checkMicrophonePermission() {
     let status = AVCaptureDevice.authorizationStatus(for: .audio)
+    microphoneAuthorizationStatus = status
     microphoneGranted = (status == .authorized)
   }
 
@@ -219,6 +236,49 @@ struct PermissionsSettingsView: View {
   private func checkSaveFolderPermission() {
     fileAccessManager.ensureExportLocationInitialized()
     saveFolderGranted = fileAccessManager.hasPersistedExportPermission
+  }
+
+  private func requestSaveFolderPermission() {
+    _ = fileAccessManager.chooseExportDirectory(
+      message: L10n.FileAccess.chooseCapturesFolderMessage,
+      prompt: L10n.FileAccess.grantAccessPrompt,
+      directoryURL: fileAccessManager.resolvedExportDirectoryURL()
+    )
+    checkSaveFolderPermission()
+  }
+
+  private func requestMicrophonePermission() {
+    switch AVCaptureDevice.authorizationStatus(for: .audio) {
+    case .authorized:
+      microphoneAuthorizationStatus = .authorized
+      microphoneGranted = true
+      openSystemSettings(microphoneURL)
+    case .notDetermined:
+      AVCaptureDevice.requestAccess(for: .audio) { granted in
+        DispatchQueue.main.async {
+          microphoneAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .audio)
+          microphoneGranted = granted
+        }
+      }
+    case .denied, .restricted:
+      openSystemSettings(microphoneURL)
+      checkMicrophonePermission()
+    @unknown default:
+      openSystemSettings(microphoneURL)
+      checkMicrophonePermission()
+    }
+  }
+
+  private func requestAccessibilityPermission() {
+    if AXIsProcessTrusted() {
+      accessibilityGranted = true
+      return
+    }
+
+    let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
+    _ = AXIsProcessTrustedWithOptions(options)
+    openSystemSettings(accessibilityURL)
+    checkAccessibilityPermission()
   }
 
   private var screenRecordingDescription: String {
@@ -261,6 +321,21 @@ struct PermissionsSettingsView: View {
     case .notGranted, .grantedButUnavailableDueToAppIdentity:
       return .orange
     }
+  }
+
+  private var microphoneActionTitle: String {
+    switch microphoneAuthorizationStatus {
+    case .authorized, .denied, .restricted:
+      return L10n.Common.openSettings
+    case .notDetermined:
+      return L10n.Onboarding.grantAccess
+    @unknown default:
+      return L10n.Common.openSettings
+    }
+  }
+
+  private var accessibilityActionTitle: String {
+    accessibilityGranted ? L10n.Common.openSettings : L10n.Onboarding.grantAccess
   }
 
   // MARK: - System Settings Navigation
