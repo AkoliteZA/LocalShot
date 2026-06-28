@@ -99,14 +99,17 @@ jobs:
           git tag -f "$TAG"
           git push origin "$TAG" --force
 
-          FLAGS=()
           if [ "${{ inputs.prerelease }}" = "true" ]; then
-            FLAGS+=(--prerelease)
+            gh release create "$TAG" \
+              "${archive}" \
+              "${checksum}" \
+              --title "LocalShot ${TAG}" \
+              --notes-file build/release-notes.md \
+              --prerelease
+          else
+            gh release create "$TAG" \
+              "${archive}" \
+              "${checksum}" \
+              --title "LocalShot ${TAG}" \
+              --notes-file build/release-notes.md
           fi
-
-          gh release create "$TAG" \
-            "${archive}" \
-            "${checksum}" \
-            --title "LocalShot ${TAG}" \
-            --notes-file build/release-notes.md \
-            "${FLAGS[@]}"
