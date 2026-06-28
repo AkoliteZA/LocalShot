@@ -2,6 +2,20 @@
 
 All notable LocalShot changes are tracked here.
 
+## [1.20.2] - 2026-06-28
+
+### Added
+
+- Added a Homebrew cask and maintainer scripts for release checksum updates.
+- Added icon design mockups and selected-source artwork for the LocalShot app icon.
+
+### Changed
+
+- Replaced the Snapzy-like app icon with a LocalShot-specific Focus Frame mark
+  using a teal, seafoam, and gold palette.
+- Updated the release workflow to publish the downloadable app archive and keep
+  the Homebrew cask aligned with the generated release checksum.
+
 ## [1.20.1] - 2026-05-29
 
 ### Added

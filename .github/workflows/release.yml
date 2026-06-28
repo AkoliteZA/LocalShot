@@ -58,6 +58,20 @@ jobs:
           echo "archive=build/${ARCHIVE}" >> "$GITHUB_ENV"
           echo "checksum=build/${ARCHIVE}.sha256" >> "$GITHUB_ENV"
 
+      - name: Update Homebrew cask
+        run: |
+          set -euo pipefail
+          TAG="${{ inputs.tag }}"
+          ./scripts/update-homebrew-cask.sh "$TAG" "${checksum}"
+
+          if ! git diff --quiet -- Casks/localshot.rb; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add Casks/localshot.rb
+            git commit -m "Update Homebrew cask for ${TAG}"
+            git push origin HEAD:main
+          fi
+
       - name: Create release notes
         run: |
           set -euo pipefail
