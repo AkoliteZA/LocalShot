@@ -69,6 +69,20 @@ Developer ID-notarized release. macOS may warn that the app cannot be verified.
 If you trust the downloaded release, open it from Finder with
 **Right-click > Open** the first time.
 
+## Install With Homebrew
+
+LocalShot includes a Homebrew cask. Add this repository as a tap, then install
+the app with the short package name:
+
+```sh
+brew tap AkoliteZA/localshot https://github.com/AkoliteZA/LocalShot
+brew trust AkoliteZA/localshot
+brew install localshot
+```
+
+See [docs/HOMEBREW.md](docs/HOMEBREW.md) for upgrade, uninstall, and maintainer
+notes.
+
 ## Install From Source
 
 Requirements:

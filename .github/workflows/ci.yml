@@ -24,6 +24,9 @@ jobs:
         with:
           xcode-version: latest-stable
 
+      - name: Check Homebrew cask
+        run: ./scripts/check-homebrew-cask.sh
+
       - name: Verify localization catalogs
         run: |
           set -euo pipefail

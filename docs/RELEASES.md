@@ -25,6 +25,27 @@ The workflow creates or updates the tag and publishes:
 - `LocalShot-vX.Y.Z.zip`
 - `LocalShot-vX.Y.Z.zip.sha256`
 
+The workflow also updates `Casks/localshot.rb` with the release version and
+SHA-256 checksum before tagging the release commit. This keeps the Homebrew tap
+metadata aligned with the downloadable GitHub release.
+
+## Homebrew
+
+LocalShot can be installed through the cask stored in this repository:
+
+```sh
+brew tap AkoliteZA/localshot https://github.com/AkoliteZA/LocalShot
+brew trust AkoliteZA/localshot
+brew install localshot
+```
+
+For manual cask maintenance, run:
+
+```sh
+./scripts/update-homebrew-cask.sh vX.Y.Z build/LocalShot-vX.Y.Z.zip.sha256
+./scripts/check-homebrew-cask.sh --verify-release
+```
+
 ## Notarized Releases
 
 For the smoothest public install experience, add a future Developer ID release
