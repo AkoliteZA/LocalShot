@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">LocalShot selected icon: Focus Frame with History Stack colours</title>
+  <desc id="desc">A LocalShot app icon concept using the Focus Frame symbol and the History Stack teal, seafoam, and gold colour scheme.</desc>
+  <defs>
+    <linearGradient id="appBase" x1="128" y1="104" x2="896" y2="920" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#173142"/>
+      <stop offset="0.54" stop-color="#2AA59F"/>
+      <stop offset="1" stop-color="#F3C969"/>
+    </linearGradient>
+    <linearGradient id="glassCard" x1="360" y1="320" x2="664" y2="704" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#EDF5EF" stop-opacity="0.90"/>
+    </linearGradient>
+    <radialGradient id="baseLight" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(295 198) rotate(48) scale(690 520)">
+      <stop stop-color="#FFFFFF" stop-opacity="0.26"/>
+      <stop offset="0.36" stop-color="#FFFFFF" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="baseShadow" x="-18%" y="-18%" width="136%" height="136%">
+      <feDropShadow dx="0" dy="26" stdDeviation="28" flood-color="#10151F" flood-opacity="0.28"/>
+      <feDropShadow dx="0" dy="-6" stdDeviation="14" flood-color="#FFFFFF" flood-opacity="0.24"/>
+    </filter>
+    <filter id="symbolShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#173142" flood-opacity="0.25"/>
+    </filter>
+    <filter id="goldGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.953  0 0 0 0 0.788  0 0 0 0 0.412  0 0 0 .42 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="1024" fill="none"/>
+  <rect x="56" y="56" width="912" height="912" rx="214" fill="url(#appBase)" filter="url(#baseShadow)"/>
+  <rect x="56" y="56" width="912" height="912" rx="214" fill="url(#baseLight)"/>
+
+  <g filter="url(#symbolShadow)">
+    <path d="M270 330v-82h150M604 248h150v82M270 694v82h150M754 694v82H604" fill="none" stroke="#F8FAF7" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M270 330v-82h150M604 248h150v82M270 694v82h150M754 694v82H604" fill="none" stroke="#FFFFFF" stroke-width="35" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"/>
+
+    <rect x="320" y="350" width="384" height="324" rx="92" fill="url(#glassCard)"/>
+    <rect x="320" y="350" width="384" height="324" rx="92" fill="#F8FAF7" opacity="0.38"/>
+
+    <circle cx="512" cy="512" r="122" fill="#173142" opacity="0.16"/>
+    <circle cx="512" cy="512" r="84" fill="#F3C969" filter="url(#goldGlow)"/>
+    <circle cx="512" cy="512" r="32" fill="#FFFFFF"/>
+    <circle cx="512" cy="512" r="14" fill="#2AA59F"/>
+
+    <path d="M214 512h112M698 512h112M512 214v112M512 698v112" fill="none" stroke="#F8FAF7" stroke-width="31" stroke-linecap="round" opacity="0.76"/>
+    <path d="M312 308c132-82 268-82 400 0M312 716c132 82 268 82 400 0" fill="none" stroke="#F8FAF7" stroke-width="26" stroke-linecap="round" stroke-dasharray="58 64" opacity="0.38"/>
+    <path d="M312 308c132-82 268-82 400 0M312 716c132 82 268 82 400 0" fill="none" stroke="#173142" stroke-width="14" stroke-linecap="round" stroke-dasharray="58 64" opacity="0.20"/>
+  </g>
+
+  <path d="M172 856c160 74 520 92 680-66" fill="none" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" opacity="0.15"/>
+</svg>

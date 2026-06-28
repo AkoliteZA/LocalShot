@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1800" viewBox="0 0 1800 1800" role="img" aria-labelledby="title desc">
+  <title id="title">LocalShot app icon mockups and colour schemes</title>
+  <desc id="desc">Five alternative LocalShot app icon concepts with labels, palette swatches, and short design notes.</desc>
+  <defs>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#152033" flood-opacity="0.12"/>
+    </filter>
+    <filter id="iconShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#10151f" flood-opacity="0.24"/>
+    </filter>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .32 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="bgFocus" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#062B2F"/>
+      <stop offset="0.58" stop-color="#0C6463"/>
+      <stop offset="1" stop-color="#21CFA6"/>
+    </linearGradient>
+    <linearGradient id="bgLens" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFE6B5"/>
+      <stop offset="0.42" stop-color="#FF8C63"/>
+      <stop offset="1" stop-color="#E5484D"/>
+    </linearGradient>
+    <linearGradient id="bgShield" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#111820"/>
+      <stop offset="0.55" stop-color="#26332D"/>
+      <stop offset="1" stop-color="#8BE66E"/>
+    </linearGradient>
+    <linearGradient id="bgAnnotate" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#241B38"/>
+      <stop offset="0.53" stop-color="#6D345D"/>
+      <stop offset="1" stop-color="#F6D65A"/>
+    </linearGradient>
+    <linearGradient id="bgStack" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#173142"/>
+      <stop offset="0.5" stop-color="#2AA59F"/>
+      <stop offset="1" stop-color="#F3C969"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#FFFFFF" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#E9EEF8" stop-opacity="0.82"/>
+    </linearGradient>
+    <style>
+      .page { fill: #F6F7FA; }
+      .title { font: 700 50px -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif; fill: #172033; letter-spacing: 0; }
+      .subtitle { font: 400 23px -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif; fill: #667085; letter-spacing: 0; }
+      .card { fill: #FFFFFF; stroke: #E7EBF2; stroke-width: 1.5; filter: url(#cardShadow); }
+      .name { font: 700 28px -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif; fill: #172033; letter-spacing: 0; }
+      .tag { font: 600 17px -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif; fill: #667085; letter-spacing: 0; }
+      .note { font: 400 18px -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif; fill: #475467; letter-spacing: 0; }
+      .hex { font: 600 13px ui-monospace, "SF Mono", Menlo, monospace; fill: #344054; letter-spacing: 0; }
+      .mini { font: 600 13px -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif; fill: #7A8497; letter-spacing: 0; text-transform: uppercase; }
+      .iconBase { filter: url(#iconShadow); }
+      .whiteStroke { stroke: #FFFFFF; stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+      .softStroke { stroke: rgba(255,255,255,0.78); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+      .dash { stroke-dasharray: 18 20; }
+    </style>
+  </defs>
+
+  <rect class="page" width="1800" height="1800"/>
+  <text class="title" x="68" y="92">LocalShot Icon Directions</text>
+  <text class="subtitle" x="70" y="136">Five routes that move away from the current blue butterfly/X silhouette while keeping the macOS capture-tool feel.</text>
+
+  <!-- Option 1 -->
+  <g transform="translate(58 215)">
+    <rect class="card" width="500" height="500" rx="34"/>
+    <g transform="translate(72 54)">
+      <rect class="iconBase" width="250" height="250" rx="58" fill="url(#bgFocus)"/>
+      <path d="M55 72v-22h42M153 50h42v22M55 178v22h42M195 178v22h-42" class="whiteStroke" opacity="0.96"/>
+      <rect x="70" y="78" width="110" height="94" rx="26" fill="#F8FAF7" opacity="0.94"/>
+      <circle cx="125" cy="125" r="34" fill="#062B2F" opacity="0.18"/>
+      <circle cx="125" cy="125" r="23" fill="#21CFA6"/>
+      <circle cx="125" cy="125" r="8" fill="#FFFFFF"/>
+      <path d="M44 125h34M172 125h34M125 44v34M125 172v34" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity="0.74"/>
+      <path d="M69 70c37-23 75-23 112 0M69 180c37 23 75 23 112 0" class="softStroke dash" opacity="0.55"/>
+    </g>
+    <text class="name" x="72" y="352">01 Focus Frame</text>
+    <text class="tag" x="72" y="383">Region capture + precision</text>
+    <text class="note" x="72" y="423">Strong at small sizes; reads as a capture</text>
+    <text class="note" x="72" y="448">target without echoing the old shape.</text>
+    <g transform="translate(72 465)">
+      <circle cx="12" cy="12" r="12" fill="#062B2F"/><text class="hex" x="33" y="17">#062B2F</text>
+      <circle cx="132" cy="12" r="12" fill="#21CFA6"/><text class="hex" x="153" y="17">#21CFA6</text>
+      <circle cx="253" cy="12" r="12" fill="#F8FAF7" stroke="#D0D5DD"/><text class="hex" x="274" y="17">#F8FAF7</text>
+    </g>
+  </g>
+
+  <!-- Option 2 -->
+  <g transform="translate(650 215)">
+    <rect class="card" width="500" height="500" rx="34"/>
+    <g transform="translate(72 54)">
+      <rect class="iconBase" width="250" height="250" rx="58" fill="url(#bgLens)"/>
+      <rect x="58" y="57" width="134" height="128" rx="26" fill="#FFF7EA" opacity="0.95"/>
+      <path d="M84 90h82M84 121h46M84 152h66" stroke="#254559" stroke-width="9" stroke-linecap="round" opacity="0.32"/>
+      <circle cx="151" cy="152" r="44" fill="#254559" opacity="0.16"/>
+      <circle cx="151" cy="152" r="31" fill="none" stroke="#254559" stroke-width="15"/>
+      <path d="M174 175l31 31" stroke="#254559" stroke-width="16" stroke-linecap="round"/>
+      <circle cx="189" cy="74" r="15" fill="#2BC3A7"/>
+      <path d="M48 50h38M48 50v38M202 202h-38M202 202v-38" stroke="#FFF7EA" stroke-width="11" stroke-linecap="round" opacity="0.92"/>
+    </g>
+    <text class="name" x="72" y="352">02 Local Lens</text>
+    <text class="tag" x="72" y="383">Inspection + OCR + capture</text>
+    <text class="note" x="72" y="423">Warm, approachable, and clearly separate</text>
+    <text class="note" x="72" y="448">from the current cool-blue identity.</text>
+    <g transform="translate(72 465)">
+      <circle cx="12" cy="12" r="12" fill="#E5484D"/><text class="hex" x="33" y="17">#E5484D</text>
+      <circle cx="132" cy="12" r="12" fill="#FFF7EA" stroke="#D0D5DD"/><text class="hex" x="153" y="17">#FFF7EA</text>
+      <circle cx="253" cy="12" r="12" fill="#254559"/><text class="hex" x="274" y="17">#254559</text>
+    </g>
+  </g>
+
+  <!-- Option 3 -->
+  <g transform="translate(1242 215)">
+    <rect class="card" width="500" height="500" rx="34"/>
+    <g transform="translate(72 54)">
+      <rect class="iconBase" width="250" height="250" rx="58" fill="url(#bgShield)"/>
+      <path d="M125 50l64 25v48c0 50-28 84-64 101-36-17-64-51-64-101V75l64-25z" fill="#F4F7F2" opacity="0.95"/>
+      <path d="M125 78l36 14v32c0 29-15 49-36 61-21-12-36-32-36-61V92l36-14z" fill="#111820" opacity="0.17"/>
+      <path d="M91 126h68M125 92v68" stroke="#8BE66E" stroke-width="14" stroke-linecap="round"/>
+      <path d="M53 78v-25h38M197 78v-25h-38M53 172v25h38M197 172v25h-38" stroke="#F4F7F2" stroke-width="10" stroke-linecap="round" opacity="0.86"/>
+      <circle cx="191" cy="62" r="12" fill="#8BE66E"/>
+    </g>
+    <text class="name" x="72" y="352">03 Privacy Shutter</text>
+    <text class="tag" x="72" y="383">Local-first + protected capture</text>
+    <text class="note" x="72" y="423">Best for the privacy angle; darker and more</text>
+    <text class="note" x="72" y="448">technical without feeling enterprise-heavy.</text>
+    <g transform="translate(72 465)">
+      <circle cx="12" cy="12" r="12" fill="#111820"/><text class="hex" x="33" y="17">#111820</text>
+      <circle cx="132" cy="12" r="12" fill="#8BE66E"/><text class="hex" x="153" y="17">#8BE66E</text>
+      <circle cx="253" cy="12" r="12" fill="#F4F7F2" stroke="#D0D5DD"/><text class="hex" x="274" y="17">#F4F7F2</text>
+    </g>
+  </g>
+
+  <!-- Option 4 -->
+  <g transform="translate(354 830)">
+    <rect class="card" width="500" height="500" rx="34"/>
+    <g transform="translate(72 54)">
+      <rect class="iconBase" width="250" height="250" rx="58" fill="url(#bgAnnotate)"/>
+      <rect x="55" y="64" width="126" height="112" rx="24" fill="#EAF0FF" opacity="0.94"/>
+      <path d="M76 101h83M76 134h57" stroke="#241B38" stroke-width="10" stroke-linecap="round" opacity="0.32"/>
+      <path d="M155 170l53-53c8-8 21-8 29 0s8 21 0 29l-53 53-39 10 10-39z" fill="#F6D65A"/>
+      <path d="M199 113l35 35" stroke="#FF6F91" stroke-width="15" stroke-linecap="round"/>
+      <path d="M64 49h45M49 64v45M201 186v15h-15" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" opacity="0.88"/>
+      <circle cx="70" cy="190" r="12" fill="#FF6F91"/>
+    </g>
+    <text class="name" x="72" y="352">04 Annotate Burst</text>
+    <text class="tag" x="72" y="383">Markup + screenshot workflow</text>
+    <text class="note" x="72" y="423">Expressive option for users who think of</text>
+    <text class="note" x="72" y="448">LocalShot as capture plus quick editing.</text>
+    <g transform="translate(72 465)">
+      <circle cx="12" cy="12" r="12" fill="#241B38"/><text class="hex" x="33" y="17">#241B38</text>
+      <circle cx="132" cy="12" r="12" fill="#F6D65A"/><text class="hex" x="153" y="17">#F6D65A</text>
+      <circle cx="253" cy="12" r="12" fill="#FF6F91"/><text class="hex" x="274" y="17">#FF6F91</text>
+    </g>
+  </g>
+
+  <!-- Option 5 -->
+  <g transform="translate(946 830)">
+    <rect class="card" width="500" height="500" rx="34"/>
+    <g transform="translate(72 54)">
+      <rect class="iconBase" width="250" height="250" rx="58" fill="url(#bgStack)"/>
+      <rect x="72" y="58" width="118" height="92" rx="22" fill="#F8FAF7" opacity="0.45"/>
+      <rect x="60" y="76" width="124" height="98" rx="23" fill="#F8FAF7" opacity="0.66"/>
+      <rect x="49" y="96" width="132" height="104" rx="25" fill="#F8FAF7" opacity="0.96"/>
+      <path d="M76 126h80M76 155h52" stroke="#173142" stroke-width="9" stroke-linecap="round" opacity="0.32"/>
+      <path d="M176 139l35 35 35-35" fill="none" stroke="#F3C969" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M211 84v90" stroke="#F3C969" stroke-width="15" stroke-linecap="round"/>
+      <path d="M50 50h38M50 50v38M200 200h-38M200 200v-38" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" opacity="0.88"/>
+      <circle cx="69" cy="195" r="10" fill="#2AA59F"/>
+    </g>
+    <text class="name" x="72" y="352">05 History Stack</text>
+    <text class="tag" x="72" y="383">Local library + repeat capture</text>
+    <text class="note" x="72" y="423">Ties screenshots to the local history and</text>
+    <text class="note" x="72" y="448">save-flow side of the product.</text>
+    <g transform="translate(72 465)">
+      <circle cx="12" cy="12" r="12" fill="#173142"/><text class="hex" x="33" y="17">#173142</text>
+      <circle cx="132" cy="12" r="12" fill="#2AA59F"/><text class="hex" x="153" y="17">#2AA59F</text>
+      <circle cx="253" cy="12" r="12" fill="#F3C969"/><text class="hex" x="274" y="17">#F3C969</text>
+    </g>
+  </g>
+
+  <text class="mini" x="70" y="1398">Mockup sheet only. No production app assets replaced.</text>
+</svg>
