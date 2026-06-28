@@ -1,6 +1,6 @@
 cask "localshot" do
-  version "1.20.1"
-  sha256 "64a622ecbc04620073ca0beebb6d2682eb589038d455e08aeef117b820583ec6"
+  version "1.20.2"
+  sha256 "103ce5063223ece83b511d4759664bf76e92a99bb0366a887e603b9038c8e4df"
 
   url "https://github.com/AkoliteZA/LocalShot/releases/download/v#{version}/LocalShot-v#{version}.zip"
   name "LocalShot"
