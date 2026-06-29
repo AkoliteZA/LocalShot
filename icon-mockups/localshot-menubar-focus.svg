@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3714" height="3714" viewBox="0 0 3714 3714" role="img" aria-labelledby="title desc">
+  <title id="title">LocalShot menu bar Focus Frame icon</title>
+  <desc id="desc">A monochrome template glyph for the macOS menu bar, based on the LocalShot Focus Frame app icon.</desc>
+  <defs>
+    <style>
+      .mark {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .solid {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+
+  <path class="mark" stroke-width="260" d="M1100 1210v-430h610M2004 780h610v430M1100 2504v430h610M2614 2504v430h-610"/>
+  <rect x="1134" y="1332" width="1446" height="1050" rx="300" class="mark" stroke-width="220"/>
+  <circle cx="1857" cy="1857" r="350" class="mark" stroke-width="190"/>
+  <circle cx="1857" cy="1857" r="110" class="solid"/>
+</svg>
